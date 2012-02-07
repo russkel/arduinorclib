@@ -41,4 +41,4 @@ extern Expo g_Expo; //!< Global instance
 
 } // namespace end
 
-#endif
+#endif // INC_TX_EXPO_H

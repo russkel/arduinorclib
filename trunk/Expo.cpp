@@ -1,4 +1,18 @@
+/* ---------------------------------------------------------------------------
+** This software is in the public domain, furnished "as is", without technical
+** support, and with no warranty, express or implied, as to its usefulness for
+** any purpose.
+**
+** Expo.cpp
+** Exponential functionality
+**
+** Author: Daniel van den Ouden
+** Project: ArduinoTXLib
+** Website: http://sourceforge.net/p/arduinotxlib/
+** -------------------------------------------------------------------------*/
+
 #include <Expo.h>
+
 
 namespace tx
 {
@@ -8,9 +22,11 @@ enum
 	EXPO_POINTS = 15 //!< number of points to interpolate over, not including 0 and 1
 };
 
+
 // Pre-calculated expo points based on x^3 and x^(1/3)
 static const uint8_t s_expoPos[EXPO_POINTS] = {0, 1, 2, 4, 8, 14, 21, 32, 46, 63, 83, 108, 137, 171, 210};
 static const uint8_t s_expoNeg[EXPO_POINTS] = {101, 128, 147, 161, 174, 185, 194, 203, 211, 219, 226, 232, 239, 245, 251};
+
 
 // Public functions
 

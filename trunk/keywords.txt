@@ -22,3 +22,7 @@ apply	KEYWORD2
 # Constants (LITERAL1)
 #######################################
 
+Type_Normal	LITERAL1
+Type_AVCS	LITERAL1
+Mode_Normal	LITERAL1
+Mode_AVCS	LITERAL1
