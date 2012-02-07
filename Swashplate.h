@@ -1,0 +1,104 @@
+#ifndef INC_TX_SWASHPLATE_H
+#define INC_TX_SWASHPLATE_H
+
+/* ---------------------------------------------------------------------------
+** This software is in the public domain, furnished "as is", without technical
+** support, and with no warranty, express or implied, as to its usefulness for
+** any purpose.
+**
+** INC_TX_SWASHPLATE_H.h
+** INC_TX_SWASHPLATE_H functionality
+**
+** Author: Daniel van den Ouden
+** Project: ArduinoTXLib
+** Website: http://sourceforge.net/p/arduinotxlib/
+** -------------------------------------------------------------------------*/
+
+#include <inttypes.h>
+
+
+namespace tx
+{
+
+/*! \brief Class to encapsulate Swashplate functionality.*/
+class Swashplate
+{
+public:
+	enum Type //!< Swashplate types, see http://www.futaba-rc.com/faq/faq-q1056.html
+	{
+		Type_H1,   //!< Independent servo for each axis
+		Type_H2,   //!< Aileron and Pitch at 180 deg, mixed. Elevator independent. Pitch left, Ail right.
+		Type_HE3,  //!< Same as above, but with elevator between ail and pit (at the rear), these are not needed for elevator
+		Type_HR3,  //!< 120 degrees setup, pitch front left, ail front right, ele back.
+		Type_HN3,  //!< Same as HN3 but rotated 150 deg ccw. Ail left, pit right back, ele right front.
+		Type_H3,   //!< Same as HR3 but 140 degrees, square swash
+		Type_H4,   //!< Same as HE3 but with second ele servo at front, 90 degree four servo setup
+		Type_H4X,  //!< Same as H4 but rotated 45 deg ccw
+		Type_Count
+	};
+
+	
+	/*! \brief Constructs a Swashplate object
+	*/
+	Swashplate();
+	
+	/*! \brief Sets swash type
+	    \p_type Swashplate type to set.*/
+	void setType(Type p_type);
+	
+	/*! \brief Gets swashplate type.
+	    \return The swashplate type currently set.*/
+	Type getType() const;
+	
+	/*! \brief Sets aileron mix.
+	    \p_mix The amount of aileron mix to set, range [-100 - 100].*/
+	void setAilMix(int8_t p_mix);
+	
+	/*! \brief Gets aileron mix.
+	    \return The current amount of aileron mix, range [-100 - 100].*/
+	int8_t getAilMix() const;
+	
+	/*! \brief Sets elevator mix.
+	    \p_mix The amount of elevator mix to set, range [-100 - 100].*/
+	void setEleMix(int8_t p_mix);
+	
+	/*! \brief Gets elevator mix.
+	    \return The current amount of elevator mix, range [-100 - 100].*/
+	int8_t getEleMix() const;
+	
+	/*! \brief Sets pitch mix.
+	    \p_mix The amount of pitch mix to set, range [-100 - 100].*/
+	void setPitMix(int8_t p_mix);
+	
+	/*! \brief Gets pitch mix.
+	    \return The current amount of pitch mix, range [-100 - 100].*/
+	int8_t getPitMix() const;
+	
+	/*! \brief Applies swashplate mixing.
+	    \p_ail The amount of aileron input, range 140% [-358 - 358].
+		\p_ele The amount of elevator input, range 140% [-358 - 358].
+		\p_pit The amount of pitch input, range 140% [-358 - 358].
+		\p_ailOUT Aileron servo, range 140% [-358 - 358].
+		\p_eleOUT Elevator servo, range 140% [-358 - 358].
+		\p_pitOUT Pitch servo, range 140% [-358 - 358].
+		\p_ele2OUT Elevator servo 2, range 140% [-358 - 358].*/
+	void apply(int16_t p_ail,
+	           int16_t p_ele,
+	           int16_t p_pit,
+	           int16_t& p_ailOUT,
+	           int16_t& p_eleOUT,
+	           int16_t& p_pitOUT,
+	           int16_t& p_ele2OUT) const;
+	
+private:
+	Type  m_type;    //!< Swashplate type
+	int8_t m_ailMix; //!< Amount of aileron mix
+	int8_t m_eleMix; //!< Amount of elevator mix
+	int8_t m_pitMix; //!< Amount of pitch mix
+};
+
+extern Swashplate g_Swash; //!< Global instance
+
+} // namespace end
+
+#endif // INC_TX_SWASHPLATE_H
