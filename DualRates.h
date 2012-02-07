@@ -30,7 +30,7 @@ public:
 	/*! \brief Applies dual rates.
 	    \p_value Source value to apply d/r to, range [-256 - 256].
 		\p_expo Amount of d/r to apply, range [0 - 140].
-		\return d/r applied p_value.*/
+		\return d/r applied p_value, range 140% [-358 - 358].*/
 	int16_t apply(int16_t p_value, uint8_t p_rate) const;
 	
 private:
