@@ -6,6 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
+Curve	KEYWORD1
 DualRates	KEYWORD1
 Expo	KEYWORD1
 Gyro	KEYWORD1
