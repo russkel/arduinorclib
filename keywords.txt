@@ -10,6 +10,7 @@ DualRates	KEYWORD1
 Expo	KEYWORD1
 Gyro	KEYWORD1
 Swashplate	KEYWORD1
+tx	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
