@@ -6,6 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
+Channel	KEYWORD1
 Curve	KEYWORD1
 DualRates	KEYWORD1
 Expo	KEYWORD1
