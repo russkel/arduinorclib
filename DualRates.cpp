@@ -1,3 +1,16 @@
+/* ---------------------------------------------------------------------------
+** This software is in the public domain, furnished "as is", without technical
+** support, and with no warranty, express or implied, as to its usefulness for
+** any purpose.
+**
+** DualRates.cpp
+** Dual Rates functionality
+**
+** Author: Daniel van den Ouden
+** Project: ArduinoTXLib
+** Website: http://sourceforge.net/p/arduinotxlib/
+** -------------------------------------------------------------------------*/
+
 #include <DualRates.h>
 
 
