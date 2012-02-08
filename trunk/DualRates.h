@@ -10,8 +10,8 @@
 ** Dual Rates functionality
 **
 ** Author: Daniel van den Ouden
-** Project: ArduinoTXLib
-** Website: http://sourceforge.net/p/arduinotxlib/
+** Project: ArduinoRCLib
+** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
 #include <inttypes.h>
