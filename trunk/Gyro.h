@@ -67,7 +67,6 @@ private:
 	Mode m_mode; //!< Mode of operation (in case of AVCS type)
 };
 
-extern Gyro g_Gyro; //!< Global instance
 
 } // namespace end
 

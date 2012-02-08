@@ -97,7 +97,6 @@ private:
 	int8_t m_pitMix; //!< Amount of pitch mix
 };
 
-extern Swashplate g_Swash; //!< Global instance
 
 } // namespace end
 

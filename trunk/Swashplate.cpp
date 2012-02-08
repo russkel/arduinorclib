@@ -178,8 +178,5 @@ void Swashplate::apply(int16_t p_ail,
 }
 
 
-// Define global instance
-Swashplate g_Swash = Swashplate();
-
 // namespace end
 }
