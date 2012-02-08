@@ -84,9 +84,6 @@ int16_t Gyro::apply(int8_t p_gain) const
 }
 
 
-// Define global instance
-Gyro g_Gyro = Gyro();
-
 // namespace end
 }
 

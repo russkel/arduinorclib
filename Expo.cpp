@@ -30,26 +30,82 @@ static const uint8_t s_expoNeg[EXPO_POINTS] = {101, 128, 147, 161, 174, 185, 194
 
 // Public functions
 
-Expo::Expo()
+Expo::Expo(int8_t p_expo)
+:
+m_expo(p_expo)
 {
 	
 }
 
 
-int16_t Expo::apply(int16_t p_value, int8_t p_expo) const
+Expo::Expo(const Expo& p_rhs)
+:
+m_expo(p_rhs.m_expo)
 {
-	if (p_expo == 0)
+	
+}
+
+
+void Expo::set(int8_t p_expo)
+{
+	m_expo = p_expo;
+}
+
+
+int8_t Expo::get() const
+{
+	return m_expo;
+}
+
+
+Expo& Expo::operator = (int8_t p_rhs)
+{
+	m_expo = p_rhs;
+	return *this;
+}
+
+
+Expo& Expo::operator = (const Expo& p_rhs)
+{
+	m_expo = p_rhs.m_expo;
+	return *this;
+}
+
+
+Expo::operator int8_t () const
+{
+	return m_expo;
+}
+
+
+int8_t* Expo::operator & ()
+{
+	return &m_expo;
+}
+
+
+const int8_t* Expo::operator & () const
+{
+	return &m_expo;
+}
+
+
+int16_t Expo::apply(int16_t p_value) const
+{
+	if (m_expo == 0)
 	{
 		// early abort
 		return p_value;
 	}
 	
+	int8_t expo = m_expo;
+	
 	// select the expo array
-	const uint8_t* exparr = p_expo > 0 ? s_expoPos : s_expoNeg;
-	if (p_expo < 0)
+	const uint8_t* exparr = expo > 0 ? s_expoPos : s_expoNeg;
+	if (expo < 0)
 	{
 		// ABS
-		p_expo = -p_expo;
+		expo = -expo;
 	}
 	
 	// save sign
@@ -73,14 +129,10 @@ int16_t Expo::apply(int16_t p_value, int8_t p_expo) const
 	uint16_t expoval = (lowval + highval) >> 4; // divide by EXPO_POINTS + 1
 	
 	// get weighted average between linear and expo value
-	uint16_t out = ((p_value * (100 - p_expo)) + (expoval * p_expo)) / 100;
+	uint16_t out = ((p_value * (100 - expo)) + (expoval * expo)) / 100;
 	
 	return neg ? -out : out;
 }
-
-
-// Define global instance
-Expo g_Expo = Expo();
 
 
 // namespace end

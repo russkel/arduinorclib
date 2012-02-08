@@ -19,24 +19,75 @@ namespace tx
 
 // Public functions
 
-DualRates::DualRates()
+DualRates::DualRates(uint8_t p_rate)
+:
+m_rate(p_rate)
 {
 	
 }
 
 
-int16_t DualRates::apply(int16_t p_value, uint8_t p_rate) const
+DualRates::DualRates(const DualRates& p_rhs)
+:
+m_rate(p_rhs.m_rate)
+{
+	
+}
+
+
+void DualRates::set(uint8_t p_rate)
+{
+	m_rate = p_rate;
+}
+
+
+uint8_t DualRates::get() const
+{
+	return m_rate;
+}
+
+
+DualRates& DualRates::operator = (uint8_t p_rhs)
+{
+	m_rate = p_rhs;
+	return *this;
+}
+
+
+DualRates& DualRates::operator = (const DualRates& p_rhs)
+{
+	m_rate = p_rhs.m_rate;
+	return *this;
+}
+
+
+DualRates::operator uint8_t () const
+{
+	return m_rate;
+}
+
+
+uint8_t* DualRates::operator & ()
+{
+	return &m_rate;
+}
+
+
+const uint8_t* DualRates::operator & () const
+{
+	return &m_rate;
+}
+
+
+int16_t DualRates::apply(int16_t p_value) const
 {
 	// there's a risk in overflows here, since 256 * 140 > 32K
 	// so we do this unsigned..
 	uint8_t neg = p_value < 0;
 	uint16_t val = static_cast<uint16_t>(neg ? (-p_value) : p_value);
-	val = (val * p_rate) / 100;
+	val = (val * m_rate) / 100;
 	return neg ? -static_cast<int16_t>(val) : static_cast<int16_t>(val);
 }
-
-// Define global instance
-DualRates g_DualRates = DualRates();
 
 
 // namespace end
