@@ -43,7 +43,7 @@ public:
 	Swashplate();
 	
 	/*! \brief Sets swash type
-	    \p_type Swashplate type to set.*/
+	    \param p_type Swashplate type to set.*/
 	void setType(Type p_type);
 	
 	/*! \brief Gets swashplate type.
@@ -51,7 +51,7 @@ public:
 	Type getType() const;
 	
 	/*! \brief Sets aileron mix.
-	    \p_mix The amount of aileron mix to set, range [-100 - 100].*/
+	    \param p_mix The amount of aileron mix to set, range [-100 - 100].*/
 	void setAilMix(int8_t p_mix);
 	
 	/*! \brief Gets aileron mix.
@@ -59,7 +59,7 @@ public:
 	int8_t getAilMix() const;
 	
 	/*! \brief Sets elevator mix.
-	    \p_mix The amount of elevator mix to set, range [-100 - 100].*/
+	    \param p_mix The amount of elevator mix to set, range [-100 - 100].*/
 	void setEleMix(int8_t p_mix);
 	
 	/*! \brief Gets elevator mix.
@@ -67,7 +67,7 @@ public:
 	int8_t getEleMix() const;
 	
 	/*! \brief Sets pitch mix.
-	    \p_mix The amount of pitch mix to set, range [-100 - 100].*/
+	    \param p_mix The amount of pitch mix to set, range [-100 - 100].*/
 	void setPitMix(int8_t p_mix);
 	
 	/*! \brief Gets pitch mix.
@@ -75,13 +75,13 @@ public:
 	int8_t getPitMix() const;
 	
 	/*! \brief Applies swashplate mixing.
-	    \p_ail The amount of aileron input, range 140% [-358 - 358].
-		\p_ele The amount of elevator input, range 140% [-358 - 358].
-		\p_pit The amount of pitch input, range 140% [-358 - 358].
-		\p_ailOUT Aileron servo, range 140% [-358 - 358].
-		\p_eleOUT Elevator servo, range 140% [-358 - 358].
-		\p_pitOUT Pitch servo, range 140% [-358 - 358].
-		\p_ele2OUT Elevator servo 2, range 140% [-358 - 358].*/
+	    \param p_ail The amount of aileron input, range 140% [-358 - 358].
+		\param p_ele The amount of elevator input, range 140% [-358 - 358].
+		\param p_pit The amount of pitch input, range 140% [-358 - 358].
+		\param p_ailOUT Aileron servo, range 140% [-358 - 358].
+		\param p_eleOUT Elevator servo, range 140% [-358 - 358].
+		\param p_pitOUT Pitch servo, range 140% [-358 - 358].
+		\param p_ele2OUT Elevator servo 2, range 140% [-358 - 358].*/
 	void apply(int16_t p_ail,
 	           int16_t p_ele,
 	           int16_t p_pit,

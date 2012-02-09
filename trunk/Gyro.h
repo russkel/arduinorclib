@@ -42,7 +42,7 @@ public:
 	Gyro();
 	
 	/*! \brief Sets gyro type
-	    \p_type Gyro mode to set.*/
+	    \param p_type Gyro mode to set.*/
 	void setType(Type p_type);
 	
 	/*! \brief Gets gyro type.
@@ -50,7 +50,7 @@ public:
 	Type getType() const;
 	
 	/*! \brief Sets gyro mode.
-	    \p_mode The mode to set.*/
+	    \param p_mode The mode to set.*/
 	void setMode(Mode p_mode);
 	
 	/*! \brief Gets gyro mode.
@@ -58,7 +58,7 @@ public:
 	Mode getMode() const;
 	
 	/*! \brief Applies gyro.
-	    \p_gain The amount of gain to use, range [0 - 100].
+	    \param p_gain The amount of gain to use, range [0 - 100].
 		\return Normalized channel value, range [-256 - 256].*/
 	int16_t apply(int8_t p_gain) const;
 	

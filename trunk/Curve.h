@@ -34,12 +34,12 @@ public:
 	Curve();
 	
 	/*! \brief Sets a curve point.
-	    \p_point The point to set.
-		\p_value The value to set, range [-256 - 256].*/
+	    \param p_point The point to set.
+		\param p_value The value to set, range [-256 - 256].*/
 	void setPoint(uint8_t p_point, int16_t p_value);
 	
 	/*! \brief Gets a curve point.
-	    \p_point The point to get.
+	    \param p_point The point to get.
 		\return The current value, range [-256 - 256].*/
 	int16_t getPoint(uint8_t p_point) const;
 	
@@ -48,7 +48,7 @@ public:
 	const int16_t& operator[](uint8_t p_point) const;
 	
 	/*! \brief Applies curve.
-	    \p_value Source value to apply curve to, range [-256 - 256].
+	    \param p_value Source value to apply curve to, range [-256 - 256].
 		\return curve applied p_value, range [-256 - 256].*/
 	int16_t apply(int16_t p_value) const;
 	

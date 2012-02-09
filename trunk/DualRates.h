@@ -24,16 +24,16 @@ class DualRates
 {
 public:
 	/*! \brief Constructs a DualRates object
-	    \p_rate The rate to set, range [0 - 140].*/
+	    \param p_rate The rate to set, range [0 - 140].*/
 	DualRates(uint8_t p_rate = 100);
 
 	/*! \brief Copy constructor
-	    \p_rhs Object to copy with.*/
+	    \param p_rhs Object to copy with.*/
 	DualRates(const DualRates& p_rhs);
 	
 	
 	/*! \brief Sets the rate.
-	    \p_rate The rate to set, range [0 - 140].*/
+	    \param p_rate The rate to set, range [0 - 140].*/
 	void set(uint8_t p_rate);
 	
 	/*! \brief Gets rate.
@@ -41,12 +41,12 @@ public:
 	uint8_t get() const;
 	
 	/*! \brief Copy assignment operator.
-	    \p_rhs Object to copy.
+	    \param p_rhs Object to copy.
 	    \return Reference to this object.*/
 	DualRates& operator = (const DualRates& p_rhs);
 	
 	/*! \brief Assignment operator, sets rate.
-	    \p_rhs The rate to set, range [0 - 140].
+	    \param p_rhs The rate to set, range [0 - 140].
 	    \return Reference to this object.*/
 	DualRates& operator = (uint8_t p_rhs);
 	
@@ -63,7 +63,7 @@ public:
 	const uint8_t* operator &() const;
 	
 	/*! \brief Applies dual rates.
-	    \p_value Source value to apply d/r to, range [-256 - 256].
+	    \param p_value Source value to apply d/r to, range [-256 - 256].
 		\return d/r applied p_value, range 140% [-358 - 358].*/
 	int16_t apply(int16_t p_value) const;
 	
