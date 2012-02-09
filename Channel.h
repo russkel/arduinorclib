@@ -29,7 +29,7 @@ public:
 	Channel();
 	
 	/*! \brief Sets channel reverse.
-	    \p_reverse Whether the channel should be reversed.*/
+	    \param p_reverse Whether the channel should be reversed.*/
 	void setReverse(bool p_reverse);
 	
 	/*! \brief Gets channel reverse.
@@ -37,7 +37,7 @@ public:
 	bool isReversed() const;
 	
 	/*! \brief Sets subtrim.
-	    \p_subtrim The subtrim, range [-100 - 100].*/
+	    \param p_subtrim The subtrim, range [-100 - 100].*/
 	void setSubtrim(int8_t p_subtrim);
 	
 	/*! \brief Gets subtrim.
@@ -45,7 +45,7 @@ public:
 	int8_t getSubtrim() const;
 
 	/*! \brief Sets end point min.
-	    \p_endPoint	The end point of the negative side of the range, range [0 - 140].*/
+	    \param p_endPoint	The end point of the negative side of the range, range [0 - 140].*/
 	void setEndPointMin(uint8_t p_endPoint);
 	
 	/*! \brief Gets end point min.
@@ -53,7 +53,7 @@ public:
 	uint8_t getEndPointMin() const;
 
 	/*! \brief Sets end point max.
-	    \p_endPoint	The end point of the positive side of the range, range [0 - 140].*/
+	    \param p_endPoint	The end point of the positive side of the range, range [0 - 140].*/
 	void setEndPointMax(uint8_t p_endPoint);
 	
 	/*! \brief Gets end point max.
@@ -61,7 +61,7 @@ public:
 	uint8_t getEndPointMax() const;
 
 	/*! \brief Applies channel transformations.
-	    \p_value The normalized value of the channel, range 140% [-358 - 358].
+	    \param p_value The normalized value of the channel, range 140% [-358 - 358].
 		\return Mormalized channel value, range [-256 - 256].*/
 	int16_t apply(int16_t p_value) const;
 	

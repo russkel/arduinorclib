@@ -25,16 +25,16 @@ class Expo
 {
 public:
 	/*! \brief Constructs an Expo object
-	    \p_expo The expo to set, range [-100 - 100].*/
+	    \param p_expo The expo to set, range [-100 - 100].*/
 	Expo(int8_t p_expo = 0);
 
 	/*! \brief Copy constructor
-	    \p_rhs Object to copy with.*/
+	    \param p_rhs Object to copy with.*/
 	Expo(const Expo& p_rhs);
 	
 	
 	/*! \brief Sets the expo.
-	    \p_expo The expo to set, range [-100 - 100].*/
+	    \param p_expo The expo to set, range [-100 - 100].*/
 	void set(int8_t p_expo);
 	
 	/*! \brief Gets expo.
@@ -42,12 +42,12 @@ public:
 	int8_t get() const;
 	
 	/*! \brief Copy assignment operator.
-	    \p_rhs Object to copy.
+	    \param p_rhs Object to copy.
 	    \return Reference to this object.*/
 	Expo& operator = (const Expo& p_rhs);
 	
 	/*! \brief Assignment operator, sets expo.
-	    \p_rhs The expo to set, range [-100 - 100].
+	    \param p_rhs The expo to set, range [-100 - 100].
 	    \return Reference to this object.*/
 	Expo& operator = (int8_t p_rhs);
 	
@@ -64,8 +64,8 @@ public:
 	const int8_t* operator &() const;
 	
 	/*! \brief Applies expo.
-	    \p_value Source value to apply expo to, range [-256 - 256].
-		\p_expo Amount of expo to apply, range [-100 - 100].
+	    \param p_value Source value to apply expo to, range [-256 - 256].
+		\param p_expo Amount of expo to apply, range [-100 - 100].
 		\return expo applies p_value.*/
 	int16_t apply(int16_t p_value) const;
 	
