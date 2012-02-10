@@ -48,7 +48,7 @@ m_timings(p_work + p_maxChannels)
 }
 
 
-void PPM::start(bool p_a, bool p_invert = false, bool p_debug = false)
+void PPM::start(bool p_a, bool p_invert, bool p_debug)
 {
 	// update all buffers before we start anything
 	updateTimings();
