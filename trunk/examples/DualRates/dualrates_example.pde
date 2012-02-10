@@ -13,15 +13,23 @@
 
 #include <DualRates.h>
 
+tx::DualRates g_rates[2];
 
 void setup()
 {
-	// put your setup code here, to run once:
-	
+	// we set up two rates, one for each flight mode
+	g_rates[0] = 80;  // normal mode, 80% response
+	g_rates[1] = 100; // stunt mode, we want faster response here
 }
 
 void loop()
 {
-	// put your main code here, to run repeatedly: 
+	// we use a0 as input pin
+	int16_t normalized = map(analogRead(a0), 0, 1024, -256, 256);
 	
+	// and apply the rates, we use digital pin 3 as a flight mode switch
+	normalized = g_rates[digitalRead(3)].apply(normalized);
+	
+	// we can then use the transformed value for further modification
+	// or we can transmit it using the PPM class
 }

@@ -14,14 +14,22 @@
 #include <Gyro.h>
 
 
+tx::Gyro g_gyro;
+
 void setup()
 {
-	// put your setup code here, to run once:
-	
+	// set up the gyro type
+	g_gyro.setType(tx::Gyro::Type_AVCS);
 }
 
 void loop()
 {
-	// put your main code here, to run repeatedly: 
+	// we use a switch to change between gyro modes
+	g_gyro.setMode(digitalRead(3) == HIGH ? tx::Gyro::Mode_AVCS : tx::Gyro::Mode_Normal);
 	
+	// we use a knob to set the gain
+	int8_t gain = map(analogRead(a0), 0, 1024, 0, 100);
+	
+	// get the normalized channel value corresponding to the mode and gain
+	int16_t chGyro = g_gyro.apply(gain);
 }

@@ -14,14 +14,29 @@
 #include <Channel.h>
 
 
+// we define a single channel here, for the sake of simplicity
+tx::Channel g_channel;
+
 void setup()
 {
-	// put your setup code here, to run once:
+	// say our servo is moving in the wrong direction, we'd want to use channel reverse
+	g_channel.setReverse(true);
 	
+	// and for some reason we want to limit the throw of our servo
+	g_channel.setEndPointMin(80);
+	
+	// and our servo's center might be a tad bit off
+	g_channel.setSubtrim(20);
 }
 
 void loop()
 {
-	// put your main code here, to run repeatedly: 
+	// we use a0 as input pin
+	int16_t normalized = map(analogRead(a0), 0, 1024, -256, 256);
 	
+	// and apply channel transformations
+	normalized = g_channel.apply(normalized);
+	
+	// we can then use the transformed value for further modification
+	// or we can transmit it using the PPM class
 }
