@@ -3,36 +3,32 @@
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** curve_example.pde
-** Demonstrate Curve functionality
+** dualrates_example.pde
+** Demonstrate Dual Rates functionality
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <Curve.h>
+#include <DualRates.h>
 
-
-tx::Curve g_curve;
+tx::DualRates g_rates[2];
 
 void setup()
 {
-	// by default we have a linear curve from -256 to 256
-	// for this example we create a V shaped curve, for stunt mode throttle on a heli
-	g_curve[0] = -256;
-	g_curve[1] = -192;
-	g_curve[2] = -128;
-	g_curve[3] = -64;
+	// we set up two rates, one for each flight mode
+	g_rates[0] = 80;  // normal mode, 80% response
+	g_rates[1] = 100; // stunt mode, we want faster response here
 }
 
 void loop()
 {
-	// we use a0 as input pin
-	int16_t normalized = map(analogRead(a0), 0, 1024, -256, 256);
+	// we use A0 as input pin
+	int16_t normalized = map(analogRead(A0), 0, 1024, -256, 256);
 	
-	// and apply the curve
-	normalized = g_curve.apply(normalized);
+	// and apply the rates, we use digital pin 3 as a flight mode switch
+	normalized = g_rates[digitalRead(3)].apply(normalized);
 	
 	// we can then use the transformed value for further modification
 	// or we can transmit it using the PPM class
