@@ -193,9 +193,9 @@ uint16_t PPM::normalizedToTicks(int16_t p_normal) const
 	uint16_t p3 = (p_normal >> 8) & 0x03; // bits 8-9
 	
 	// multiply by end range
-	p1 *= m_range;
-	p2 *= m_range;
-	p3 *= m_range;
+	p1 *= range;
+	p2 *= range;
+	p3 *= range;
 	
 	// divide by start range, shift back
 	p1 >>= 9; // divide by 512

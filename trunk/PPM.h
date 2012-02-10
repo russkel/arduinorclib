@@ -102,7 +102,6 @@ private:
 	uint16_t m_pauseLength; //!< End of frame length in timer ticks.
 	uint16_t m_center; //!< Servo center in timer ticks.
 	uint16_t m_travel; //!< Servo travel in timer ticks.
-	uint16_t m_range;  //!< Total range in timer ticks.
 	
 	uint8_t  m_channelCount; //!< Number of active channels.
 	int16_t* m_channels;     //!< External buffer with channel values, range [-256 - 256].
