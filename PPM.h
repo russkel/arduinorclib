@@ -22,7 +22,13 @@
 namespace tx
 {
 
-/*! \brief Class to encapsulate PPM functionality.*/
+/*! 
+ *  \brief     Class to encapsulate PPM functionality.
+ *  \details   This class provides a way to generate a PPM signal for a configurable amount of channels.
+ *  \author    Daniel van den Ouden
+ *  \date      Feb-2012
+ *  \copyright Public Domain.
+ */
 class PPM
 {
 public:

@@ -20,11 +20,17 @@
 namespace tx
 {
 
-/*! \brief Class to encapsulate Swashplate functionality.*/
+/*! 
+ *  \brief     Class to encapsulate Swashplate functionality.
+ *  \details   This class provides swashplate mixing.
+ *  \author    Daniel van den Ouden
+ *  \date      Feb-2012
+ *  \copyright Public Domain.
+ */
 class Swashplate
 {
 public:
-	enum Type //!< Swashplate types, see http://www.futaba-rc.com/faq/faq-q1056.html
+	enum Type //! Swashplate types, see http://www.futaba-rc.com/faq/faq-q1056.html
 	{
 		Type_H1,   //!< Independent servo for each axis
 		Type_H2,   //!< Aileron and Pitch at 180 deg, mixed. Elevator independent. Pitch left, Ail right.
@@ -76,12 +82,12 @@ public:
 	
 	/*! \brief Applies swashplate mixing.
 	    \param p_ail The amount of aileron input, range 140% [-358 - 358].
-		\param p_ele The amount of elevator input, range 140% [-358 - 358].
-		\param p_pit The amount of pitch input, range 140% [-358 - 358].
-		\param p_ailOUT Aileron servo, range 140% [-358 - 358].
-		\param p_eleOUT Elevator servo, range 140% [-358 - 358].
-		\param p_pitOUT Pitch servo, range 140% [-358 - 358].
-		\param p_ele2OUT Elevator servo 2, range 140% [-358 - 358].*/
+	    \param p_ele The amount of elevator input, range 140% [-358 - 358].
+	    \param p_pit The amount of pitch input, range 140% [-358 - 358].
+	    \param p_ailOUT Aileron servo, range 140% [-358 - 358].
+	    \param p_eleOUT Elevator servo, range 140% [-358 - 358].
+	    \param p_pitOUT Pitch servo, range 140% [-358 - 358].
+	    \param p_ele2OUT Elevator servo 2, range 140% [-358 - 358].*/
 	void apply(int16_t p_ail,
 	           int16_t p_ele,
 	           int16_t p_pit,

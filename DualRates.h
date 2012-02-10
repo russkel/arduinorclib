@@ -19,14 +19,20 @@
 
 namespace tx {
 
-/*! \brief Class to encapsulate Dual Rates functionality. Can be used as a plain uint8_t. */
+/*! 
+ *  \brief     Class to encapsulate dual rates functionality.
+ *  \details   This class provides dual rates functionality and may be used as a uint8_t.
+ *  \author    Daniel van den Ouden
+ *  \date      Feb-2012
+ *  \copyright Public Domain.
+ */
 class DualRates
 {
 public:
 	/*! \brief Constructs a DualRates object
 	    \param p_rate The rate to set, range [0 - 140].*/
 	DualRates(uint8_t p_rate = 100);
-
+	
 	/*! \brief Copy constructor
 	    \param p_rhs Object to copy with.*/
 	DualRates(const DualRates& p_rhs);
@@ -64,7 +70,7 @@ public:
 	
 	/*! \brief Applies dual rates.
 	    \param p_value Source value to apply d/r to, range [-256 - 256].
-		\return d/r applied p_value, range 140% [-358 - 358].*/
+	    \return d/r applied p_value, range 140% [-358 - 358].*/
 	int16_t apply(int16_t p_value) const;
 	
 private:

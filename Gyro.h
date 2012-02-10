@@ -20,22 +20,28 @@
 namespace tx
 {
 
-/*! \brief Class to encapsulate Gyro functionality.*/
+/*! 
+ *  \brief     Class to encapsulate Gyroscope functionality.
+ *  \details   This class provides gyro gain encoding.
+ *  \author    Daniel van den Ouden
+ *  \date      Feb-2012
+ *  \copyright Public Domain.
+ */
 class Gyro
 {
 public:
-	enum Type //!< Type of gyro
+	enum Type //! Type of gyro
 	{
 		Type_Normal, //!< Normal (Rate mode) gyro
 		Type_AVCS    //!< Heading hold gyro, also capable of rate mode
 	};
-
-	enum Mode //!< Mode in which the gyro is operating, only for AVCS type gyros
+	
+	enum Mode //! Mode in which the gyro is operating, only for AVCS type gyros
 	{
 		Mode_Normal, //!< Normal mode (Rate mode)
 		Mode_AVCS    //!< AVCS mode (Heading hold mode)
 	};
-
+	
 	
 	/*! \brief Constructs a Gyro object
 	*/
@@ -59,7 +65,7 @@ public:
 	
 	/*! \brief Applies gyro.
 	    \param p_gain The amount of gain to use, range [0 - 100].
-		\return Normalized channel value, range [-256 - 256].*/
+	    \return Normalized channel value, range [-256 - 256].*/
 	int16_t apply(int8_t p_gain) const;
 	
 private:
