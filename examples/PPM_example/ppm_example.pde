@@ -16,7 +16,7 @@
 
 #define CHANNELS 4
 
-uint8_t  g_pins[CHANNELS] = {a0, a1, a2, a3}; // Input pins
+uint8_t  g_pins[CHANNELS] = {A0, A1, A2, A3}; // Input pins
 int16_t  g_input[CHANNELS];                   // normalized input buffer (range [-256 - 256]
 uint16_t g_work[PPM_WORK_SIZE(CHANNELS)];     // we need to have a work buffer for the PPM class
 

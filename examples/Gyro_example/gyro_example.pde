@@ -3,33 +3,33 @@
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** expo_example.pde
-** Demonstrate Expo functionality
+** gyro_example.pde
+** Demonstrate Gyro functionality
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <Expo.h>
+#include <Gyro.h>
 
 
-tx::Expo g_expo;
+tx::Gyro g_gyro;
 
 void setup()
 {
-	// we use -30% expo, dumb down the sensitivity in the center a bit
-	g_expo = -30;
+	// set up the gyro type
+	g_gyro.setType(tx::Gyro::Type_AVCS);
 }
 
 void loop()
 {
-	// we use a0 as input pin
-	int16_t normalized = map(analogRead(a0), 0, 1024, -256, 256);
+	// we use a switch to change between gyro modes
+	g_gyro.setMode(digitalRead(3) == HIGH ? tx::Gyro::Mode_AVCS : tx::Gyro::Mode_Normal);
 	
-	// and apply expo
-	normalized = g_expo.apply(normalized);
+	// we use a knob to set the gain
+	int8_t gain = map(analogRead(A0), 0, 1024, 0, 100);
 	
-	// we can then use the transformed value for further modification
-	// or we can transmit it using the PPM class
+	// get the normalized channel value corresponding to the mode and gain
+	int16_t chGyro = g_gyro.apply(gain);
 }

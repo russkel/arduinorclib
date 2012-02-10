@@ -29,10 +29,10 @@ void setup()
 
 void loop()
 {
-	// we use a0,a1,a2 as input pin
-	int16_t ail = map(analogRead(a0), 0, 1024, -256, 256);
-	int16_t ele = map(analogRead(a1), 0, 1024, -256, 256);
-	int16_t pit = map(analogRead(a2), 0, 1024, -256, 256);
+	// we use A0,A1,A2 as input pin
+	int16_t ail = map(analogRead(A0), 0, 1024, -256, 256);
+	int16_t ele = map(analogRead(A1), 0, 1024, -256, 256);
+	int16_t pit = map(analogRead(A2), 0, 1024, -256, 256);
 	
 	int16_t dummy; // we need a dummy value
 	

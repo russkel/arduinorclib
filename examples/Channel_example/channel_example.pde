@@ -31,8 +31,8 @@ void setup()
 
 void loop()
 {
-	// we use a0 as input pin
-	int16_t normalized = map(analogRead(a0), 0, 1024, -256, 256);
+	// we use A0 as input pin
+	int16_t normalized = map(analogRead(A0), 0, 1024, -256, 256);
 	
 	// and apply channel transformations
 	normalized = g_channel.apply(normalized);
