@@ -20,7 +20,13 @@
 namespace tx
 {
 
-/*! \brief Class to encapsulate Channel functionality.*/
+/*! 
+ *  \brief     Class to encapsulate Channel transformation functionality.
+ *  \details   This class provides channel reverse, end points and subtrim.
+ *  \author    Daniel van den Ouden
+ *  \date      Feb-2012
+ *  \copyright Public Domain.
+ */
 class Channel
 {
 public:
@@ -62,7 +68,7 @@ public:
 
 	/*! \brief Applies channel transformations.
 	    \param p_value The normalized value of the channel, range 140% [-358 - 358].
-		\return Mormalized channel value, range [-256 - 256].*/
+	    \return Normalized channel value, range [-256 - 256].*/
 	int16_t apply(int16_t p_value) const;
 	
 private:
