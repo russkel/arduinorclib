@@ -14,14 +14,22 @@
 #include <Expo.h>
 
 
+tx::Expo g_expo;
+
 void setup()
 {
-	// put your setup code here, to run once:
-	
+	// we use -30% expo, dumb down the sensitivity in the center a bit
+	g_expo = -30;
 }
 
 void loop()
 {
-	// put your main code here, to run repeatedly: 
+	// we use a0 as input pin
+	int16_t normalized = map(analogRead(a0), 0, 1024, -256, 256);
 	
+	// and apply expo
+	normalized = g_expo.apply(normalized);
+	
+	// we can then use the transformed value for further modification
+	// or we can transmit it using the PPM class
 }

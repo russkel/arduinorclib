@@ -14,14 +14,26 @@
 #include <Curve.h>
 
 
+tx::Curve g_curve;
+
 void setup()
 {
-	// put your setup code here, to run once:
-	
+	// by default we have a linear curve from -256 to 256
+	// for this example we create a V shaped curve, for stunt mode throttle on a heli
+	g_curve[0] = -256;
+	g_curve[1] = -192;
+	g_curve[2] = -128;
+	g_curve[3] = -64;
 }
 
 void loop()
 {
-	// put your main code here, to run repeatedly: 
+	// we use a0 as input pin
+	int16_t normalized = map(analogRead(a0), 0, 1024, -256, 256);
 	
+	// and apply the curve
+	normalized = g_curve.apply(normalized);
+	
+	// we can then use the transformed value for further modification
+	// or we can transmit it using the PPM class
 }
