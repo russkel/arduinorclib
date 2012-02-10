@@ -63,14 +63,31 @@ public:
 	    \return The gyro mode currently set.*/
 	Mode getMode() const;
 	
+	/*! \brief Sets gyro gain.
+	    \param p_gain The gain to set, range [0 - 100].*/
+	void setGain(int8_t p_gain);
+	
+	/*! \brief Gets gyro gain.
+	    \return The gyro gain currently set, range [0 - 100].*/
+	int8_t getGain() const;
+	
+	/*! \brief Assignment operator, sets gain.
+	    \param p_rhs The gain to set, range [0 - 100].
+	    \return Reference to this object.*/
+	Gyro& operator = (int8_t p_rhs);
+	
+	/*! \brief Cast operator, casts object to int8_t.
+	    \return Current gain, range [0 - 100].*/
+	operator int8_t () const;
+	
 	/*! \brief Applies gyro.
-	    \param p_gain The amount of gain to use, range [0 - 100].
 	    \return Normalized channel value, range [-256 - 256].*/
-	int16_t apply(int8_t p_gain) const;
+	int16_t apply() const;
 	
 private:
-	Type m_type; //!< Gyro type
-	Mode m_mode; //!< Mode of operation (in case of AVCS type)
+	Type   m_type; //!< Gyro type
+	Mode   m_mode; //!< Mode of operation (in case of AVCS type)
+	int8_t m_gain; //!< Gain [0 - 100]
 };
 
 
