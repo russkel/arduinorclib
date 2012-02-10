@@ -1,13 +1,13 @@
-#ifndef INC_TX_PPM_H
-#define INC_TX_PPM_H
+#ifndef INC_TX_PPMOUT_H
+#define INC_TX_PPMOUT_H
 
 /* ---------------------------------------------------------------------------
 ** This software is in the public domain, furnished "as is", without technical
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** PPM.h
-** Pulse Position Modulation functionality
+** PPMOut.h
+** Pulse Position Modulation Output functionality
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
@@ -16,29 +16,29 @@
 
 #include <inttypes.h>
 
-#define PPM_WORK_SIZE(channels) ((channels) + (((channels) + 1) * 2))
+#define PPMOUT_WORK_SIZE(channels) ((channels) + (((channels) + 1) * 2))
 
 
-namespace tx
+namespace rc
 {
 
 /*! 
- *  \brief     Class to encapsulate PPM functionality.
+ *  \brief     Class to encapsulate PPM Output functionality.
  *  \details   This class provides a way to generate a PPM signal for a configurable amount of channels.
  *  \author    Daniel van den Ouden
  *  \date      Feb-2012
  *  \copyright Public Domain.
  */
-class PPM
+class PPMOut
 {
 public:
 	
-	/*! \brief Constructs a PPM object.
+	/*! \brief Constructs a PPMOut object.
 	    \param p_channels Number of active channels, <= p_maxChannels.
 	    \param p_input External input buffer for channel values.
 	    \param p_work Work buffer, should be (p_maxChannels + 1) * 4 elements large.
 	    \param p_maxChannels Maximum number of channels supported. */
-	PPM(uint8_t p_channels, int16_t* p_input, uint16_t* p_work, uint8_t p_maxChannels);
+	PPMOut(uint8_t p_channels, int16_t* p_input, uint16_t* p_work, uint8_t p_maxChannels);
 	
 	/*! \brief Sets up timers and interrupts.
 	    \param p_a Use timer output pin A on true, output pin B on false.
@@ -122,10 +122,10 @@ private:
 	uint8_t   m_timingPos;   //!< Current position in timings buffer.
 	uint16_t* m_timings;     //!< Timing values in timer ticks.
 	
-	static PPM* s_instance; //!< Singleton instance
+	static PPMOut* s_instance; //!< Singleton instance
 };
 
 
 } // namespace end
 
-#endif // INC_TX_PPM_H
+#endif // INC_TX_PPMOUT_H

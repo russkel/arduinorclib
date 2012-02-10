@@ -14,12 +14,12 @@
 #include <Swashplate.h>
 
 
-tx::Swashplate g_swash;
+rc::Swashplate g_swash;
 
 void setup()
 {
 	// use the most common type of CCPM swash
-	g_swash.setType(tx::Swashplate::Type_HR3);
+	g_swash.setType(rc::Swashplate::Type_HR3);
 	
 	// set up mixes
 	g_swash.setAilMix(50);
@@ -40,5 +40,5 @@ void loop()
 	g_swash.apply(ail, ele, pit, ail, ele, pit, dummy);
 	
 	// we can then use the transformed values for further modification
-	// or we can transmit them using the PPM class
+	// or we can transmit them using the PPMOut class
 }

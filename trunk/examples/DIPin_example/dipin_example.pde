@@ -14,7 +14,7 @@
 #include <DIPin.h>
 
 
-tx::DIPin g_pin(3); // we want to use digital pin 3
+rc::DIPin g_pin(3); // we want to use digital pin 3
 
 void setup()
 {

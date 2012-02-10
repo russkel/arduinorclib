@@ -14,7 +14,7 @@
 #include <Swashplate.h>
 
 
-namespace tx
+namespace rc
 {
 
 // Public functions

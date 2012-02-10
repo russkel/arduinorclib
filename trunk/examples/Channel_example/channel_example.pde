@@ -15,7 +15,7 @@
 
 
 // we define a single channel here, for the sake of simplicity
-tx::Channel g_channel;
+rc::Channel g_channel;
 
 void setup()
 {
@@ -38,5 +38,5 @@ void loop()
 	normalized = g_channel.apply(normalized);
 	
 	// we can then use the transformed value for further modification
-	// or we can transmit it using the PPM class
+	// or we can transmit it using the PPMOut class
 }

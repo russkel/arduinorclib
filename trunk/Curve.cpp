@@ -14,7 +14,7 @@
 #include <Curve.h>
 
 
-namespace tx
+namespace rc
 {
 
 // Public functions

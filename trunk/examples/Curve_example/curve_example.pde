@@ -14,7 +14,7 @@
 #include <Curve.h>
 
 
-tx::Curve g_curve;
+rc::Curve g_curve;
 
 void setup()
 {
@@ -35,5 +35,5 @@ void loop()
 	normalized = g_curve.apply(normalized);
 	
 	// we can then use the transformed value for further modification
-	// or we can transmit it using the PPM class
+	// or we can transmit it using the PPMOut class
 }

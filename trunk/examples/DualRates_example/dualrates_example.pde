@@ -13,7 +13,7 @@
 
 #include <DualRates.h>
 
-tx::DualRates g_rates[2];
+rc::DualRates g_rates[2];
 
 void setup()
 {
@@ -31,5 +31,5 @@ void loop()
 	normalized = g_rates[digitalRead(3)].apply(normalized);
 	
 	// we can then use the transformed value for further modification
-	// or we can transmit it using the PPM class
+	// or we can transmit it using the PPMOut class
 }

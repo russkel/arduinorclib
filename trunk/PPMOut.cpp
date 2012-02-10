@@ -3,15 +3,15 @@
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** PPM.cpp
-** Pulse Position Modulation functionality
+** PPMOut.cpp
+** Pulse Position Modulation Output functionality
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <PPM.h>
+#include <PPMOut.h>
 
 #include <wiring.h>
 #include <avr/interrupt.h>
@@ -20,19 +20,19 @@
 // Interrupt service routine
 ISR(TIMER1_COMPA_vect)
 {
-	tx::PPM::handleInterrupt();
+	rc::PPMOut::handleInterrupt();
 }
 
 
-namespace tx
+namespace rc
 {
 
-PPM* PPM::s_instance = 0;
+PPMOut* PPMOut::s_instance = 0;
 
 
 // Public functions
 
-PPM::PPM(uint8_t p_channels, int16_t* p_input, uint16_t* p_work, uint8_t p_maxChannels)
+PPMOut::PPMOut(uint8_t p_channels, int16_t* p_input, uint16_t* p_work, uint8_t p_maxChannels)
 :
 m_pulseLength(500),
 m_pauseLength(10500),
@@ -48,7 +48,7 @@ m_timings(p_work + p_maxChannels)
 }
 
 
-void PPM::start(bool p_a, bool p_invert, bool p_debug)
+void PPMOut::start(bool p_a, bool p_invert, bool p_debug)
 {
 	// update all buffers before we start anything
 	updateTimings();
@@ -81,81 +81,81 @@ void PPM::start(bool p_a, bool p_invert, bool p_debug)
 }
 
 
-void PPM::setChannelCount(uint8_t p_channels)
+void PPMOut::setChannelCount(uint8_t p_channels)
 {
 	m_channelCount = p_channels;
 }
 
 
-uint8_t PPM::getChannelCount() const
+uint8_t PPMOut::getChannelCount() const
 {
 	return m_channelCount;
 }
 
 
-void PPM::setPulseLength(uint16_t p_length)
+void PPMOut::setPulseLength(uint16_t p_length)
 {
 	m_pulseLength = p_length << 1;
 }
 
 
-uint16_t PPM::getPulseLength() const
+uint16_t PPMOut::getPulseLength() const
 {
 	return m_pulseLength >> 1;
 }
 
 
-void PPM::setPauseLength(uint16_t p_length)
+void PPMOut::setPauseLength(uint16_t p_length)
 {
 	m_pauseLength = p_length << 1;
 }
 
 
-uint16_t PPM::getPauseLength() const
+uint16_t PPMOut::getPauseLength() const
 {
 	return m_pauseLength >> 1;
 }
 
 
-void PPM::setCenter(uint16_t p_center)
+void PPMOut::setCenter(uint16_t p_center)
 {
 	m_center = p_center << 1;
 }
 
 
-uint16_t PPM::getCenter() const
+uint16_t PPMOut::getCenter() const
 {
 	return m_center >> 1;
 }
 
 
-void PPM::setTravel(uint16_t p_travel)
+void PPMOut::setTravel(uint16_t p_travel)
 {
 	m_travel = p_travel << 1;
 }
 
 
-uint16_t PPM::getTravel() const
+uint16_t PPMOut::getTravel() const
 {
 	return m_travel >> 1;
 }
 
 
-void PPM::loadFutaba()
+void PPMOut::loadFutaba()
 {
 	setCenter(1520);
 	setTravel(600);
 }
 
 
-void PPM::loadJR()
+void PPMOut::loadJR()
 {
 	setCenter(1500);
 	setTravel(600);
 }
 
 
-void PPM::update()
+void PPMOut::update()
 {
 	for (uint8_t i = 0; i < m_channelCount; ++i)
 	{
@@ -164,7 +164,7 @@ void PPM::update()
 }
 
 
-void PPM::handleInterrupt()
+void PPMOut::handleInterrupt()
 {
 	if (s_instance != 0)
 	{
@@ -175,7 +175,7 @@ void PPM::handleInterrupt()
 
 // Private functions
 
-uint16_t PPM::normalizedToTicks(int16_t p_normal) const
+uint16_t PPMOut::normalizedToTicks(int16_t p_normal) const
 {
 	// we have a normalized value [-256 - 256] which corresponds to full positive or negative servo movement
 	// we need to scale this to a [0 - 2 * m_travel] timer ticks range
@@ -213,7 +213,7 @@ uint16_t PPM::normalizedToTicks(int16_t p_normal) const
 }
 
 
-void PPM::updateTimings()
+void PPMOut::updateTimings()
 {
 	uint16_t* scratch = m_timings;
 	
@@ -241,7 +241,7 @@ void PPM::updateTimings()
 }
 
 
-void PPM::isr()
+void PPMOut::isr()
 {
 	// set the compare register with the next value
 	OCR1A = m_timings[m_timingPos];
