@@ -28,10 +28,10 @@ void loop()
 	g_gyro.setMode(digitalRead(3) == HIGH ? rc::Gyro::Mode_AVCS : rc::Gyro::Mode_Normal);
 	
 	// we use a knob to set the gain
-	int8_t gain = map(analogRead(A0), 0, 1024, 0, 100);
+	g_gyro = map(analogRead(A0), 0, 1024, 0, 100);
 	
 	// get the normalized channel value corresponding to the mode and gain
-	int16_t chGyro = g_gyro.apply(gain);
+	int16_t chGyro = g_gyro.apply();
 	
 	// we can now transmit this value using the PPMOut class
 }

@@ -50,16 +50,41 @@ Gyro::Mode Gyro::getMode() const
 {
 	return m_mode;
 }
+
+	
+void Gyro::setGain(int8_t p_gain)
+{
+	m_gain = p_gain;
+}
 	
 
-int16_t Gyro::apply(int8_t p_gain) const
+int8_t Gyro::getGain() const
+{
+	return m_gain;
+}
+
+
+Gyro& Gyro::operator = (int8_t p_rhs)
+{
+	m_gain = p_rhs;
+	return *this;
+}
+
+
+Gyro::operator int8_t () const
+{
+	return m_gain;
+}
+
+
+int16_t Gyro::apply() const
 {
 	switch (m_type)
 	{
 		default:
 		case Type_Normal:
 		{
-			int16_t val = p_gain; // range [0 - 100]
+			int16_t val = m_gain; // range [0 - 100]
 			val = val - 50; // range [-50 - 50]
 			val *= 512; // range [-25600 - 25600]
 			val /= 100; // range [-256 - 256]
@@ -69,7 +94,7 @@ int16_t Gyro::apply(int8_t p_gain) const
 		
 		case Type_AVCS:
 		{
-			int16_t val = p_gain; // range [0 - 100]
+			int16_t val = m_gain; // range [0 - 100]
 			if (m_mode == Mode_Normal)
 			{
 				val = -val;
