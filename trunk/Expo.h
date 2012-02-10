@@ -65,8 +65,7 @@ public:
 	
 	/*! \brief Applies expo.
 	    \param p_value Source value to apply expo to, range [-256 - 256].
-		\param p_expo Amount of expo to apply, range [-100 - 100].
-		\return expo applies p_value.*/
+	    \return expo applies p_value.*/
 	int16_t apply(int16_t p_value) const;
 	
 private:
