@@ -14,7 +14,7 @@
 #include <Channel.h>
 
 
-namespace tx
+namespace rc
 {
 
 // Public functions

@@ -13,7 +13,7 @@
 
 #include <AIPin.h>
 
-tx::AIPin g_pin(A0);
+rc::AIPin g_pin(A0);
 
 void setup()
 {
@@ -34,5 +34,5 @@ void loop()
 	int16_t normalized = g_pin.read();
 	
 	// we can then use the value for further modification
-	// or we can transmit it using the PPM class
+	// or we can transmit it using the PPMOut class
 }

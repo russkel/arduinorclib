@@ -15,7 +15,7 @@ Expo	KEYWORD1
 Gyro	KEYWORD1
 PPM	KEYWORD1
 Swashplate	KEYWORD1
-tx	KEYWORD1
+rc	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)

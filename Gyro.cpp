@@ -14,7 +14,7 @@
 #include <Gyro.h>
 
 
-namespace tx
+namespace rc
 {
 
 // Public functions

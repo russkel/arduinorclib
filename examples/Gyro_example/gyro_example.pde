@@ -14,22 +14,24 @@
 #include <Gyro.h>
 
 
-tx::Gyro g_gyro;
+rc::Gyro g_gyro;
 
 void setup()
 {
 	// set up the gyro type
-	g_gyro.setType(tx::Gyro::Type_AVCS);
+	g_gyro.setType(rc::Gyro::Type_AVCS);
 }
 
 void loop()
 {
 	// we use a switch to change between gyro modes
-	g_gyro.setMode(digitalRead(3) == HIGH ? tx::Gyro::Mode_AVCS : tx::Gyro::Mode_Normal);
+	g_gyro.setMode(digitalRead(3) == HIGH ? rc::Gyro::Mode_AVCS : rc::Gyro::Mode_Normal);
 	
 	// we use a knob to set the gain
 	int8_t gain = map(analogRead(A0), 0, 1024, 0, 100);
 	
 	// get the normalized channel value corresponding to the mode and gain
 	int16_t chGyro = g_gyro.apply(gain);
+	
+	// we can now transmit this value using the PPMOut class
 }

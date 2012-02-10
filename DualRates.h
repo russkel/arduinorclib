@@ -17,7 +17,8 @@
 #include <inttypes.h>
 
 
-namespace tx {
+namespace rc
+{
 
 /*! 
  *  \brief     Class to encapsulate dual rates functionality.

@@ -14,7 +14,7 @@
 #include <Expo.h>
 
 
-tx::Expo g_expo;
+rc::Expo g_expo;
 
 void setup()
 {
@@ -31,5 +31,5 @@ void loop()
 	normalized = g_expo.apply(normalized);
 	
 	// we can then use the transformed value for further modification
-	// or we can transmit it using the PPM class
+	// or we can transmit it using the PPMOut class
 }
