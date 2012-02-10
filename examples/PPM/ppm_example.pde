@@ -17,12 +17,12 @@
 #define CHANNELS 4
 
 uint8_t  g_pins[CHANNELS] = {a0, a1, a2, a3}; // Input pins
-int16_t  g_input[CHANNELS]; // normalized input buffer (range [-256 - 256]
-uint16_t g_work[CHANNELS + ((CHANNELS + 1) * 2)]; // we need to have a buffer of channels + ((channels + 1) * 2) in size
+int16_t  g_input[CHANNELS];                   // normalized input buffer (range [-256 - 256]
+uint16_t g_work[PPM_WORK_SIZE(CHANNELS)];     // we need to have a work buffer for the PPM class
 
 // PPM requires two buffers:
 //     Input buffer containing normalized input samples, range [-256 - 256]
-//     Work buffer of ((channels + 1) * 2) elements
+//     Work buffer of ((channels + 1) * 2) elements for internal calculations and frame buffering
 // This setup removes any limit on the number of channels you want, and makes sure the library doesn't use more
 // memory than it really needs, since the client code supplies the buffers.
 tx::PPM g_PPM(CHANNELS, g_input, g_work, CHANNELS);

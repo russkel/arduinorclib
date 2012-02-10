@@ -16,6 +16,8 @@
 
 #include <inttypes.h>
 
+#define PPM_WORK_SIZE(channels) ((channels) + (((channels) + 1) * 2))
+
 
 namespace tx
 {
@@ -28,13 +30,15 @@ public:
 	/*! \brief Constructs a PPM object.
 	    \param p_channels Number of active channels, <= p_maxChannels.
 	    \param p_input External input buffer for channel values.
-		\param p_work Work buffer, should be (p_maxChannels + 1) * 4 elements large.
-		\param p_maxChannels Maximum number of channels supported. */
+	    \param p_work Work buffer, should be (p_maxChannels + 1) * 4 elements large.
+	    \param p_maxChannels Maximum number of channels supported. */
 	PPM(uint8_t p_channels, int16_t* p_input, uint16_t* p_work, uint8_t p_maxChannels);
 	
 	/*! \brief Sets up timers and interrupts.
-	    \param p_a Use compare A on true, compare B on false.*/
-	void start(bool p_a);
+	    \param p_a Use timer output pin A on true, output pin B on false.
+	    \param p_invert Invert the signal on true.
+	    \param p_debug Slow PPM output down by factor 256 on true.*/
+	void start(bool p_a, bool p_invert = false, bool p_debug = false);
 	
 	/*! \brief Sets channel count
 	    \param p_channels Channel count.*/

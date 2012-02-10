@@ -48,7 +48,7 @@ m_timings(p_work + p_maxChannels)
 }
 
 
-void PPM::start(bool p_a)
+void PPM::start(bool p_a, bool p_invert = false, bool p_debug = false)
 {
 	// update all buffers before we start anything
 	updateTimings();
@@ -57,7 +57,7 @@ void PPM::start(bool p_a)
 	m_timingCount = 1;
 	
 	pinMode(pin, OUTPUT);
-	digitalWrite(pin, LOW);
+	digitalWrite(pin, p_invert ? HIGH : LOW);
 	
 	// First disable the timer interrupts
 	TIMSK1 = 0;
@@ -66,8 +66,14 @@ void PPM::start(bool p_a)
 	TCCR1A = p_a ? (1 << COM1A0) : (1 << COM1B0);
 	
 	// set up timer1 speed
-	TCCR1B = ((1 << WGM12) | (1 << CS11)); // set at clk / 8
-	//TCCR1B = ((1 << WGM12) | (1 << CS12) | (1 << CS10)); // set at clk / 1024
+	if (p_debug == false)
+	{
+		TCCR1B = ((1 << WGM12) | (1 << CS11)); // set at clk / 8
+	}
+	else
+	{
+		TCCR1B = ((1 << WGM12) | (1 << CS12) | (1 << CS10)); // set at clk / 1024
+	}
 	
 	// set the compare register
 	OCR1A = m_timings[0];
