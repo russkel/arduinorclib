@@ -11,10 +11,14 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <PPMOut.h>
+#if defined(ARDUINO) && ARDUINO >= 100
+	#include <Arduino.h>
+#else
+	#include <avr/interrupt.h>
+	#include <wiring.h>
+#endif
 
-#include <wiring.h>
-#include <avr/interrupt.h>
+#include <PPMOut.h>
 
 
 // Interrupt service routine

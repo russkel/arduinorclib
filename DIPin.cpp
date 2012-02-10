@@ -11,9 +11,13 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <DIPin.h>
+#if defined(ARDUINO) && ARDUINO >= 100
+	#include <Arduino.h>
+#else
+	#include <wiring.h>
+#endif
 
-#include <wiring.h>
+#include <DIPin.h>
 
 
 namespace rc
