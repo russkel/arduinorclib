@@ -20,10 +20,10 @@ void setup()
 {
 	// by default we have a linear curve from -256 to 256
 	// for this example we create a V shaped curve, for stunt mode throttle on a heli
-	g_curve[0] = -256;
-	g_curve[1] = -192;
-	g_curve[2] = -128;
-	g_curve[3] = -64;
+	g_curve[0] = 256;
+	g_curve[1] = 192;
+	g_curve[2] = 128;
+	g_curve[3] = 64;
 }
 
 void loop()

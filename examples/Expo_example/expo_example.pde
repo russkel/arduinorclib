@@ -18,8 +18,8 @@ rc::Expo g_expo;
 
 void setup()
 {
-	// we use -30% expo, dumb down the sensitivity in the center a bit
-	g_expo = -30;
+	// we use 30% expo, dumb down the sensitivity in the center a bit
+	g_expo = 30;
 }
 
 void loop()
