@@ -54,14 +54,19 @@ m_timings(p_work + p_maxChannels)
 
 void PPMOut::start(bool p_a, bool p_invert, bool p_debug)
 {
-	// update all buffers before we start anything
+	// stop timer 1
+	TCCR1B = 0;
+	
+	// Fill channelTimings buffer with data from channels buffer
+	update();
+	
+	// Fill timings buffer with data from channelTimings buffer (set up a complete PPM frame)
 	updateTimings();
 	
 	uint8_t pin = p_a ? 9 : 10;
-	m_timingCount = 1;
+	m_timingPos = p_invert ? 0 : 1;
 	
 	pinMode(pin, OUTPUT);
-	digitalWrite(pin, p_invert ? HIGH : LOW);
 	
 	// First disable the timer interrupts
 	TIMSK1 = 0;
@@ -69,7 +74,11 @@ void PPMOut::start(bool p_a, bool p_invert, bool p_debug)
 	// Configure timer1 in CTC mode (Clear Timer on Compare Match) and Toggle OC1A/OC1B on Compare Match
 	TCCR1A = p_a ? (1 << COM1A0) : (1 << COM1B0);
 	
-	// set up timer1 speed
+	// set the compare register
+	OCR1A = m_timings[p_invert ? m_timingCount - 1 : 0];
+	TIMSK1 = (1 << OCIE1A) ;
+	
+	// start the timer by setting the speed speed
 	if (p_debug == false)
 	{
 		TCCR1B = ((1 << WGM12) | (1 << CS11)); // set at clk / 8
@@ -78,10 +87,6 @@ void PPMOut::start(bool p_a, bool p_invert, bool p_debug)
 	{
 		TCCR1B = ((1 << WGM12) | (1 << CS12) | (1 << CS10)); // set at clk / 1024
 	}
-	
-	// set the compare register
-	OCR1A = m_timings[0];
-	TIMSK1 = (1 << OCIE1A) ;
 }
 
 
