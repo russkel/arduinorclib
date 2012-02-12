@@ -45,7 +45,7 @@ public:
 	/*! \brief Assignment operator, sets hardware pin.
 	    \param p_pin The hardware pin to use.
 	    \return Reference to AIPin object.*/
-	AIPin& operator = (uint8_t p_point);
+	AIPin& operator = (uint8_t p_pin);
 	
 	/*! \brief Cast operator, casts object to uint8_t.
 	    \return Current hardware pin.*/
@@ -84,7 +84,7 @@ public:
 	uint16_t getMin() const;
 	
 	/*! \brief Sets the calibration maximum.
-	    \param p_min The raw maximum, range [0 - 1023].*/
+	    \param p_max The raw maximum, range [0 - 1023].*/
 	void setMax(uint16_t p_max);
 	
 	/*! \brief Gets the calibration maximum.

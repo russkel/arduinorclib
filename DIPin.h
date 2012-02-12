@@ -45,7 +45,7 @@ public:
 	/*! \brief Assignment operator, sets hardware pin.
 	    \param p_pin The hardware pin to use.
 	    \return Reference to DIPin object.*/
-	DIPin& operator = (uint8_t p_point);
+	DIPin& operator = (uint8_t p_pin);
 	
 	/*! \brief Cast operator, casts object to uint8_t.
 	    \return Current hardware pin.*/
