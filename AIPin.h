@@ -1,5 +1,5 @@
-#ifndef INC_TX_AIPIN_H
-#define INC_TX_AIPIN_H
+#ifndef INC_RC_AIPIN_H
+#define INC_RC_AIPIN_H
 
 /* ---------------------------------------------------------------------------
 ** This software is in the public domain, furnished "as is", without technical
@@ -112,4 +112,4 @@ private:
 
 } // namespace end
 
-#endif // INC_TX_AIPIN_H
+#endif // INC_RC_AIPIN_H

@@ -1,13 +1,13 @@
-#ifndef INC_TX_SWASHPLATE_H
-#define INC_TX_SWASHPLATE_H
+#ifndef INC_RC_SWASHPLATE_H
+#define INC_RC_SWASHPLATE_H
 
 /* ---------------------------------------------------------------------------
 ** This software is in the public domain, furnished "as is", without technical
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** INC_TX_SWASHPLATE_H.h
-** INC_TX_SWASHPLATE_H functionality
+** Swashplate.h
+** Swashplate functionality
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
@@ -106,4 +106,4 @@ private:
 
 } // namespace end
 
-#endif // INC_TX_SWASHPLATE_H
+#endif // INC_RC_SWASHPLATE_H
