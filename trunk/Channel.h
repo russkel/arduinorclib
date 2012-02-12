@@ -1,5 +1,5 @@
-#ifndef INC_TX_CHANNEL_H
-#define INC_TX_CHANNEL_H
+#ifndef INC_RC_CHANNEL_H
+#define INC_RC_CHANNEL_H
 
 /* ---------------------------------------------------------------------------
 ** This software is in the public domain, furnished "as is", without technical
@@ -80,4 +80,4 @@ private:
 
 } // namespace end
 
-#endif // INC_TX_CHANNEL_H
+#endif // INC_RC_CHANNEL_H
