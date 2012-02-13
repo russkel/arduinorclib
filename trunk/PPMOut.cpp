@@ -236,7 +236,7 @@ void PPMOut::updateTimings()
 		++scratch;
 		
 		// set timing
-		*scratch = m_channelTimings[i];
+		*scratch = m_channelTimings[i] - m_pulseLength;
 		++scratch;
 	}
 	
