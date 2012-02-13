@@ -36,7 +36,11 @@ PPMOut* PPMOut::s_instance = 0;
 
 // Public functions
 
-PPMOut::PPMOut(uint8_t p_channels, int16_t* p_input, uint16_t* p_work, uint8_t p_maxChannels)
+PPMOut::PPMOut(uint8_t   p_channels,
+               int16_t*  p_input,
+               uint16_t* p_work,
+               uint8_t   p_maxChannels,
+               bool      p_useMicroseconds)
 :
 m_pulseLength(500),
 m_pauseLength(10500),
@@ -44,6 +48,7 @@ m_center(1520),
 m_travel(600),
 m_channelCount(p_channels),
 m_channels(p_input),
+m_useMicroseconds(p_useMicroseconds),
 m_channelTimings(p_work),
 m_timingCount((p_channels + 1) * 2),
 m_timings(p_work + p_maxChannels)
@@ -168,9 +173,19 @@ void PPMOut::loadJR()
 
 void PPMOut::update()
 {
-	for (uint8_t i = 0; i < m_channelCount; ++i)
+	if (m_useMicroseconds)
 	{
-		m_channelTimings[i] = normalizedToTicks(m_channels[i]);
+		for (uint8_t i = 0; i < m_channelCount; ++i)
+		{
+			m_channelTimings[i] = m_channels[i] << 1;
+		}
+	}
+	else
+	{
+		for (uint8_t i = 0; i < m_channelCount; ++i)
+		{
+			m_channelTimings[i] = normalizedToTicks(m_channels[i]);
+		}
 	}
 }
 
