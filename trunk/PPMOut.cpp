@@ -68,24 +68,26 @@ void PPMOut::start(bool p_a, bool p_invert, bool p_debug)
 	
 	pinMode(pin, OUTPUT);
 	
-	// First disable the timer interrupts
-	TIMSK1 = 0;
+	// First disable the output compare match A interrupt
+	TIMSK1 &= ~(1 << OCIE1A);
 
-	// Configure timer1 in CTC mode (Clear Timer on Compare Match) and Toggle OC1A/OC1B on Compare Match
+	// Configure timer1 Toggle OC1A/OC1B on Compare Match
 	TCCR1A = p_a ? (1 << COM1A0) : (1 << COM1B0);
 	
-	// set the compare register
-	OCR1A = m_timings[p_invert ? m_timingCount - 1 : 0];
-	TIMSK1 = (1 << OCIE1A) ;
+	// set compare value
+	OCR1A = TCNT1 + m_timings[p_invert ? m_timingCount - 1 : 0];
+	
+	// enable timer output compare match A interrupts
+	TIMSK1 |= (1 << OCIE1A);
 	
 	// start the timer by setting the speed speed
 	if (p_debug == false)
 	{
-		TCCR1B = ((1 << WGM12) | (1 << CS11)); // set at clk / 8
+		TCCR1B = (1 << CS11); // set at clk / 8
 	}
 	else
 	{
-		TCCR1B = ((1 << WGM12) | (1 << CS12) | (1 << CS10)); // set at clk / 1024
+		TCCR1B = ((1 << CS12) | (1 << CS10)); // set at clk / 1024
 	}
 }
 
@@ -253,7 +255,7 @@ void PPMOut::updateTimings()
 void PPMOut::isr()
 {
 	// set the compare register with the next value
-	OCR1A = m_timings[m_timingPos];
+	OCR1A += m_timings[m_timingPos];
 	
 	// update position
 	++m_timingPos;
