@@ -21,7 +21,7 @@ namespace rc
 {
 
 /*! 
- *  \brief     Class to encapsulate Servo Siganl Input functionality.
+ *  \brief     Class to encapsulate Servo Signal Input functionality.
  *  \details   This class provides a way to read and decode a Servo signal.
  *  \author    Daniel van den Ouden
  *  \date      Feb-2012
