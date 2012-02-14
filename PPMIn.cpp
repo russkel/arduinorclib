@@ -204,17 +204,17 @@ bool PPMIn::update()
 int16_t PPMIn::ticksToNormalized(uint16_t p_ticks) const
 {
 	// first we clip values, early abort.
-	if (p_tick >= m_center + m_travel)
+	if (p_ticks >= m_center + m_travel)
 	{
 		return 256;
 	}
-	else if (p_tick <= m_center - m_travel)
+	else if (p_ticks <= m_center - m_travel)
 	{
 		return -256;
 	}
 	
-	// get the absolute delta ABS(p_tick - m_center)
-	uint16_t delta = (p_tick > m_center) ? (p_ticks - m_center) : (m_center - p_ticks);
+	// get the absolute delta ABS(p_ticks - m_center)
+	uint16_t delta = (p_ticks > m_center) ? (p_ticks - m_center) : (m_center - p_ticks);
 	
 	// we need to multiply by end range 256 and divide by start range m_travel
 	// and we need to do this without risking overflows...
