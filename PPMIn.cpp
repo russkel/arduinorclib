@@ -19,6 +19,7 @@
 #endif
 
 #include <PPMIn.h>
+#include <util.h>
 
 
 namespace rc
@@ -30,8 +31,6 @@ PPMIn::PPMIn(uint16_t* p_work, uint8_t p_maxChannels, bool p_useMicroseconds)
 :
 m_state(State_Startup),
 m_channels(0),
-m_center(1520),
-m_range(600),
 m_work(p_work),
 m_maxChannels(p_maxChannels),
 m_idx(0),
@@ -57,44 +56,6 @@ bool PPMIn::isStable() const
 uint8_t PPMIn::getChannels() const
 {
 	return m_channels;
-}
-
-
-void PPMIn::setCenter(uint16_t p_center)
-{
-	m_center = p_center << 1;
-}
-
-
-uint16_t PPMIn::getCenter() const
-{
-	return m_center >> 1;
-}
-
-
-void PPMIn::setTravel(uint16_t p_travel)
-{
-	m_travel = p_travel << 1;
-}
-
-
-uint16_t PPMIn::getTravel() const
-{
-	return m_travel >> 1;
-}
-
-
-void PPMIn::loadFutaba()
-{
-	setCenter(1520);
-	setTravel(600);
-}
-
-
-void PPMIn::loadJR()
-{
-	setCenter(1500);
-	setTravel(600);
 }
 
 
@@ -188,7 +149,7 @@ bool PPMIn::update()
 		{
 			for (uint8_t i = 0; i < m_channels && i < m_maxChannels; ++i)
 			{
-				m_results[i] = ticksToNormalized(m_work[i]);
+				m_results[i] = microsToNormalized(m_work[i] >> 1);
 			}
 		}
 	}
@@ -196,38 +157,6 @@ bool PPMIn::update()
 	{
 		return false;
 	}
-}
-
-
-// Private functions
-
-int16_t PPMIn::ticksToNormalized(uint16_t p_ticks) const
-{
-	// first we clip values, early abort.
-	if (p_ticks >= m_center + m_travel)
-	{
-		return 256;
-	}
-	else if (p_ticks <= m_center - m_travel)
-	{
-		return -256;
-	}
-	
-	// get the absolute delta ABS(p_ticks - m_center)
-	uint16_t delta = (p_ticks > m_center) ? (p_ticks - m_center) : (m_center - p_ticks);
-	
-	// we need to multiply by end range 256 and divide by start range m_travel
-	// and we need to do this without risking overflows...
-	
-	// The max value in delta will be m_range, about 2000. This gives us 5 bits of room to play with
-	// So instead of multiplying with 256 and dividing by m_travel,
-	// we multiply by 32 and divide by m_travel / 8
-	// we lose the last three bits of the division, but that's not going to make much of a difference...
-	// the least significant bit of m_travel is 0 anyway, so the actual loss is just 2 bits.
-	delta <<= 5;
-	delta /= (m_travel >> 3);
-	
-	return (p_ticks >= m_center) ? delta : -delta;
 }
 
 
