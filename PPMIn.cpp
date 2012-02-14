@@ -113,6 +113,7 @@ void PPMIn::pinChanged(bool p_high)
 				if (m_idx == m_channels)
 				{
 					m_idx = 0;
+					m_newFrame = true;
 				}
 				else
 				{
