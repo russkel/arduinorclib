@@ -74,7 +74,6 @@ uint16_t normalizedToMicros(int16_t p_normal)
 	// multiply by end range
 	p1 *= range;
 	p2 *= range;
-	p3 *= range;
 	
 	// divide by start range, shift back
 	p1 >>= 9; // divide by 512
@@ -91,7 +90,7 @@ void setCenter(uint16_t p_center)
 }
 
 
-uint16_t getCenter() const
+uint16_t getCenter()
 {
 	return s_center;
 }
@@ -103,7 +102,7 @@ void setTravel(uint16_t p_travel)
 }
 
 
-uint16_t getTravel() const
+uint16_t getTravel()
 {
 	return s_travel;
 }

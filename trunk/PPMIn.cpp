@@ -27,10 +27,11 @@ namespace rc
 
 // Public functions
 
-PPMIn::PPMIn(uint16_t* p_work, uint8_t p_maxChannels, bool p_useMicroseconds)
+PPMIn::PPMIn(int16_t* p_results, uint16_t* p_work, uint8_t p_maxChannels, bool p_useMicroseconds)
 :
 m_state(State_Startup),
 m_channels(0),
+m_results(p_results),
 m_work(p_work),
 m_maxChannels(p_maxChannels),
 m_idx(0),

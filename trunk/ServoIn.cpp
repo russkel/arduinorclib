@@ -70,7 +70,7 @@ void ServoIn::pinChanged(bool p_high)
 	
 	case State_Listening:
 		{
-			if (p_low)
+			if (p_high == false)
 			{
 				if (cnt - m_lastTime >= 6000)
 				{
@@ -112,7 +112,7 @@ void ServoIn::pinChanged(bool p_high)
 }
 
 
-int16_t ServoIn::getValue(bool p_useMicroseconds)
+int16_t ServoIn::getValue(bool p_useMicroseconds) const
 {
 	if (p_useMicroseconds)
 	{
