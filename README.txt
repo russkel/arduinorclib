@@ -1,5 +1,7 @@
-Version 0.1.1
+Version 0.2
 - BUG: Incorrect timings in PPMOut
+- CHG: Use of Timer1 refactored for shared use
+- ADD: PPMIn
 
 Version 0.1
 - ADD: AIPin, analog input; trim, reverse, calibration
