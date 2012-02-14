@@ -77,7 +77,10 @@ public:
 private:
 	int8_t m_expo;
 };
-
+/** \example expo_example.pde
+ * This is an example of how to use the Expo class.
+ */
+ 
 
 } // namespace end
 

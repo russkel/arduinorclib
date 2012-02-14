@@ -60,7 +60,9 @@ private:
 	uint16_t m_ticks;    //!< Current value in ticks
 	uint16_t m_lastTime; //!< Time of last interrupt.
 };
-
+/** \example servoin_example.pde
+ * This is an example of how to use the ServoIn class.
+ */
 
 } // namespace end
 

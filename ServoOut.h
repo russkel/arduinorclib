@@ -37,7 +37,9 @@ public:
 private:
 	
 };
-
+/** \example servoout_example.pde
+ * This is an example of how to use the ServoOut class.
+ */
 
 } // namespace end
 

@@ -89,6 +89,9 @@ private:
 	Mode   m_mode; //!< Mode of operation (in case of AVCS type)
 	int8_t m_gain; //!< Gain [0 - 100]
 };
+/** \example gyro_example.pde
+ * This is an example of how to use the Gyro class.
+ */
 
 
 } // namespace end

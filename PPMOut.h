@@ -103,7 +103,9 @@ private:
 	
 	static PPMOut* s_instance; //!< Singleton instance
 };
-
+/** \example ppmout_example.pde
+ * This is an example of how to use the PPMOut class.
+ */
 
 } // namespace end
 

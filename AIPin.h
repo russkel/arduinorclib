@@ -109,6 +109,10 @@ private:
 	uint16_t m_min;      //!< Calibration minimum.
 	uint16_t m_max;      //!< Calibration maximum.
 };
+/** \example aipin_example.pde
+ * This is an example of how to use the AIPin class.
+ */
+
 
 } // namespace end
 

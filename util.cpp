@@ -20,7 +20,7 @@ namespace rc
 static uint16_t s_center = 1520;
 static uint16_t s_travel = 600;
 
-int16_t microsToNormalized(uint16_t p_micros) const
+int16_t microsToNormalized(uint16_t p_micros)
 {
 	// first we clip values, early abort.
 	if (p_micros >= s_center + s_travel)

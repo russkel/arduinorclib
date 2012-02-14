@@ -65,9 +65,14 @@ public:
 	int16_t apply(int16_t p_value) const;
 	
 private:
-	int16_t m_points[PointCount];
+	int16_t m_points[PointCount]; //!< Points
 };
+/** \example curve_example.pde
+ * This is an example of how to use the Curve class.
+ */
+
 
 } // namespace end
+
 
 #endif // INC_RC_CURVE_H
