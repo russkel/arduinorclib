@@ -21,7 +21,7 @@ namespace rc
 {
 
 /*! 
- *  \brief     Class to encapsulate Servo Siganl Output functionality.
+ *  \brief     Class to encapsulate Servo Signal Output functionality.
  *  \details   This class provides a way to generate a Servo signal.
  *  \author    Daniel van den Ouden
  *  \date      Feb-2012
