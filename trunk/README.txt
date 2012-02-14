@@ -1,7 +1,9 @@
 Version 0.2
-- BUG: Incorrect timings in PPMOut
-- CHG: Use of Timer1 refactored for shared use
-- ADD: PPMIn
+- BUG: Issue #19 Incorrect timings in PPMOut
+- CHG: Issue #18 Use of Timer1 refactored for shared use
+- CHG: Issue #20 Signal properties Center and Travel have been moved to utility functions
+- ADD: Issue #2  PPMIn, PPM reader/decoder
+- ADD: Issue #16 ServoIn, Servo signal reader/decoder
 
 Version 0.1
 - ADD: AIPin, analog input; trim, reverse, calibration
