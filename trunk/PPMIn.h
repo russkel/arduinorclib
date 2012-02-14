@@ -78,7 +78,10 @@ private:
 	
 	uint16_t m_lastTime;      //!< Time of last interrupt.
 };
-
+/** \example ppmin_example.pde
+ * This is an example of how to use the PPMIn class.
+ */
+ 
 
 } // namespace end
 

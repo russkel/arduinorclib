@@ -77,6 +77,10 @@ private:
 	uint8_t  m_epMax;    //!< End point maximum
 	int8_t   m_subtrim;  //!< Subtrim
 };
+/** \example channel_example.pde
+ * This is an example of how to use the Channel class.
+ */
+
 
 } // namespace end
 

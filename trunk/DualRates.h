@@ -77,6 +77,9 @@ public:
 private:
 	uint8_t m_rate;
 };
+/** \example dualrates_example.pde
+ * This is an example of how to use the DualRates class.
+ */
 
 
 } // namespace end

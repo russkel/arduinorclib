@@ -67,6 +67,10 @@ private:
 	uint8_t  m_pin;      //!< Hardware pin.
 	bool     m_reversed; //!< Input reverse.
 };
+/** \example dipin_example.pde
+ * This is an example of how to use the DIPin class.
+ */
+ 
 
 } // namespace end
 

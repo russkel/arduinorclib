@@ -102,6 +102,9 @@ private:
 	int8_t m_eleMix; //!< Amount of elevator mix
 	int8_t m_pitMix; //!< Amount of pitch mix
 };
+/** \example swashplate_example.pde
+ * This is an example of how to use the Swashplate class.
+ */
 
 
 } // namespace end

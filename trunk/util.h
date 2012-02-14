@@ -16,6 +16,13 @@
 
 #include <inttypes.h>
 
+/*!
+ *  \file util.h
+ *  \brief Utility include file.
+ *  \author    Daniel van den Ouden
+ *  \date      Feb-2012
+ *  \copyright Public Domain.
+*/
 
 namespace rc
 {
