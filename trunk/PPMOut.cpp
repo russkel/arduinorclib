@@ -37,11 +37,11 @@ PPMOut* PPMOut::s_instance = 0;
 
 // Public functions
 
-PPMOut::PPMOut(uint8_t   p_channels,
-               int16_t*  p_input,
-               uint16_t* p_work,
-               uint8_t   p_maxChannels,
-               bool      p_useMicroseconds)
+PPMOut::PPMOut(uint8_t        p_channels,
+               const int16_t* p_input,
+               uint16_t*      p_work,
+               uint8_t        p_maxChannels,
+               bool           p_useMicroseconds)
 :
 m_pulseLength(500),
 m_pauseLength(10500),

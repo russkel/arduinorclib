@@ -39,11 +39,11 @@ public:
 	    \param p_work Work buffer, should be (p_maxChannels + 1) * 4 elements large.
 	    \param p_maxChannels Maximum number of channels supported.
 		\param p_useMicroseconds Whether the input buffer is specified in microseconds or not.*/
-	PPMOut(uint8_t   p_channels,
-	       int16_t*  p_input,
-	       uint16_t* p_work,
-	       uint8_t   p_maxChannels,
-	       bool      p_useMicroseconds = false);
+	PPMOut(uint8_t        p_channels,
+	       const int16_t* p_input,
+	       uint16_t*      p_work,
+	       uint8_t        p_maxChannels,
+	       bool           p_useMicroseconds = false);
 	
 	/*! \brief Sets up timers and interrupts.
 	    \param p_a Use timer output pin A on true, output pin B on false.
@@ -91,9 +91,9 @@ private:
 	uint16_t m_pulseLength; //!< Pulse length in timer ticks.
 	uint16_t m_pauseLength; //!< End of frame length in timer ticks.
 	
-	uint8_t  m_channelCount;    //!< Number of active channels.
-	bool     m_useMicroseconds; //!< Whether the external buffer is in microseconds or normalized.
-	int16_t* m_channels;        //!< External buffer with channel values, range [-256 - 256] or microseconds.
+	uint8_t        m_channelCount;    //!< Number of active channels.
+	bool           m_useMicroseconds; //!< Whether the external buffer is in microseconds or normalized.
+	const int16_t* m_channels;        //!< External buffer with channel values, range [-256 - 256] or microseconds.
 	
 	volatile uint16_t* m_channelTimings; //!< Timings per channel, in timer ticks.
 	
