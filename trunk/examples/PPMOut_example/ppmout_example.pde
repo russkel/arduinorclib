@@ -41,8 +41,6 @@ void setup()
 	// initialize PPMOut with some settings
 	g_PPMOut.setPulseLength(448);
 	g_PPMOut.setPauseLength(10448);
-	g_PPMOut.setCenter(1520);
-	g_PPMOut.setTravel(600);
 	
 	// start PPMOut, use pin 9 (use false to use pin 10 as output)
 	g_PPMOut.start(true);

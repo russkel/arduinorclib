@@ -75,28 +75,6 @@ public:
 	    \return The current pause length.*/
 	uint16_t getPauseLength() const;
 	
-	/*! \brief Sets servo center.
-	    \param p_center Center of servo in microseconds.*/
-	void setCenter(uint16_t);
-	
-	/*! \brief Gets the servo center.
-	    \return The servo center in microseconds.*/
-	uint16_t getCenter() const;
-	
-	/*! \brief Sets maximum travel from center.
-	    \param p_travel Travel of servo in microseconds.*/
-	void setTravel(uint16_t);
-	
-	/*! \brief Gets maximum travel from center.
-	    \return Travel of servo in microseconds.*/
-	uint16_t getTravel() const;
-	
-	/*! \brief Sets timings according to Futaba standards, center 1520, travel 600.*/
-	void loadFutaba();
-	
-	/*! \brief Sets timings according to JR standards, center 1500, travel 600.*/
-	void loadJR();
-	
 	/*! \brief Updates channel timings, will be sent at next frame.*/
 	void update();
 	
@@ -104,9 +82,6 @@ public:
 	static void handleInterrupt();
 	
 private:
-	/*! \brief convert a normalized value [-256 - 256] to timer ticks. */
-	uint16_t normalizedToTicks(int16_t p_normal) const; 
-	
 	/*! \brief Update the entire timings buffer. */
 	void updateTimings();
 	
@@ -115,8 +90,6 @@ private:
 	
 	uint16_t m_pulseLength; //!< Pulse length in timer ticks.
 	uint16_t m_pauseLength; //!< End of frame length in timer ticks.
-	uint16_t m_center; //!< Servo center in timer ticks.
-	uint16_t m_travel; //!< Servo travel in timer ticks.
 	
 	uint8_t  m_channelCount;    //!< Number of active channels.
 	bool     m_useMicroseconds; //!< Whether the external buffer is in microseconds or normalized.

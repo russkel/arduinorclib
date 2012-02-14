@@ -48,28 +48,6 @@ public:
 	    \return The number of channels found in the last received signal. */
 	uint8_t getChannels() const;
 	
-	/*! \brief Sets servo center.
-	    \param p_center Center of servo in microseconds.*/
-	void setCenter(uint16_t);
-	
-	/*! \brief Gets the servo center.
-	    \return The servo center in microseconds.*/
-	uint16_t getCenter() const;
-	
-	/*! \brief Sets maximum travel from center.
-	    \param p_travel Travel of servo in microseconds.*/
-	void setTravel(uint16_t);
-	
-	/*! \brief Gets maximum travel from center.
-	    \return Travel of servo in microseconds.*/
-	uint16_t getTravel() const;
-	
-	/*! \brief Sets timings according to Futaba standards, center 1520, travel 600.*/
-	void loadFutaba();
-	
-	/*! \brief Sets timings according to JR standards, center 1500, travel 600.*/
-	void loadJR();
-	
 	/*! \brief Handles pin change interrupt, call in your interrupt handler.
 	    \param p_high Whether the pin is high or not.*/
 	void pinChanged(bool p_high);
@@ -79,11 +57,6 @@ public:
 	bool update();
 	
 private:
-	/*! \brief convert a timer ticks value to a normalized value [-256 - 256].
-	    \param p_ticks Input in timer ticks.
-	    \return Normalized value, range [-256 - 256].*/
-	int16_t ticksToNormalized(uint16_t p_ticks) const; 
-	
 	enum State
 	{
 		State_Startup,   //!< Just started, no signal received yet.
@@ -94,9 +67,6 @@ private:
 	
 	State   m_state;    //!< Current state of input signal.
 	uint8_t m_channels; //!< Number of channels in input signal.
-	
-	uint16_t m_center; //!< Servo center in timer ticks.
-	uint16_t m_travel; //!< Servo travel in timer ticks.
 	
 	int16_t*  m_results;     //!< Results buffer.
 	uint16_t* m_work;        //!< Work buffer.

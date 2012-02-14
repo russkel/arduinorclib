@@ -19,6 +19,7 @@
 #endif
 
 #include <PPMOut.h>
+#include <util.h>
 
 
 // Interrupt service routine
@@ -44,8 +45,6 @@ PPMOut::PPMOut(uint8_t   p_channels,
 :
 m_pulseLength(500),
 m_pauseLength(10500),
-m_center(1520),
-m_travel(600),
 m_channelCount(p_channels),
 m_channels(p_input),
 m_useMicroseconds(p_useMicroseconds),
@@ -133,44 +132,6 @@ uint16_t PPMOut::getPauseLength() const
 }
 
 
-void PPMOut::setCenter(uint16_t p_center)
-{
-	m_center = p_center << 1;
-}
-
-
-uint16_t PPMOut::getCenter() const
-{
-	return m_center >> 1;
-}
-
-
-void PPMOut::setTravel(uint16_t p_travel)
-{
-	m_travel = p_travel << 1;
-}
-
-
-uint16_t PPMOut::getTravel() const
-{
-	return m_travel >> 1;
-}
-
-
-void PPMOut::loadFutaba()
-{
-	setCenter(1520);
-	setTravel(600);
-}
-
-
-void PPMOut::loadJR()
-{
-	setCenter(1500);
-	setTravel(600);
-}
-
-
 void PPMOut::update()
 {
 	if (m_useMicroseconds)
@@ -184,7 +145,7 @@ void PPMOut::update()
 	{
 		for (uint8_t i = 0; i < m_channelCount; ++i)
 		{
-			m_channelTimings[i] = normalizedToTicks(m_channels[i]);
+			m_channelTimings[i] = normalizedToMicros(m_channels[i]) << 1;
 		}
 	}
 }
@@ -200,44 +161,6 @@ void PPMOut::handleInterrupt()
 
 
 // Private functions
-
-uint16_t PPMOut::normalizedToTicks(int16_t p_normal) const
-{
-	// we have a normalized value [-256 - 256] which corresponds to full positive or negative servo movement
-	// we need to scale this to a [0 - 2 * m_travel] timer ticks range
-	// this needs to be done in multiple stages to prevent overflows while keeping maximum resolution
-	p_normal += 256; // first we bring it up to [0 - 512]
-	
-	// calculate range
-	uint16_t range = m_travel << 1;
-	
-	// we assume the range won't be more than 4000 ticks, 2 milliseconds
-	// this means we have 4 bits of room to play with
-	// we can safely multiply any 4 bit number with the range without having overflows
-	// the normalized value is 10 bits in size
-	// we will chop it up into two pieces of 4 bits and one piece of 2 bits
-	// then we will do the multiplications, divide the results by 512, and shift the results back
-	// then we'll piece the results back together to form the end result
-	
-	// cut  into pieces
-	uint16_t p1 =  p_normal       & 0x0F; // bits 0-3
-	uint16_t p2 = (p_normal >> 4) & 0x0F; // bits 4-7
-	uint16_t p3 = (p_normal >> 8) & 0x03; // bits 8-9
-	
-	// multiply by end range
-	p1 *= range;
-	p2 *= range;
-	p3 *= range;
-	
-	// divide by start range, shift back
-	p1 >>= 9; // divide by 512
-	p2 >>= 5; // divide by 32; ( / 512) << 4
-	p3 >>= 1; // divide by 2;  ( / 512) << 8
-	
-	// piece it back together, offset with center
-	return ((m_center - m_travel) + p1 + p2 + p3);
-}
-
 
 void PPMOut::updateTimings()
 {
