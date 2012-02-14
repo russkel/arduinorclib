@@ -26,13 +26,17 @@ namespace rc
 
 // Public functions
 
-PPMIn::PPMIn(uint16_t* p_work, uint8_t p_maxChannels)
+PPMIn::PPMIn(uint16_t* p_work, uint8_t p_maxChannels, bool p_useMicroseconds)
 :
 m_state(State_Startup),
 m_channels(0),
+m_center(1520),
+m_range(600),
 m_work(p_work),
 m_maxChannels(p_maxChannels),
 m_idx(0),
+m_useMicroseconds(p_useMicroseconds),
+m_newFrame(false),
 m_lastTime(0)
 {
 	// check if Timer 1 is running or not
@@ -96,13 +100,13 @@ void PPMIn::loadJR()
 
 void PPMIn::pinChanged(bool p_high)
 {
-	if (p_high/* == false*/)
+	if (p_high)
 	{
-		// only interested in signal going high
+		// only interested in signal going low
 		return;
 	}
 	
-	// first things firs, get Timer 1 count
+	// first things first, get Timer 1 count
 	uint8_t oldSREG = SREG;
 	cli();
 	uint16_t cnt = TCNT1;
@@ -127,6 +131,7 @@ void PPMIn::pinChanged(bool p_high)
 			{
 				m_state = State_Stable;
 				m_idx = 0;
+				m_newFrame = true;
 			}
 			else
 			{
@@ -167,7 +172,63 @@ void PPMIn::pinChanged(bool p_high)
 }
 
 
+bool PPMIn::update()
+{
+	if (m_newFrame)
+	{
+		m_newFrame = false;
+		if (m_useMicroseconds)
+		{
+			for (uint8_t i = 0; i < m_channels && i < m_maxChannels; ++i)
+			{
+				m_results[i] = m_work[i] >> 1;
+			}
+		}
+		else
+		{
+			for (uint8_t i = 0; i < m_channels && i < m_maxChannels; ++i)
+			{
+				m_results[i] = ticksToNormalized(m_work[i]);
+			}
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
 // Private functions
+
+int16_t PPMIn::ticksToNormalized(uint16_t p_ticks) const
+{
+	// first we clip values, early abort.
+	if (p_tick >= m_center + m_travel)
+	{
+		return 256;
+	}
+	else if (p_tick <= m_center - m_travel)
+	{
+		return -256;
+	}
+	
+	// get the absolute delta ABS(p_tick - m_center)
+	uint16_t delta = (p_tick > m_center) ? (p_ticks - m_center) : (m_center - p_ticks);
+	
+	// we need to multiply by end range 256 and divide by start range m_travel
+	// and we need to do this without risking overflows...
+	
+	// The max value in delta will be m_range, about 2000. This gives us 5 bits of room to play with
+	// So instead of multiplying with 256 and dividing by m_travel,
+	// we multiply by 32 and divide by m_travel / 8
+	// we lose the last three bits of the division, but that's not going to make much of a difference...
+	// the least significant bit of m_travel is 0 anyway, so the actual loss is just 2 bits.
+	delta <<= 5;
+	delta /= (m_travel >> 3);
+	
+	return (p_ticks >= m_center) ? delta : -delta;
+}
 
 
 // namespace end
