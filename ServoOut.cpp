@@ -25,6 +25,22 @@ ServoOut::ServoOut()
 }
 
 
+/*
+
+handle interrupt()
+{
+	active pin != 0?
+		set active pin to low
+	next pin != 0?
+		set next pin high
+	update compare register
+	active pin = next pin
+	get next pin
+}
+
+*/
+
+
 // Private functions
 
 
