@@ -79,6 +79,11 @@ public:
 	bool update();
 	
 private:
+	/*! \brief convert a timer ticks value to a normalized value [-256 - 256].
+	    \param p_ticks Input in timer ticks.
+	    \return Normalized value, range [-256 - 256].*/
+	int16_t ticksToNormalized(uint16_t p_ticks) const; 
+	
 	enum State
 	{
 		State_Startup,   //!< Just started, no signal received yet.
@@ -87,18 +92,21 @@ private:
 		State_Confused   //!< Something unexpected happened.
 	};
 	
-	State   m_state;    //!< Current state of input signal
-	uint8_t m_channels; //!< Number of channels in input signal
+	State   m_state;    //!< Current state of input signal.
+	uint8_t m_channels; //!< Number of channels in input signal.
 	
 	uint16_t m_center; //!< Servo center in timer ticks.
 	uint16_t m_travel; //!< Servo travel in timer ticks.
 	
-	int16_t*  m_results;     //!< Results buffer
-	uint16_t* m_work;        //!< Work buffer
-	uint8_t   m_maxChannels; //!< Maximum number of channels to fit buffers
-	uint8_t   m_idx;         //!< Current index in buffer
+	int16_t*  m_results;     //!< Results buffer.
+	uint16_t* m_work;        //!< Work buffer.
+	uint8_t   m_maxChannels; //!< Maximum number of channels to fit buffers.
+	uint8_t   m_idx;         //!< Current index in buffer.
 	
-	uint16_t m_lastTime; //!< Time of last interrupt
+	bool          m_useMicroseconds; //!< Whether the results should be stored in microseconds or normalized values.
+	volatile bool m_newFrame;        //!< Whether a new frame is available or not.
+	
+	uint16_t m_lastTime;      //!< Time of last interrupt.
 };
 
 
