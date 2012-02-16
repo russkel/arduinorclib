@@ -40,6 +40,14 @@ public:
 	    \param p_maxServos Maximum number of servos supported.*/
 	ServoOut(const uint8_t* p_pins, const uint16_t* p_values, uint8_t* p_work, uint8_t p_maxServos);
 	
+	/*! \brief Sets the minimum length between pulses on a pin.
+	    \param p_length The minimum length between two pulses in microseconds.*/
+	void setPauseLength(uint16_t p_length);
+	
+	/*! \brief Gets the minimum length between pulses on a pin.
+	    \return The minimum length between two pulses in microseconds.*/
+	uint16_t getPauseLength() const;
+	
 	/*! \brief Updates all internal timings.*/
 	void update();
 	
@@ -50,22 +58,25 @@ private:
 	/*! \brief Internal interrupt handling. */
 	void isr();
 	
-	const uint8_t*  m_pins;
-	const uint16_t* m_values;
+	uint16_t m_pauseLength; //!< Minimal length of pause between pulses on a pin in microseconds.
 	
-	uint16_t* m_timings;
-	uint8_t*  m_ports;
-	uint8_t*  m_masks;
+	const uint8_t*  m_pins;   //!< External buffer defining pins to use.
+	const uint16_t* m_values; //!< External buffer defining values for servos.
 	
-	uint8_t   m_maxServos;
+	uint16_t* m_timings; //!< Work buffer containing timings.
+	uint8_t*  m_ports;   //!< Work buffer containing port addresses.
+	uint8_t*  m_masks;   //!< Work buffer containing bitmasks.
 	
-	volatile uint8_t* m_activePort;
-	         uint8_t  m_activeMask;
-	volatile uint8_t* m_nextPort;
-	         uint8_t  m_nextMask;
-	uint8_t m_idx;
+	uint8_t   m_maxServos; //!< Maximal number of servos that can be contained in the buffers.
 	
-	static ServoOut* s_instance; //!< Singleton instance
+	volatile uint8_t* m_activePort; //!< Address of port of currently active (high) pin.
+	         uint8_t  m_activeMask; //!< Inverted bitmask of currently active (high) pin.
+	volatile uint8_t* m_nextPort;   //!< Address of port of next active (high) pin.
+	         uint8_t  m_nextMask;   //!< Bitmask of next active (high) pin.
+	
+	uint8_t m_idx; //!< Next index in work buffers.
+	
+	static ServoOut* s_instance; //!< Singleton instance.
 };
 /** \example servoout_example.pde
  * This is an example of how to use the ServoOut class.
