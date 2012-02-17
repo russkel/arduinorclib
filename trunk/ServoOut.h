@@ -16,7 +16,7 @@
 
 #include <inttypes.h>
 
-#define SERVOOUT_WORK_SIZE(servos) ((servos * 4) + 1)
+#define SERVOOUT_WORK_SIZE(servos) (((servos) + 1) * 4)
 
 
 namespace rc
@@ -35,10 +35,13 @@ public:
 	
 	/*! \brief Constructs a ServoOut object.
 	    \param p_pins Input buffer of pins to connect servos to.
-		\param p_values Input buffer of values of servos in microseconds.
+	    \param p_values Input buffer of values of servos in microseconds.
 	    \param p_work Work buffer at least SERVOOUT_WORK_SIZE(p_maxServos) in size.
 	    \param p_maxServos Maximum number of servos supported.*/
 	ServoOut(const uint8_t* p_pins, const uint16_t* p_values, uint8_t* p_work, uint8_t p_maxServos);
+	
+	/*! \brief Starts timers and output.*/
+	void start();
 	
 	/*! \brief Sets the minimum length between pulses on a pin.
 	    \param p_length The minimum length between two pulses in microseconds.*/
@@ -48,8 +51,9 @@ public:
 	    \return The minimum length between two pulses in microseconds.*/
 	uint16_t getPauseLength() const;
 	
-	/*! \brief Updates all internal timings.*/
-	void update();
+	/*! \brief Updates all internal timings.
+	    \param p_pinsChanged If any pins have changed, set this to true.*/
+	void update(bool p_pinsChanged = false);
 	
 	/*! \brief Handles timer interrupt.*/
 	static void handleInterrupt();
@@ -63,9 +67,9 @@ private:
 	const uint8_t*  m_pins;   //!< External buffer defining pins to use.
 	const uint16_t* m_values; //!< External buffer defining values for servos.
 	
-	uint16_t* m_timings; //!< Work buffer containing timings.
-	uint8_t*  m_ports;   //!< Work buffer containing port addresses.
-	uint8_t*  m_masks;   //!< Work buffer containing bitmasks.
+	volatile uint16_t* m_timings; //!< Work buffer containing timings.
+	volatile uint8_t*  m_ports;   //!< Work buffer containing port addresses.
+	volatile uint8_t*  m_masks;   //!< Work buffer containing bitmasks.
 	
 	uint8_t   m_maxServos; //!< Maximal number of servos that can be contained in the buffers.
 	
