@@ -42,28 +42,39 @@ ServoOut::ServoOut(const uint8_t* p_pins, const uint16_t* p_values, uint8_t* p_w
 m_pauseLength(10000),
 m_pins(p_pins),
 m_values(p_values),
-m_timings(reinterpret_cast<uint16_t*>(p_work)),
-m_ports(reinterpret_cast<uint8_t*>(m_timings + p_maxServos)),
-m_masks(m_ports + p_maxServos),
+m_timings(reinterpret_cast<volatile uint16_t*>(p_work)),
+m_ports(reinterpret_cast<volatile uint8_t*>(m_timings + p_maxServos + 1)),
+m_masks(m_ports + p_maxServos + 1),
 m_maxServos(p_maxServos),
 m_activePort(0),
-m_activeMask(0xFF),
+m_activeMask(0),
 m_nextPort(0),
 m_nextMask(0),
 m_idx(0)
 {
 	s_instance = this;
+}
+
+
+void ServoOut::start()
+{
+	// set initial values
+	update(true);
 	
 	// stop timer 1
 	TCCR1B = 0;
 	
+	// set mode
+	TCCR1A &= 0xF0;
+	TCCR1C = 0;
+	
 	// First disable the output compare match B interrupt
 	TIMSK1 &= ~(1 << OCIE1B);
-
+	
 	// set compare value (first, we wait)
 	OCR1B = TCNT1 + (m_pauseLength << 1);
 	
-	// enable timer output compare match A interrupts
+	// enable timer output compare match B interrupts
 	TIMSK1 |= (1 << OCIE1B);
 	
 	// start the timer by setting the speed speed
@@ -83,17 +94,33 @@ uint16_t ServoOut::getPauseLength() const
 }
 
 
-void ServoOut::update()
+void ServoOut::update(bool p_pinsChanged)
 {
 	uint16_t remainingTime = m_pauseLength;
 	uint8_t idx = 0;
+	
 	for (uint8_t i = 0; i < m_maxServos; ++i)
 	{
 		if (m_pins[i] != 0 && m_values[i] != 0)
 		{
-			uint8_t bit = digitalPinToBitMask(m_pins[i]);
-			uint8_t port = digitalPinToPort(m_pins[i]);
-			volatile uint8_t* out = portOutputRegister(port);
+			if (p_pinsChanged)
+			{
+				uint8_t mask = digitalPinToBitMask(m_pins[i]);
+				uint8_t port = digitalPinToPort(m_pins[i]);
+				volatile uint8_t* out = portInputRegister(port);
+				
+				TIMSK1 &= ~(1 << OCIE1B);
+				m_timings[idx] = m_values[i] << 1;
+				m_ports[idx] = static_cast<uint8_t>(reinterpret_cast<uint16_t>(out) & 0xFF);
+				m_masks[idx] = mask;
+				TIMSK1 |= (1 << OCIE1B);
+			}
+			else
+			{
+				TIMSK1 &= ~(1 << OCIE1B);
+				m_timings[idx] = m_values[i] << 1;
+				TIMSK1 |= (1 << OCIE1B);
+			}
 			
 			if (remainingTime < m_values[i])
 			{
@@ -104,15 +131,15 @@ void ServoOut::update()
 				remainingTime -= m_values[i];
 			}
 			
-			m_timings[idx] = m_values[i] << 1;
-			m_ports[idx] = reinterpret_cast<u8>(out);
-			m_masks[idx] = _BV(bit);
 			++idx;
 		}
 	}
+	
+	TIMSK1 &= ~(1 << OCIE1B);
 	m_timings[idx] = remainingTime << 1;
 	m_ports[idx] = 0;
-	m_mask[idx] = 0;
+	m_masks[idx] = 0;
+	TIMSK1 = (1 << OCIE1B);
 }
 
 
@@ -136,23 +163,25 @@ void ServoOut::isr()
 	
 	if (m_activePort != 0)
 	{
-		// set active pin to low, no need to do ~here, already been taken care of
-		*m_activePort &= m_activeMask;
+		// toggle active port (turn it off)
+		*m_activePort |= m_activeMask;
 	}
 	if (m_nextPort != 0)
 	{
-		// set next pin to high
+		// toggle new port (turn it on)
 		*m_nextPort |= m_nextMask;
 	}
 	
 	// update compare register
-	OCR1A += m_timings[m_idx];
+	OCR1B += m_timings[m_idx];
 	
+	// update active
 	m_activePort = m_nextPort;
-	m_activeMask = ~m_nextMask;
+	m_activeMask = m_nextMask;
 	
+	// update index
 	++m_idx;
-	if (m_idx >= m_maxServos || m_ports[m_idx] == 0)
+	if (m_idx > m_maxServos || m_timings[m_idx] == 0)
 	{
 		m_idx = 0;
 	}
