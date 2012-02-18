@@ -28,17 +28,38 @@ namespace rc
  *  \author    Daniel van den Ouden
  *  \date      Feb-2012
  *  \copyright Public Domain.
+ *  \warning   This class should <b>NOT</b> be used together with the standard Arduino Servo library,
+ *             use rc::ServoOut instead.
  */
 class PPMIn
 {
 public:
-	
 	/*! \brief Constructs a PPMIn object.
 	    \param p_results External buffer to store results, at least p_maxChannels in size.
 	    \param p_work Work buffer at least PPMIN_WORK_SIZE(p_maxChannels) in size.
 	    \param p_maxChannels Maximum number of channels supported.
-		\param p_useMicroseconds Whether the results should be stored in microseconds or normalized.*/
+	    \param p_useMicroseconds Whether the results should be stored in microseconds or normalized.*/
 	PPMIn(int16_t* p_results, uint16_t* p_work, uint8_t p_maxChannels, bool p_useMicroseconds = false);
+	
+	/*! \brief Starts measuring.
+	    \param p_high Whether the incoming signal has high or low pulses.
+	    \note It doesn't really matter if the pulses are low or high,
+	          but you may want to try changing this parameter if you experience an
+	          unstable signal. This may be due to simultanious interrupts, changing
+	          the p_high parameter will make the interrupt handler respond to either
+	          the high or low pin change and may thus reduce problems created by
+	          simultanious interrupts.
+	    \warning Do <b>NOT</b> use this together with the standard Arduino Servo library,
+	             use rc::ServoOut instead.*/
+	void start(bool p_high = false);
+	
+	/*! \brief Sets minimum pause length, including pulse.
+	    \param p_length Minimum pause length in microseconds.*/
+	void setPauseLength(uint16_t p_length);
+	
+	/*! \brief Gets minimum pause length.
+	    \return The minimum pause length.*/
+	uint16_t getPauseLength() const;
 	
 	/*! \brief Checks if the input signal is stable.
 	    \return Return true if a stable signal has been received. */
@@ -65,8 +86,9 @@ private:
 		State_Confused   //!< Something unexpected happened.
 	};
 	
-	State   m_state;    //!< Current state of input signal.
-	uint8_t m_channels; //!< Number of channels in input signal.
+	State    m_state;       //!< Current state of input signal.
+	uint8_t  m_channels;    //!< Number of channels in input signal.
+	uint16_t m_pauseLength; //!< Minimum pause length in microseconds.
 	
 	int16_t*  m_results;     //!< Results buffer.
 	uint16_t* m_work;        //!< Work buffer.
@@ -76,7 +98,8 @@ private:
 	bool          m_useMicroseconds; //!< Whether the results should be stored in microseconds or normalized values.
 	volatile bool m_newFrame;        //!< Whether a new frame is available or not.
 	
-	uint16_t m_lastTime;      //!< Time of last interrupt.
+	uint16_t m_lastTime; //!< Time of last interrupt.
+	bool     m_high;     //!< Whether the incoming signal uses high pulses.
 };
 /** \example ppmin_example.pde
  * This is an example of how to use the PPMIn class.

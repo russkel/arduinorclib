@@ -31,20 +31,42 @@ PPMIn::PPMIn(int16_t* p_results, uint16_t* p_work, uint8_t p_maxChannels, bool p
 :
 m_state(State_Startup),
 m_channels(0),
+m_pauseLength(8000),
 m_results(p_results),
 m_work(p_work),
 m_maxChannels(p_maxChannels),
 m_idx(0),
 m_useMicroseconds(p_useMicroseconds),
 m_newFrame(false),
-m_lastTime(0)
+m_lastTime(0),
+m_high(false)
 {
+	
+}
+
+
+void PPMIn::start(bool p_high)
+{
+	m_high = p_high;
+	
 	// check if Timer 1 is running or not
 	if ((TCCR1B & ((1 << CS12) | (1 << CS11) | (1 << CS10))) == 0)
 	{
 		// start Timer 1
 		TCCR1B |= (1 << CS11);
 	}
+}
+
+
+void PPMIn::setPauseLength(uint16_t p_length)
+{
+	m_pauseLength = p_length << 1;
+}
+
+
+uint16_t PPMIn::getPauseLength() const
+{
+	return m_pauseLength >> 1;
 }
 
 
@@ -62,9 +84,8 @@ uint8_t PPMIn::getChannels() const
 
 void PPMIn::pinChanged(bool p_high)
 {
-	if (p_high)
+	if (p_high == m_high)
 	{
-		// only interested in signal going low
 		return;
 	}
 	
@@ -79,7 +100,7 @@ void PPMIn::pinChanged(bool p_high)
 	default:
 	case State_Startup:
 		{
-			if (cnt - m_lastTime > 15000)
+			if (cnt - m_lastTime >= m_pauseLength)
 			{
 				m_state = State_Listening;
 				m_channels = 0;
@@ -89,7 +110,7 @@ void PPMIn::pinChanged(bool p_high)
 	
 	case State_Listening:
 		{
-			if (cnt - m_lastTime > 15000)
+			if (cnt - m_lastTime >= m_pauseLength)
 			{
 				m_state = State_Stable;
 				m_idx = 0;
@@ -108,7 +129,7 @@ void PPMIn::pinChanged(bool p_high)
 	
 	case State_Stable:
 		{
-			if (cnt - m_lastTime > 15000)
+			if (cnt - m_lastTime >= m_pauseLength)
 			{
 				if (m_idx == m_channels)
 				{
