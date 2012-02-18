@@ -84,7 +84,7 @@ uint8_t PPMIn::getChannels() const
 
 void PPMIn::pinChanged(bool p_high)
 {
-	if (p_high == m_high)
+	if (p_high != m_high)
 	{
 		return;
 	}
