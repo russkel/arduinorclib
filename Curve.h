@@ -41,22 +41,22 @@ public:
 	Curve();
 	
 	/*! \brief Sets a curve point.
-	    \param p_point The point to set.
+	    \param p_point The point to set, range [0 - Curve::PointCount-1].
 	    \param p_value The value to set, range [-256 - 256].*/
 	void setPoint(uint8_t p_point, int16_t p_value);
 	
 	/*! \brief Gets a curve point.
-	    \param p_point The point to get.
+	    \param p_point The point to get, range [0 - Curve::PointCount-1].
 	    \return The current value, range [-256 - 256].*/
 	int16_t getPoint(uint8_t p_point) const;
 	
 	/*! \brief Array subscript operator, allow direct access to curve points.
-	    \param p_point The point to get
+	    \param p_point The point to get, range [0 - Curve::PointCount-1].
 	    \return Reference to point.*/
 	int16_t& operator[](uint8_t p_point);
 	
 	/*! \brief Array subscript operator, allow direct access to curve points.
-	    \param p_point The point to get
+	    \param p_point The point to get, range [0 - Curve::PointCount-1].
 	    \return Reference to point.*/
 	const int16_t& operator[](uint8_t p_point) const;
 	
