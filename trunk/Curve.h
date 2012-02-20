@@ -30,6 +30,7 @@ namespace rc
 class Curve
 {
 public:
+	/*! \brief Nameless enum, magic number hiding. */
 	enum
 	{
 		PointCount = 9 //!< Amount of points in the curve
