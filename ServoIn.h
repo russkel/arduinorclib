@@ -16,6 +16,8 @@
 
 #include <inttypes.h>
 
+#define SERVOIN_WORK_SIZE(servos) ((servos) * 4)
+
 
 namespace rc
 {
@@ -31,34 +33,32 @@ class ServoIn
 {
 public:
 	
-	/*! \brief Constructs a ServoIn object.*/
-	ServoIn();
+	/*! \brief Constructs a ServoIn object.
+	    \param p_results Output buffer for results, in microseconds.
+	    \param p_work Work buffer of at least SERVOIN_WORK_SIZE(p_maxServos) in size.
+	    \param p_maxServos Maximum number of signals to listen to.*/
+	ServoIn(int16_t* p_results, uint8_t* p_work, uint8_t p_maxServos);
 	
-	/*! \brief Checks if the input signal is stable.
-	    \return Return true if a stable signal has been received. */
-	bool isStable() const;
+	/*! \brief Starts measuring.
+	    \param p_high Whether the incoming signal has high or low pulses.
+	    \warning Do <b>NOT</b> use this together with the standard Arduino Servo library,
+	             use rc::ServoOut instead.*/
+	void start(bool p_high = true);
 	
 	/*! \brief Handles pin change interrupt, call in your interrupt handler.
+	    \param p_servo For which servo the pin changed.
 	    \param p_high Whether the pin is high or not.*/
-	void pinChanged(bool p_high);
+	void pinChanged(uint8_t p_servo, bool p_high);
 	
-	/*! \brief Gets the current value of the servo signal.
-	    \param p_useMicroseconds Whether the result should be in microseconds or normalized.
-	    \return The current value of the servo signal in microseconds or normalized, range [-256 - 256].*/
-	int16_t getValue(bool p_useMicroseconds = false) const;
+	/*! \brief Updates output buffer with new values.*/
+	void update();
 	
 private:
-	enum State
-	{
-		State_Startup,   //!< Just started, no signal received yet.
-		State_Listening, //!< Received first high signal.
-		State_Stable,    //!< Received first low signal, stable.
-		State_Confused   //!< Something unexpected happened (too much time between signals).
-	};
-	
-	State    m_state;    //!< Current state of input signal.
-	uint16_t m_ticks;    //!< Current value in ticks
-	uint16_t m_lastTime; //!< Time of last interrupt.
+	uint8_t   m_maxServos;   //!< Maximum number of servos to listen for.
+	bool      m_high;        //!< Whether pulses are high or low.
+	int16_t*  m_results;     //!< Output result buffer, microseconds.
+	uint16_t* m_pulseStart;  //!< Last measured pulse start for each servo.
+	uint16_t* m_pulseLength; //!< Last measured pulse length for each servo.
 };
 /** \example servoin_example.pde
  * This is an example of how to use the ServoIn class.

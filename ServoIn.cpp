@@ -27,12 +27,30 @@ namespace rc
 
 // Public functions
 
-ServoIn::ServoIn()
+ServoIn::ServoIn(int16_t* p_results, uint8_t* p_work, uint8_t p_maxServos)
 :
-m_state(State_Startup),
-m_ticks(1520),
-m_lastTime(0)
+m_maxServos(p_maxServos),
+m_high(true),
+m_results(p_results),
+m_pulseStart(reinterpret_cast<uint16_t*>(p_work)),
+m_pulseLength(m_pulseStart + p_maxServos)
 {
+	
+}
+
+
+void ServoIn::start(bool p_high)
+{
+	m_high = p_high;
+	
+	// clean buffers
+	for (uint8_t i = 0; i < m_maxServos; ++i)
+	{
+		m_pulseStart[i]  = 0;
+		m_pulseLength[i] = 0;
+		m_results[i]     = 0;
+	}
+	
 	// check if Timer 1 is running or not
 	if ((TCCR1B & ((1 << CS12) | (1 << CS11) | (1 << CS10))) == 0)
 	{
@@ -42,13 +60,7 @@ m_lastTime(0)
 }
 
 
-bool ServoIn::isStable() const
-{
-	return m_state == State_Stable;
-}
-
-
-void ServoIn::pinChanged(bool p_high)
+void ServoIn::pinChanged(uint8_t p_servo, bool p_high)
 {
 	// first things first, get Timer 1 count
 	uint8_t oldSREG = SREG;
@@ -56,71 +68,24 @@ void ServoIn::pinChanged(bool p_high)
 	uint16_t cnt = TCNT1;
 	SREG = oldSREG;
 	
-	switch (m_state)
+	if (p_high == m_high)
 	{
-	default:
-	case State_Startup:
-		{
-			if (p_high)
-			{
-				m_state = State_Listening;
-			}
-		}
-		break;
-	
-	case State_Listening:
-		{
-			if (p_high == false)
-			{
-				if (cnt - m_lastTime >= 6000)
-				{
-					m_state = State_Confused;
-				}
-				else
-				{
-					m_ticks = cnt - m_lastTime;
-					m_state = State_Stable;
-				}
-			}
-		}
-		break;
-	
-	case State_Stable:
-		{
-			if (p_high)
-			{
-				if (cnt - m_lastTime > 30000)
-				{
-					m_state = State_Confused;
-				}
-			}
-			else
-			{
-				if (cnt - m_lastTime >= 6000)
-				{
-					m_state = State_Confused;
-				}
-				else
-				{
-					m_ticks = cnt - m_lastTime;
-				}
-			}
-		}
-		break;
-	}
-	m_lastTime = cnt;
-}
-
-
-int16_t ServoIn::getValue(bool p_useMicroseconds) const
-{
-	if (p_useMicroseconds)
-	{
-		return m_ticks >> 1;
+		// start of pulse, cheat half a microsecond so we can detect errors
+		m_pulseStart[p_servo] = (cnt == 0) ? 1 : cnt;
 	}
 	else
 	{
-		return microsToNormalized(m_ticks >> 1);
+		// end of pulse, clear length on error
+		m_pulseLength[p_servo] = (m_pulseStart[p_servo] == 0) ? 0 : (cnt - m_pulseStart[p_servo]);
+	}
+}
+
+
+void ServoIn::update()
+{
+	for (uint8_t i = 0; i < m_maxServos; ++i)
+	{
+		m_results[i] = m_pulseLength[i] >> 1;
 	}
 }
 
