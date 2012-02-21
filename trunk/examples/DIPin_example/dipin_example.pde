@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <DIPin.h>
+#include <rc/DIPin.h>
 
 
 rc::DIPin g_pin(3); // we want to use digital pin 3

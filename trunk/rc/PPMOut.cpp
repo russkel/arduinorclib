@@ -18,7 +18,7 @@
 	#include <wiring.h>
 #endif
 
-#include <PPMOut.h>
+#include <rc/PPMOut.h>
 
 
 // Interrupt service routine

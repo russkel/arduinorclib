@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <PPMOut.h>
+#include <rc/PPMOut.h>
 
 
 #define CHANNELS 4

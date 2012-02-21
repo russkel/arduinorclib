@@ -19,7 +19,7 @@
 #endif
 #include <pins_arduino.h>
 
-#include <ServoOut.h>
+#include <rc/ServoOut.h>
 
 
 // Interrupt service routine

@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <Curve.h>
+#include <rc/Curve.h>
 
 
 namespace rc

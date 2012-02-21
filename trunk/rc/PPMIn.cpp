@@ -18,7 +18,7 @@
 	#include <wiring.h>
 #endif
 
-#include <PPMIn.h>
+#include <rc/PPMIn.h>
 
 
 namespace rc

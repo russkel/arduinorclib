@@ -12,16 +12,16 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <AIPin.h>
-#include <Channel.h>
-#include <Curve.h>
-#include <DIPin.h>
-#include <DualRates.h>
-#include <Expo.h>
-#include <Gyro.h>
-#include <PPMOut.h>
-#include <Swashplate.h>
-#include <util.h>
+#include <rc/AIPin.h>
+#include <rc/Channel.h>
+#include <rc/Curve.h>
+#include <rc/DIPin.h>
+#include <rc/DualRates.h>
+#include <rc/Expo.h>
+#include <rc/Gyro.h>
+#include <rc/PPMOut.h>
+#include <rc/Swashplate.h>
+#include <rc/util.h>
 
 enum
 {
