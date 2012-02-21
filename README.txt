@@ -5,6 +5,8 @@ Version 0.2
 - ADD: Issue #2  PPMIn, PPM reader/decoder (trainer port)
 - ADD: Issue #16 ServoIn, Servo signal reader/decoder
 - ADD: Issue #17 ServoOut, Servo signal writer/encoder
+- CHG: Issue #22 Remove all use of normalized values from Signal generating/reading code
+- CHG: Issue #21 Refactor location of source and header files
 
 Version 0.1
 - ADD: AIPin, analog input; trim, reverse, calibration
