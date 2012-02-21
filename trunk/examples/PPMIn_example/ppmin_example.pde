@@ -16,7 +16,7 @@
 
 #define CHANNELS 4
 
-int16_t  g_values[CHANNELS];                  // output buffer for PPMIn
+uint16_t g_values[CHANNELS];                  // output buffer for PPMIn
 uint16_t g_workIn[PPMIN_WORK_SIZE(CHANNELS)]; // we need to have a work buffer for the PPMIn class
 
 rc::PPMIn g_PPMIn(g_values, g_workIn, CHANNELS);
@@ -44,7 +44,7 @@ void loop()
 	
 	if (g_PPMIn.isStable())
 	{
-		// do magic, incoming values available in g_values.
+		// do magic, incoming values available in g_values in microseconds.
 	}
 }
 

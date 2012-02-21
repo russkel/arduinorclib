@@ -19,7 +19,6 @@
 #endif
 
 #include <PPMIn.h>
-#include <util.h>
 
 
 namespace rc
@@ -27,16 +26,15 @@ namespace rc
 
 // Public functions
 
-PPMIn::PPMIn(int16_t* p_results, uint16_t* p_work, uint8_t p_maxChannels, bool p_useMicroseconds)
+PPMIn::PPMIn(uint16_t* p_results, uint8_t* p_work, uint8_t p_maxChannels)
 :
 m_state(State_Startup),
 m_channels(0),
 m_pauseLength(8000),
 m_results(p_results),
-m_work(p_work),
+m_work(reinterpret_cast<uint16_t*>(p_work)),
 m_maxChannels(p_maxChannels),
 m_idx(0),
-m_useMicroseconds(p_useMicroseconds),
 m_newFrame(false),
 m_lastTime(0),
 m_high(false)
@@ -161,19 +159,9 @@ bool PPMIn::update()
 	if (m_newFrame)
 	{
 		m_newFrame = false;
-		if (m_useMicroseconds)
+		for (uint8_t i = 0; i < m_channels && i < m_maxChannels; ++i)
 		{
-			for (uint8_t i = 0; i < m_channels && i < m_maxChannels; ++i)
-			{
-				m_results[i] = m_work[i] >> 1;
-			}
-		}
-		else
-		{
-			for (uint8_t i = 0; i < m_channels && i < m_maxChannels; ++i)
-			{
-				m_results[i] = microsToNormalized(m_work[i] >> 1);
-			}
+			m_results[i] = m_work[i] >> 1;
 		}
 	}
 	else
