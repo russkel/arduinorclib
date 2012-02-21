@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <Gyro.h>
+#include <rc/Gyro.h>
 
 
 namespace rc

@@ -17,7 +17,7 @@
 	#include <wiring.h>
 #endif
 
-#include <AIPin.h>
+#include <rc/AIPin.h>
 
 
 namespace rc

@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <Swashplate.h>
+#include <rc/Swashplate.h>
 
 
 namespace rc

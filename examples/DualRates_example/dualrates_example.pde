@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <DualRates.h>
+#include <rc/DualRates.h>
 
 rc::DualRates g_rates[2];
 

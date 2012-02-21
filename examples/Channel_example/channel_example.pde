@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <Channel.h>
+#include <rc/Channel.h>
 
 
 // we define a single channel here, for the sake of simplicity

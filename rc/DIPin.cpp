@@ -17,7 +17,7 @@
 	#include <wiring.h>
 #endif
 
-#include <DIPin.h>
+#include <rc/DIPin.h>
 
 
 namespace rc
