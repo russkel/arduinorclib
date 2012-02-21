@@ -21,6 +21,7 @@
 #include <Gyro.h>
 #include <PPMOut.h>
 #include <Swashplate.h>
+#include <util.h>
 
 enum
 {
@@ -57,11 +58,11 @@ rc::Swashplate g_swash;
 // gyro
 rc::Gyro g_gyro[2];
 
-// normalized channel values
-int16_t g_channelValues[ChannelCount] = {0, 0, -256, 0, 0, 0}; // MAKE SURE you SHUT throttle as initial value!
+// Channel values in microseconds
+uint16_t g_channelValues[ChannelCount] = {0};
 
 // PPM related variables
-uint16_t   g_PPMWork[PPMOUT_WORK_SIZE(ChannelCount)];
+uint8_t    g_PPMWork[PPMOUT_WORK_SIZE(ChannelCount)];
 rc::PPMOut g_PPMOut(ChannelCount, g_channelValues, g_PPMWork, ChannelCount);
 
 
@@ -107,11 +108,21 @@ void setup()
 	g_gyro[0] = 50;
 	g_gyro[1] = 75;
 	
-	// set up ppm
+	// set up normalized -> microseconds conversion
+	rc::setCenter(1520);
+	rc::setTravel(600);
+	
+	// fill channel values buffer with sane values, all centered
+	g_channelValues[0] = rc::normalizedToMicros(0);
+	g_channelValues[1] = rc::normalizedToMicros(0);
+	g_channelValues[2] = rc::normalizedToMicros(-256); // Throttle channel, MUST BE AT 0 THROTTLE!
+	g_channelValues[3] = rc::normalizedToMicros(0);
+	g_channelValues[4] = rc::normalizedToMicros(0);
+	g_channelValues[5] = rc::normalizedToMicros(0);
+	
+	// set up PPM
 	g_PPMOut.setPulseLength(448);
 	g_PPMOut.setPauseLength(10448);
-	g_PPMOut.setCenter(1520);
-	g_PPMOut.setTravel(600);
 	g_PPMOut.start(true);
 }
 
@@ -161,12 +172,12 @@ void loop()
 	int16_t GYR = g_gyro[flightmode].apply();
 	
 	// perform channel transformations and set channel values
-	g_channelValues[0] = g_channels[0].apply(AIL);
-	g_channelValues[1] = g_channels[1].apply(ELE);
-	g_channelValues[2] = g_channels[2].apply(THR);
-	g_channelValues[3] = g_channels[3].apply(RUD);
-	g_channelValues[4] = g_channels[4].apply(GYR);
-	g_channelValues[5] = g_channels[5].apply(PIT);
+	g_channelValues[0] = rc::normalizedToMicros(g_channels[0].apply(AIL));
+	g_channelValues[1] = rc::normalizedToMicros(g_channels[1].apply(ELE));
+	g_channelValues[2] = rc::normalizedToMicros(g_channels[2].apply(THR));
+	g_channelValues[3] = rc::normalizedToMicros(g_channels[3].apply(RUD));
+	g_channelValues[4] = rc::normalizedToMicros(g_channels[4].apply(GYR));
+	g_channelValues[5] = rc::normalizedToMicros(g_channels[5].apply(PIT));
 	
 	// Tell PPMOut that new values are ready
 	g_PPMOut.update();

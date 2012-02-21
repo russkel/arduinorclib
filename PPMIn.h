@@ -16,7 +16,7 @@
 
 #include <inttypes.h>
 
-#define PPMIN_WORK_SIZE(channels) (channels)
+#define PPMIN_WORK_SIZE(channels) ((channels) * 2)
 
 
 namespace rc
@@ -37,9 +37,8 @@ public:
 	/*! \brief Constructs a PPMIn object.
 	    \param p_results External buffer to store results, at least p_maxChannels in size.
 	    \param p_work Work buffer at least PPMIN_WORK_SIZE(p_maxChannels) in size.
-	    \param p_maxChannels Maximum number of channels supported.
-	    \param p_useMicroseconds Whether the results should be stored in microseconds or normalized.*/
-	PPMIn(int16_t* p_results, uint16_t* p_work, uint8_t p_maxChannels, bool p_useMicroseconds = false);
+	    \param p_maxChannels Maximum number of channels supported.*/
+	PPMIn(uint16_t* p_results, uint8_t* p_work, uint8_t p_maxChannels);
 	
 	/*! \brief Starts measuring.
 	    \param p_high Whether the incoming signal has high or low pulses.
@@ -90,12 +89,11 @@ private:
 	uint8_t  m_channels;    //!< Number of channels in input signal.
 	uint16_t m_pauseLength; //!< Minimum pause length in microseconds.
 	
-	int16_t*  m_results;     //!< Results buffer.
+	uint16_t* m_results;     //!< Results buffer.
 	uint16_t* m_work;        //!< Work buffer.
 	uint8_t   m_maxChannels; //!< Maximum number of channels to fit buffers.
 	uint8_t   m_idx;         //!< Current index in buffer.
 	
-	bool          m_useMicroseconds; //!< Whether the results should be stored in microseconds or normalized values.
 	volatile bool m_newFrame;        //!< Whether a new frame is available or not.
 	
 	uint16_t m_lastTime; //!< Time of last interrupt.

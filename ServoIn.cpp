@@ -27,7 +27,7 @@ namespace rc
 
 // Public functions
 
-ServoIn::ServoIn(int16_t* p_results, uint8_t* p_work, uint8_t p_maxServos)
+ServoIn::ServoIn(uint16_t* p_results, uint8_t* p_work, uint8_t p_maxServos)
 :
 m_maxServos(p_maxServos),
 m_high(true),

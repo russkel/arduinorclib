@@ -37,7 +37,7 @@ public:
 	    \param p_results Output buffer for results, in microseconds.
 	    \param p_work Work buffer of at least SERVOIN_WORK_SIZE(p_maxServos) in size.
 	    \param p_maxServos Maximum number of signals to listen to.*/
-	ServoIn(int16_t* p_results, uint8_t* p_work, uint8_t p_maxServos);
+	ServoIn(uint16_t* p_results, uint8_t* p_work, uint8_t p_maxServos);
 	
 	/*! \brief Starts measuring.
 	    \param p_high Whether the incoming signal has high or low pulses.
@@ -56,7 +56,7 @@ public:
 private:
 	uint8_t   m_maxServos;   //!< Maximum number of servos to listen for.
 	bool      m_high;        //!< Whether pulses are high or low.
-	int16_t*  m_results;     //!< Output result buffer, microseconds.
+	uint16_t* m_results;     //!< Output result buffer, microseconds.
 	uint16_t* m_pulseStart;  //!< Last measured pulse start for each servo.
 	uint16_t* m_pulseLength; //!< Last measured pulse length for each servo.
 };

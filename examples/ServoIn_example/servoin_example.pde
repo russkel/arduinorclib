@@ -16,8 +16,8 @@
 
 #define SERVOS 4
 
-int16_t g_values[SERVOS];                    // output buffer for ServoIn
-uint8_t g_workIn[SERVOIN_WORK_SIZE(SERVOS)]; // we need to have a work buffer for the ServoIn class
+uint16_t g_values[SERVOS];                    // output buffer for ServoIn
+uint8_t  g_workIn[SERVOIN_WORK_SIZE(SERVOS)]; // we need to have a work buffer for the ServoIn class
 
 rc::ServoIn g_ServoIn(g_values, g_workIn, SERVOS);
 

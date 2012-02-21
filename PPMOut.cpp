@@ -19,7 +19,6 @@
 #endif
 
 #include <PPMOut.h>
-#include <util.h>
 
 
 // Interrupt service routine
@@ -37,20 +36,18 @@ PPMOut* PPMOut::s_instance = 0;
 
 // Public functions
 
-PPMOut::PPMOut(uint8_t        p_channels,
-               const int16_t* p_input,
-               uint16_t*      p_work,
-               uint8_t        p_maxChannels,
-               bool           p_useMicroseconds)
+PPMOut::PPMOut(uint8_t         p_channels,
+               const uint16_t* p_input,
+               uint8_t*        p_work,
+               uint8_t         p_maxChannels)
 :
 m_pulseLength(500),
 m_pauseLength(10500),
 m_channelCount(p_channels),
 m_channels(p_input),
-m_useMicroseconds(p_useMicroseconds),
-m_channelTimings(p_work),
+m_channelTimings(reinterpret_cast<uint16_t*>(p_work)),
 m_timingCount((p_channels + 1) * 2),
-m_timings(p_work + p_maxChannels)
+m_timings(m_channelTimings + p_maxChannels)
 {
 	s_instance = this;
 }
@@ -134,19 +131,9 @@ uint16_t PPMOut::getPauseLength() const
 
 void PPMOut::update()
 {
-	if (m_useMicroseconds)
+	for (uint8_t i = 0; i < m_channelCount; ++i)
 	{
-		for (uint8_t i = 0; i < m_channelCount; ++i)
-		{
-			m_channelTimings[i] = m_channels[i] << 1;
-		}
-	}
-	else
-	{
-		for (uint8_t i = 0; i < m_channelCount; ++i)
-		{
-			m_channelTimings[i] = normalizedToMicros(m_channels[i]) << 1;
-		}
+		m_channelTimings[i] = m_channels[i] << 1;
 	}
 }
 

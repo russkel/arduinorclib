@@ -17,8 +17,8 @@
 #define CHANNELS 4
 
 uint8_t  g_pins[CHANNELS] = {A0, A1, A2, A3}; // Input pins
-int16_t  g_input[CHANNELS];                   // normalized input buffer (range [-256 - 256]
-uint16_t g_work[PPMOUT_WORK_SIZE(CHANNELS)];  // we need to have a work buffer for the PPMOut class
+uint16_t g_input[CHANNELS];                   // Input buffer in microseconds
+uint8_t  g_work[PPMOUT_WORK_SIZE(CHANNELS)];  // we need to have a work buffer for the PPMOut class
 
 // PPMOut requires two buffers:
 //     Input buffer containing normalized input samples, range [-256 - 256]
@@ -35,7 +35,7 @@ void setup()
 		pinMode(g_pins[i], INPUT);
 		
 		// fill input buffer, convert raw values to normalized ones
-		g_input[i] = map(analogRead(g_pins[i]), 0, 1024, -256, 256);
+		g_input[i] = map(analogRead(g_pins[i]), 0, 1024, 1000, 2000);
 	}
 	
 	// initialize PPMOut with some settings
@@ -51,7 +51,7 @@ void loop()
 	// update the input buffer
 	for (uint8_t i = 0;  i < CHANNELS; ++i)
 	{
-		g_input[i] = map(analogRead(g_pins[i]), 0, 1024, -256, 256);
+		g_input[i] = map(analogRead(g_pins[i]), 0, 1024, 1000, 2000);
 	}
 	
 	// tell PPMOut there are new values available in the input buffer
