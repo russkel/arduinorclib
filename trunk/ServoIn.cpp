@@ -18,8 +18,8 @@
 	#include <wiring.h>
 #endif
 
-#include <rc/ServoIn.h>
-#include <rc/util.h>
+#include <ServoIn.h>
+#include <util.h>
 
 
 namespace rc

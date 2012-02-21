@@ -21,12 +21,11 @@ namespace rc
 {
 
 /*! 
- *  \brief      Class to encapsulate Channel transformation functionality.
- *  \details    This class provides channel reverse, end points and subtrim.
- *  \headerfile rc/Channel.h
- *  \author     Daniel van den Ouden
- *  \date       Feb-2012
- *  \copyright  Public Domain.
+ *  \brief     Class to encapsulate Channel transformation functionality.
+ *  \details   This class provides channel reverse, end points and subtrim.
+ *  \author    Daniel van den Ouden
+ *  \date      Feb-2012
+ *  \copyright Public Domain.
  */
 class Channel
 {

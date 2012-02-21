@@ -18,7 +18,7 @@
 	#include <wiring.h>
 #endif
 
-#include <rc/PPMIn.h>
+#include <PPMIn.h>
 
 
 namespace rc
@@ -165,10 +165,7 @@ bool PPMIn::update()
 		}
 		return true;
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 

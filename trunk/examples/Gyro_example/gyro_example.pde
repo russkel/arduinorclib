@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <rc/Gyro.h>
+#include <Gyro.h>
 
 
 rc::Gyro g_gyro;

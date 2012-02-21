@@ -21,12 +21,11 @@ namespace rc
 {
 
 /*! 
- *  \brief      Class to encapsulate Swashplate functionality.
- *  \details    This class provides swashplate mixing.
- *  \headerfile rc/Swashplate.h
- *  \author     Daniel van den Ouden
- *  \date       Feb-2012
- *  \copyright  Public Domain.
+ *  \brief     Class to encapsulate Swashplate functionality.
+ *  \details   This class provides swashplate mixing.
+ *  \author    Daniel van den Ouden
+ *  \date      Feb-2012
+ *  \copyright Public Domain.
  */
 class Swashplate
 {
