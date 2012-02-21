@@ -21,11 +21,12 @@ namespace rc
 {
 
 /*! 
- *  \brief     Class to encapsulate Curve functionality.
- *  \details   This class provides throttle/pitch curves, curve points may be edited as if this were an array.
- *  \author    Daniel van den Ouden
- *  \date      Feb-2012
- *  \copyright Public Domain.
+ *  \brief      Class to encapsulate Curve functionality.
+ *  \details    This class provides throttle/pitch curves, curve points may be edited as if this were an array.
+ *  \headerfile rc/Curve.h
+ *  \author     Daniel van den Ouden
+ *  \date       Feb-2012
+ *  \copyright  Public Domain.
  */
 class Curve
 {

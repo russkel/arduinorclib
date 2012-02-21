@@ -21,11 +21,12 @@ namespace rc
 {
 
 /*! 
- *  \brief     Class to encapsulate analog input functionality.
- *  \details   This class provides functionality for reading analog input.
- *  \author    Daniel van den Ouden
- *  \date      Feb-2012
- *  \copyright Public Domain.
+ *  \brief      Class to encapsulate analog input functionality.
+ *  \details    This class provides functionality for reading analog input.
+ *  \headerfile rc/AIPin.h
+ *  \author     Daniel van den Ouden
+ *  \date       Feb-2012
+ *  \copyright  Public Domain.
  */
 class AIPin
 {

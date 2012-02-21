@@ -21,11 +21,12 @@ namespace rc
 {
 
 /*! 
- *  \brief     Class to encapsulate dual rates functionality.
- *  \details   This class provides dual rates functionality and may be used as a uint8_t.
- *  \author    Daniel van den Ouden
- *  \date      Feb-2012
- *  \copyright Public Domain.
+ *  \brief      Class to encapsulate dual rates functionality.
+ *  \details    This class provides dual rates functionality and may be used as a uint8_t.
+ *  \headerfile rc/DualRates.h
+ *  \author     Daniel van den Ouden
+ *  \date       Feb-2012
+ *  \copyright  Public Domain.
  */
 class DualRates
 {

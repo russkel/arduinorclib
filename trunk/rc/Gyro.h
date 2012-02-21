@@ -21,11 +21,12 @@ namespace rc
 {
 
 /*! 
- *  \brief     Class to encapsulate Gyroscope functionality.
- *  \details   This class provides gyro gain encoding.
- *  \author    Daniel van den Ouden
- *  \date      Feb-2012
- *  \copyright Public Domain.
+ *  \brief      Class to encapsulate Gyroscope functionality.
+ *  \details    This class provides gyro gain encoding.
+ *  \headerfile rc/Gyro.h
+ *  \author     Daniel van den Ouden
+ *  \date       Feb-2012
+ *  \copyright  Public Domain.
  */
 class Gyro
 {
