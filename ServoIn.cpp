@@ -51,12 +51,13 @@ void ServoIn::start(bool p_high)
 		m_results[i]     = 0;
 	}
 	
-	// check if Timer 1 is running or not
-	if ((TCCR1B & ((1 << CS12) | (1 << CS11) | (1 << CS10))) == 0)
-	{
-		// start Timer 1
-		TCCR1B |= (1 << CS11);
-	}
+	// stop timer 1
+	TCCR1A = 0;
+	TCCR1B &= ~((1 << CS12) | (1 << CS11) | (1 << CS10));
+	TCCR1C = 0;
+	
+	// start Timer 1
+	TCCR1B |= (1 << CS11);
 }
 
 

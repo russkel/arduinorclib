@@ -25,12 +25,12 @@ void setup()
 {
 	// We use pin 8-11 as Servo input pins
 	pinMode(8, INPUT);
-//	pinMode(9, INPUT);
-//	pinMode(10, INPUT);
-//	pinMode(11, INPUT);
+	pinMode(9, INPUT);
+	pinMode(10, INPUT);
+	pinMode(11, INPUT);
 	
 	// only allow pin change interrupts for PB0-3, digital pins 8-11.
-	PCMSK0 = (1 << PCINT0);// | (1 << PCINT1) | (1 << PCINT2) | (1 << PCINT3);
+	PCMSK0 = (1 << PCINT0) | (1 << PCINT1) | (1 << PCINT2) | (1 << PCINT3);
 	
 	// enable pin change interrupt 0
 	PCICR = (1 << PCIE0);
@@ -74,7 +74,7 @@ ISR(PCINT0_vect)
 		{
 			g_ServoIn.pinChanged(0, newB & _BV(0));
 		}
-	/*	if (chgB & _BV(1))
+		if (chgB & _BV(1))
 		{
 			g_ServoIn.pinChanged(1, newB & _BV(1));
 		}
@@ -85,6 +85,6 @@ ISR(PCINT0_vect)
 		if (chgB & _BV(3))
 		{
 			g_ServoIn.pinChanged(3, newB & _BV(3));
-		}*/
+		}
 	}
 }
