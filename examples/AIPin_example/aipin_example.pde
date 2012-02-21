@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <rc/AIPin.h>
+#include <AIPin.h>
 
 rc::AIPin g_pin(A0);
 

@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <rc/Swashplate.h>
+#include <Swashplate.h>
 
 
 rc::Swashplate g_swash;

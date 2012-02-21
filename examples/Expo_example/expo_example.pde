@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <rc/Expo.h>
+#include <Expo.h>
 
 
 rc::Expo g_expo;

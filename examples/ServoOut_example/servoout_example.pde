@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <rc/ServoOut.h>
+#include <ServoOut.h>
 
 #define SERVOS 4
 

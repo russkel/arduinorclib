@@ -21,12 +21,11 @@ namespace rc
 {
 
 /*! 
- *  \brief      Class to encapsulate digital input functionality.
- *  \details    This class provides functionality for reading digital input.
- *  \headerfile rc/DIPin.h
- *  \author     Daniel van den Ouden
- *  \date       Feb-2012
- *  \copyright  Public Domain.
+ *  \brief     Class to encapsulate digital input functionality.
+ *  \details   This class provides functionality for reading digital input.
+ *  \author    Daniel van den Ouden
+ *  \date      Feb-2012
+ *  \copyright Public Domain.
  */
 class DIPin
 {

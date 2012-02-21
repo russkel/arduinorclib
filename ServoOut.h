@@ -23,14 +23,11 @@ namespace rc
 {
 
 /*! 
- *  \brief      Class to encapsulate Servo Signal Output functionality.
- *  \details    This class provides a way to generate a Servo signal.
- *  \headerfile rc/ServoOut.h
- *  \author     Daniel van den Ouden
- *  \date       Feb-2012
- *  \copyright  Public Domain.
- *  \warning    This class should <b>NOT</b> be used together with the standard Arduino Servo library,
- *              use rc::ServoOut instead.
+ *  \brief     Class to encapsulate Servo Signal Output functionality.
+ *  \details   This class provides a way to generate a Servo signal.
+ *  \author    Daniel van den Ouden
+ *  \date      Feb-2012
+ *  \copyright Public Domain.
  */
 class ServoOut
 {

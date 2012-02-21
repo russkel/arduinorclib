@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <rc/PPMIn.h>
+#include <PPMIn.h>
 
 
 #define CHANNELS 4
