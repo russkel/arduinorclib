@@ -21,11 +21,12 @@ namespace rc
 {
 
 /*! 
- *  \brief     Class to encapsulate Expo functionality.
- *  \details   This class provides exponential transformation.
- *  \author    Daniel van den Ouden
- *  \date      Feb-2012
- *  \copyright Public Domain.
+ *  \brief      Class to encapsulate Expo functionality.
+ *  \details    This class provides exponential transformation.
+ *  \headerfile rc/Expo.h
+ *  \author     Daniel van den Ouden
+ *  \date       Feb-2012
+ *  \copyright  Public Domain.
  */
 class Expo
 {
