@@ -37,8 +37,6 @@ void setup()
 	
 	// start listening
 	g_ServoIn.start();
-	
-	Serial.begin(9600);
 }
 
 void loop()
@@ -47,14 +45,7 @@ void loop()
 	g_ServoIn.update();
 	
 	// handle servo values here, stored in g_values
-	for (uint8_t i = 0; i < SERVOS; ++i)
-	{
-		Serial.print(g_values[i]);
-		Serial.print(" ");
-	}
-	Serial.println("");
 }
-
 
 
 // Interrupt handling code below, this needs cleaning
