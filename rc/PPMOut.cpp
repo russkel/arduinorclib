@@ -47,7 +47,7 @@ m_channelCount(p_channels),
 m_channels(p_input),
 m_channelTimings(reinterpret_cast<uint16_t*>(p_work)),
 m_timingCount((p_channels + 1) * 2),
-m_timings(m_channelTimings + p_maxChannels)
+m_timings(const_cast<uint16_t*>(m_channelTimings) + p_maxChannels)
 {
 	s_instance = this;
 }

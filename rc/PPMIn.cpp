@@ -163,6 +163,7 @@ bool PPMIn::update()
 		{
 			m_results[i] = m_work[i] >> 1;
 		}
+		return true;
 	}
 	else
 	{
