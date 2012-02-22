@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <PPMOut.h>
+#include <Timer1.h>
 
 
 #define CHANNELS 4
@@ -29,6 +30,8 @@ rc::PPMOut g_PPMOut(CHANNELS, g_input, g_work, CHANNELS);
 
 void setup()
 {
+	rc::Timer1::init();
+	
 	for (uint8_t i = 0;  i < CHANNELS; ++i)
 	{
 		// set up input pins

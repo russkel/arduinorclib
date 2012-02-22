@@ -45,9 +45,8 @@ public:
 	
 	/*! \brief Sets up timers and interrupts.
 	    \param p_a Use timer output pin A on true, output pin B on false.
-	    \param p_invert Invert the signal on true.
-	    \param p_debug Slow PPM output down by factor 256 on true.*/
-	void start(bool p_a, bool p_invert = false, bool p_debug = false);
+	    \param p_invert Invert the signal on true.*/
+	void start(bool p_a, bool p_invert = false);
 	
 	/*! \brief Sets channel count
 	    \param p_channels Channel count.*/

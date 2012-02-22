@@ -20,13 +20,7 @@
 #include <pins_arduino.h>
 
 #include <ServoOut.h>
-
-
-// Interrupt service routine
-ISR(TIMER1_COMPB_vect)
-{
-	rc::ServoOut::handleInterrupt();
-}
+#include <Timer1.h>
 
 
 namespace rc
@@ -62,23 +56,19 @@ void ServoOut::start()
 	update(true);
 	
 	// stop timer 1
-	TCCR1B = 0;
+	rc::Timer1::stop();
 	
-	// set mode
-	TCCR1A &= 0xF0;
-	TCCR1C = 0;
-	
-	// First disable the output compare match B interrupt
-	TIMSK1 &= ~(1 << OCIE1B);
+	// disable compare match B interrupts
+	rc::Timer1::setCompareMatch(false, false);
 	
 	// set compare value (first, we wait)
 	OCR1B = TCNT1 + (m_pauseLength << 1);
 	
 	// enable timer output compare match B interrupts
-	TIMSK1 |= (1 << OCIE1B);
+	rc::Timer1::setCompareMatch(true, false, ServoOut::handleInterrupt);
 	
-	// start the timer by setting the speed speed
-	TCCR1B = (1 << CS11); // set at clk / 8
+	// start the timer
+	rc::Timer1::start();
 }
 
 

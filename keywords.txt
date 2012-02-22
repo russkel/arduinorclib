@@ -18,6 +18,7 @@ PPMOut	KEYWORD1
 ServoIn	KEYWORD1
 ServoOut	KEYWORD1
 Swashplate	KEYWORD1
+Timer1	KEYWORD1
 rc	KEYWORD1
 
 #######################################

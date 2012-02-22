@@ -19,7 +19,7 @@
 #endif
 
 #include <ServoIn.h>
-#include <util.h>
+#include <Timer1.h>
 
 
 namespace rc
@@ -51,13 +51,8 @@ void ServoIn::start(bool p_high)
 		m_results[i]     = 0;
 	}
 	
-	// stop timer 1
-	TCCR1A = 0;
-	TCCR1B &= ~((1 << CS12) | (1 << CS11) | (1 << CS10));
-	TCCR1C = 0;
-	
 	// start Timer 1
-	TCCR1B |= (1 << CS11);
+	rc::Timer1::start();
 }
 
 

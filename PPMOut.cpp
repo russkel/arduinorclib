@@ -19,13 +19,7 @@
 #endif
 
 #include <PPMOut.h>
-
-
-// Interrupt service routine
-ISR(TIMER1_COMPA_vect)
-{
-	rc::PPMOut::handleInterrupt();
-}
+#include <Timer1.h>
 
 
 namespace rc
@@ -53,10 +47,10 @@ m_timings(const_cast<uint16_t*>(m_channelTimings) + p_maxChannels)
 }
 
 
-void PPMOut::start(bool p_a, bool p_invert, bool p_debug)
+void PPMOut::start(bool p_a, bool p_invert)
 {
 	// stop timer 1
-	TCCR1B = 0;
+	rc::Timer1::stop();
 	
 	// Fill channelTimings buffer with data from channels buffer
 	update();
@@ -70,26 +64,19 @@ void PPMOut::start(bool p_a, bool p_invert, bool p_debug)
 	pinMode(pin, OUTPUT);
 	
 	// First disable the output compare match A interrupt
-	TIMSK1 &= ~(1 << OCIE1A);
+	rc::Timer1::setCompareMatch(false, true);
 
 	// Configure timer1 Toggle OC1A/OC1B on Compare Match
-	TCCR1A = p_a ? (1 << COM1A0) : (1 << COM1B0);
+	rc::Timer1::setToggle(true, p_a);
 	
 	// set compare value
 	OCR1A = TCNT1 + m_timings[p_invert ? m_timingCount - 1 : 0];
 	
 	// enable timer output compare match A interrupts
-	TIMSK1 |= (1 << OCIE1A);
+	rc::Timer1::setCompareMatch(true, true, PPMOut::handleInterrupt);
 	
-	// start the timer by setting the speed speed
-	if (p_debug == false)
-	{
-		TCCR1B = (1 << CS11); // set at clk / 8
-	}
-	else
-	{
-		TCCR1B = ((1 << CS12) | (1 << CS10)); // set at clk / 1024
-	}
+	// start the timer
+	rc::Timer1::start();
 }
 
 

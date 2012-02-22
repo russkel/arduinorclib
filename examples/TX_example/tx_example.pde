@@ -21,6 +21,7 @@
 #include <Gyro.h>
 #include <PPMOut.h>
 #include <Swashplate.h>
+#include <Timer1.h>
 #include <util.h>
 
 enum
@@ -68,6 +69,9 @@ rc::PPMOut g_PPMOut(ChannelCount, g_channelValues, g_PPMWork, ChannelCount);
 
 void setup()
 {
+	// Initialize timer1
+	rc::Timer1::init();
+	
 	// set default values, these depend on hardware configurations
 	g_aPins[0].setCalibration( 90, 515,  930); // Right horizontal, aileron
 	g_aPins[1].setCalibration(127, 544,  961); // Right vertical, elevator
