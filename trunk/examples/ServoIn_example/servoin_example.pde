@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <ServoIn.h>
+#include <Timer1.h>
 
 
 #define SERVOS 4
@@ -23,6 +24,9 @@ rc::ServoIn g_ServoIn(g_values, g_workIn, SERVOS);
 
 void setup()
 {
+	// Initialize timer1
+	rc::Timer1::init();
+	
 	// We use pin 8-11 as Servo input pins
 	pinMode(8, INPUT);
 	pinMode(9, INPUT);

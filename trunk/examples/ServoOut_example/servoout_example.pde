@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <ServoOut.h>
+#include <Timer1.h>
 
 #define SERVOS 4
 
@@ -31,6 +32,9 @@ rc::ServoOut g_ServoOut(g_pinsOut, g_input, g_work, SERVOS);
 
 void setup()
 {
+	// Initialize timer1
+	rc::Timer1::init();
+	
 	for (uint8_t i = 0;  i < SERVOS; ++i)
 	{
 		// set up input pins

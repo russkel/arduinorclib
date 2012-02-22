@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <PPMIn.h>
+#include <Timer1.h>
 
 
 #define CHANNELS 4
@@ -23,6 +24,9 @@ rc::PPMIn g_PPMIn(g_values, g_workIn, CHANNELS);
 
 void setup()
 {
+	// Initialize timer1
+	rc::Timer1::init();
+	
 	// We use pin 8 as PPM input pin
 	pinMode(8, INPUT);
 	
