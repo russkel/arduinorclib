@@ -48,13 +48,13 @@ public:
 	static void stop();
 	
 	/*! \brief Enables/Disables Compare Match Interrupt.
-	    \param p_enable Whether to enable or disable Compare Match Interrupt..
+	    \param p_enable Whether to enable or disable Compare Match Interrupt.
 	    \param p_OCIE1A Whether to use OCIE1A or OCIE1B.
 	    \param p_callback Function to call at interrupt.*/
 	static void setCompareMatch(bool p_enable, bool p_OCIE1A, Callback p_callback = 0);
 		
 	/*! \brief Enables/Disables Overflow Interrupt.
-	    \param p_enable Whether to enable or disable Overflow Interrupt..
+	    \param p_enable Whether to enable or disable Overflow Interrupt.
 	    \param p_callback Function to call at interrupt.*/
 	static void setOverflow(bool p_enable, Callback p_callback = 0);
 	

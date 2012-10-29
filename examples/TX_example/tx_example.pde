@@ -72,7 +72,7 @@ void setup()
 	// Initialize timer1
 	rc::Timer1::init();
 	
-	// set default values, these depend on hardware configurations
+	// set calibration values, these depend on hardware configurations
 	g_aPins[0].setCalibration( 90, 515,  930); // Right horizontal, aileron
 	g_aPins[1].setCalibration(127, 544,  961); // Right vertical, elevator
 	g_aPins[2].setCalibration( 27, 435,  834); // Left vertical, throttle

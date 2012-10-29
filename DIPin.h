@@ -39,7 +39,7 @@ public:
 	void setPin(uint8_t p_pin);
 	
 	/*! \brief Gets the hardware pin.
-	    \return The current value, range [-256 - 256].*/
+	    \return Current hardware pin.*/
 	uint8_t getPin() const;
 	
 	/*! \brief Assignment operator, sets hardware pin.

@@ -19,11 +19,11 @@ void callbackOVF();
 
 void setup()
 {
-	// call the init function before any other function
-	// in debug mode, otherwise everything will go way too fast to see
+	// call the init function before any other function.
+	// We use debug mode, otherwise everything will go way too fast to see
 	rc::Timer1::init(true);
 	
-	// we'll use pin A0 and A1 as analog input
+	// we'll use pin A0 as analog input
 	pinMode(A0, INPUT);
 	
 	// and pin 9 as output
@@ -55,6 +55,8 @@ void setup()
 void loop()
 {
 	// we base the compare registers on analog input
+	// by changing the analog input (twisting a potentiometer) we can
+	// change the time the connected LED is on
 	OCR1A = map(analogRead(A0), 0, 1024, 0, 65536);
 	delay(1000);
 }

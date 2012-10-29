@@ -18,16 +18,20 @@ rc::Gyro g_gyro;
 
 void setup()
 {
-	// set up the gyro type
+	// set up the gyro type, heading hold type in this case
 	g_gyro.setType(rc::Gyro::Type_AVCS);
 }
 
 void loop()
 {
 	// we use a switch to change between gyro modes
-	g_gyro.setMode(digitalRead(3) == HIGH ? rc::Gyro::Mode_AVCS : rc::Gyro::Mode_Normal);
+	g_gyro.setMode(digitalRead(3) == HIGH ?
+	               rc::Gyro::Mode_AVCS :
+	               rc::Gyro::Mode_Normal);
 	
 	// we use a knob to set the gain
+	// we use A0 as input pin, we map raw input values (0 - 1024)
+	// to a different range range (0 - 100)
 	g_gyro = map(analogRead(A0), 0, 1024, 0, 100);
 	
 	// get the normalized channel value corresponding to the mode and gain

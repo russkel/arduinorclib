@@ -44,20 +44,20 @@ public:
 	    \param p_high Whether the incoming signal has high or low pulses.
 	    \note It doesn't really matter if the pulses are low or high,
 	          but you may want to try changing this parameter if you experience an
-	          unstable signal. This may be due to simultanious interrupts, changing
+	          unstable signal. This may be due to simultaneous interrupts, changing
 	          the p_high parameter will make the interrupt handler respond to either
 	          the high or low pin change and may thus reduce problems created by
-	          simultanious interrupts.
+	          simultaneous interrupts.
 	    \warning Do <b>NOT</b> use this together with the standard Arduino Servo library,
 	             use rc::ServoOut instead.*/
 	void start(bool p_high = false);
 	
-	/*! \brief Sets minimum pause length, including pulse.
+	/*! \brief Sets minimum pause length, including pulse, in microseconds.
 	    \param p_length Minimum pause length in microseconds.*/
 	void setPauseLength(uint16_t p_length);
 	
-	/*! \brief Gets minimum pause length.
-	    \return The minimum pause length.*/
+	/*! \brief Gets minimum pause length in microseconds.
+	    \return The minimum pause length in microseconds.*/
 	uint16_t getPauseLength() const;
 	
 	/*! \brief Checks if the input signal is stable.
