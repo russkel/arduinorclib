@@ -51,7 +51,7 @@ public:
 	int8_t getSubtrim() const;
 
 	/*! \brief Sets end point min.
-	    \param p_endPoint	The end point of the negative side of the range, range [0 - 140].*/
+	    \param p_endPoint The end point of the negative side of the range, range [0 - 140].*/
 	void setEndPointMin(uint8_t p_endPoint);
 	
 	/*! \brief Gets end point min.
@@ -59,7 +59,7 @@ public:
 	uint8_t getEndPointMin() const;
 
 	/*! \brief Sets end point max.
-	    \param p_endPoint	The end point of the positive side of the range, range [0 - 140].*/
+	    \param p_endPoint The end point of the positive side of the range, range [0 - 140].*/
 	void setEndPointMax(uint8_t p_endPoint);
 	
 	/*! \brief Gets end point max.

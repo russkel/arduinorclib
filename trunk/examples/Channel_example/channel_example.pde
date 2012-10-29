@@ -19,7 +19,8 @@ rc::Channel g_channel;
 
 void setup()
 {
-	// say our servo is moving in the wrong direction, we'd want to use channel reverse
+	// say our servo is moving in the wrong direction,
+	// we'd want to use channel reverse
 	g_channel.setReverse(true);
 	
 	// and for some reason we want to limit the throw of our servo
@@ -31,7 +32,8 @@ void setup()
 
 void loop()
 {
-	// we use A0 as input pin
+	// we use A0 as input pin, we map raw input values (0 - 1024) to normalized
+	// values (-256 - 256)
 	int16_t normalized = map(analogRead(A0), 0, 1024, -256, 256);
 	
 	// and apply channel transformations

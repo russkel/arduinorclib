@@ -21,7 +21,7 @@ void setup()
 	// use the most common type of CCPM swash
 	g_swash.setType(rc::Swashplate::Type_HR3);
 	
-	// set up mixes
+	// set up mixes, use 50% on all axis
 	g_swash.setAilMix(50);
 	g_swash.setEleMix(50);
 	g_swash.setPitMix(50);
@@ -29,7 +29,8 @@ void setup()
 
 void loop()
 {
-	// we use A0,A1,A2 as input pin
+	// we use A0, A1 and A2 as input pins,
+	// we map raw input values (0 - 1024) to normalized values (-256 - 256)
 	int16_t ail = map(analogRead(A0), 0, 1024, -256, 256);
 	int16_t ele = map(analogRead(A1), 0, 1024, -256, 256);
 	int16_t pit = map(analogRead(A2), 0, 1024, -256, 256);

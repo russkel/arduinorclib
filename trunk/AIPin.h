@@ -39,7 +39,7 @@ public:
 	void setPin(uint8_t p_pin);
 	
 	/*! \brief Gets the hardware pin.
-	    \return The current value, range [-256 - 256].*/
+	    \return The current hardware pin.*/
 	uint8_t getPin() const;
 	
 	/*! \brief Assignment operator, sets hardware pin.
@@ -92,9 +92,9 @@ public:
 	uint16_t getMax() const;
 	
 	/*! \brief Sets the calibration values.
-	    \param p_min The raw minimum, range [0 - 1023].
-		\param p_center The raw center, range [0 - 1023].
-		\param p_max The raw maximum, range [0 - 1023].*/
+	    \param p_min The raw minimum, range [0 - p_center].
+		\param p_center The raw center, range [p_min - p_max].
+		\param p_max The raw maximum, range [p_center - 1023].*/
 	void setCalibration(uint16_t p_min, uint16_t p_center, uint16_t p_max);
 	
 	/*! \brief Reads and processes.

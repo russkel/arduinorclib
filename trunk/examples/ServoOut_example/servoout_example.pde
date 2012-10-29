@@ -32,7 +32,8 @@ rc::ServoOut g_ServoOut(g_pinsOut, g_input, g_work, SERVOS);
 
 void setup()
 {
-	// Initialize timer1
+	// Initialize timer1, this is required for all features that use Timer1
+	// (PPMIn/PPMOut/ServoIn/ServoOut)
 	rc::Timer1::init();
 	
 	for (uint8_t i = 0;  i < SERVOS; ++i)
@@ -57,6 +58,7 @@ void loop()
 	// update the input buffer
 	for (uint8_t i = 0;  i < SERVOS; ++i)
 	{
+		// fill input buffer, convert raw values to normalized ones
 		g_input[i] = map(analogRead(g_pinsIn[i]), 0, 1024, 1000, 2000);
 	}
 	

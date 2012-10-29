@@ -56,20 +56,20 @@ public:
 	    \return The amount of active channels.*/
 	uint8_t getChannelCount() const;
 	
-	/*! \brief Sets pulse length
+	/*! \brief Sets pulse length in microseconds.
 	    \param p_length Pulse length in microseconds.*/
 	void setPulseLength(uint16_t p_length);
 	
-	/*! \brief Gets pulse length.
-	    \return The current pulse length.*/
+	/*! \brief Gets pulse length in microseconds.
+	    \return The current pulse length in microseconds.*/
 	uint16_t getPulseLength() const;
 	
-	/*! \brief Sets pause length
+	/*! \brief Sets pause length in microseconds.
 	    \param p_length Pause length in microseconds.*/
 	void setPauseLength(uint16_t p_length);
 	
-	/*! \brief Gets pause length.
-	    \return The current pause length.*/
+	/*! \brief Gets pause length in microseconds.
+	    \return The current pause length in microseconds.*/
 	uint16_t getPauseLength() const;
 	
 	/*! \brief Updates channel timings, will be sent at next frame.*/

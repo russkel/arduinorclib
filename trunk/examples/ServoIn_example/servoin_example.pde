@@ -24,7 +24,8 @@ rc::ServoIn g_ServoIn(g_values, g_workIn, SERVOS);
 
 void setup()
 {
-	// Initialize timer1
+	// Initialize timer1, this is required for all features that use Timer1
+	// (PPMIn/PPMOut/ServoIn/ServoOut)
 	rc::Timer1::init();
 	
 	// We use pin 8-11 as Servo input pins
@@ -33,7 +34,11 @@ void setup()
 	pinMode(10, INPUT);
 	pinMode(11, INPUT);
 	
-	// only allow pin change interrupts for PB0-3, digital pins 8-11.
+	// We use pin change interrupts to detect changes in the signal
+	// If you're unfamiliar with how this works, please look up some
+	// article or tutorial on the subject.
+	
+	// only allow pin change interrupts for PB0-3 (digital pins 8-11)
 	PCMSK0 = (1 << PCINT0) | (1 << PCINT1) | (1 << PCINT2) | (1 << PCINT3);
 	
 	// enable pin change interrupt 0
@@ -59,12 +64,15 @@ static uint8_t lastB = 0;
 // Pin change port 0 interrupt
 ISR(PCINT0_vect)
 {
+	// we need to call the ServoIn ISR here, keep code in the ISR to a minimum!
 	uint8_t newB = PINB;
 	uint8_t chgB = newB ^ lastB; // bitwise XOR will set all bits that have changed
 	lastB = newB;
 	
+	// has any of the pins changed?
 	if (chgB)
 	{
+		// find out which pin has changed
 		if (chgB & _BV(0))
 		{
 			g_ServoIn.pinChanged(0, newB & _BV(0));

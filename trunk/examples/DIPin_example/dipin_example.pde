@@ -14,7 +14,7 @@
 #include <DIPin.h>
 
 
-rc::DIPin g_pin(3); // we want to use digital pin 3
+rc::DIPin g_pin(3); // we want to use digital pin 3, we can use any digital pin
 
 void setup()
 {
@@ -25,7 +25,8 @@ void setup()
 
 void loop()
 {
-	// all we need to do is call the read function and we get the pin value, reversed if needed
+	// all we need to do is call the read function and we get the pin value,
+	// reversed if needed
 	bool value = g_pin.read();
 	
 	// That's all!

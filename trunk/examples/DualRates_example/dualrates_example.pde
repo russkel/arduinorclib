@@ -13,6 +13,7 @@
 
 #include <DualRates.h>
 
+// we create two rates, one for normal and one for stunt mode
 rc::DualRates g_rates[2];
 
 void setup()
@@ -24,7 +25,8 @@ void setup()
 
 void loop()
 {
-	// we use A0 as input pin
+	// we use A0 as input pin, we map raw input values (0 - 1024) to normalized
+	// values (-256 - 256)
 	int16_t normalized = map(analogRead(A0), 0, 1024, -256, 256);
 	
 	// and apply the rates, we use digital pin 3 as a flight mode switch
