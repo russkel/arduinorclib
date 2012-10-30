@@ -3,8 +3,8 @@
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** servoout_example.pde
-** Demonstrate Servo Signal Output functionality
+** retracts_example.pde
+** Demonstrate Retracts functionality
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
