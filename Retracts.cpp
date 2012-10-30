@@ -242,7 +242,7 @@ void Retracts::update()
 }
 
 
-int16_t Retracts::getDoorPosition() const
+int16_t Retracts::getDoorsPosition() const
 {
 	return m_doorsPosition;
 }

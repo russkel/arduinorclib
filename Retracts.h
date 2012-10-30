@@ -130,7 +130,7 @@ public:
 	/*! \brief Gets the position of the doors servo.
 	    \return Normalized channel value, range [-256 - 256].
 		\note In a single servo setup this will return the same as getGearPosition(). */
-	int16_t getDoorPosition() const;
+	int16_t getDoorsPosition() const;
 	
 	/*! \brief Gets the position of the gear servo.
 	    \return Normalized channel value, range [-256 - 256].
