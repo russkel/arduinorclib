@@ -125,9 +125,9 @@ void setup()
 	g_channelValues[5] = rc::normalizedToMicros(0);
 	
 	// set up PPM
-	g_PPMOut.setPulseLength(448);
-	g_PPMOut.setPauseLength(10448);
-	g_PPMOut.start(true);
+	g_PPMOut.setPulseLength(448);   // default pulse length used by Esky hardware
+	g_PPMOut.setPauseLength(10448); // default pause length used by Esky hardware
+	g_PPMOut.start(9); // use pin 9, which is preferred as it's faster
 }
 
 

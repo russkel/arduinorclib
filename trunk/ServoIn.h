@@ -27,6 +27,8 @@ namespace rc
  *  \details   This class provides a way to read and decode a Servo signal.
  *  \author    Daniel van den Ouden
  *  \date      Feb-2012
+ *  \warning   This class should <b>NOT</b> be used together with the standard Arduino Servo library,
+ *             use rc::ServoOut instead.
  *  \copyright Public Domain.
  */
 class ServoIn

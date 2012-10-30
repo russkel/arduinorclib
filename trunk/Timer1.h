@@ -25,6 +25,8 @@ namespace rc
  *  \details   This class provides centralised Timer1 controls.
  *  \author    Daniel van den Ouden
  *  \date      Feb-2012
+ *  \warning   This class should <b>NOT</b> be used together with the standard Arduino Servo library,
+ *             use rc::ServoOut instead.
  *  \copyright Public Domain.
  */
 class Timer1
