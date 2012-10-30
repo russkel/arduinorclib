@@ -84,6 +84,62 @@ uint16_t normalizedToMicros(int16_t p_normal)
 }
 
 
+int16_t rangeToNormalized(uint16_t p_value, uint16_t p_range)
+{
+	// first we clip values, early abort.
+	if (p_value >= p_range)
+	{
+		return 256;
+	}
+	else if (p_value == 0)
+	{
+		return -256;
+	}
+	
+	// first we need to test if we need have enough bits to play with
+	if (p_range > 128)
+	{
+		// we want (512 * p_position) / p_range) - 256
+		// this is bound to generate some nasty overflows though
+		
+		// first we create one bit of extra space to play with by halving the length (we can get the sign later)
+		// we get ((256 * p_position) / (p_range / 2)) - 256
+		uint16_t halfLength = p_length / 2;
+		uint16_t delta = (p_position > halfLength) ? (p_position - halfLength) : (halfLength - p_position);
+		
+		// then we calculate how many bits we have left to play with
+		uint8 bits = 0;
+		{
+			uint16_t scratch = halfLength;
+			while (scratch < 0x8000) // keep going until msb is on
+			{
+				++bits
+				scratch <<= 1;
+			}
+		}
+		// now we do (delta * (2 ^ bits)) / (halfLength / (2 ^ (8 - bits)))
+		// which is the same as (delta * 256) / halfLength
+		delta <<= bits;
+		delta /= (halfLength >> (8 - bits));
+		
+		return (p_position >= halfLength) ? delta : -delta;
+	}
+	else
+	{
+		// plenty of bits to play with, direct calculation
+		return static_cast<int16_t>((p_position * 512) / p_length) - 256;
+	}
+}
+
+
+uint16_t normalizedToMicros(int16_t p_normal)
+{
+	(void)p_normal;
+	// FIXME!
+	return 0;
+}
+
+
 void setCenter(uint16_t p_center)
 {
 	s_center = p_center;
