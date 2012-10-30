@@ -99,42 +99,43 @@ int16_t rangeToNormalized(uint16_t p_value, uint16_t p_range)
 	// first we need to test if we need have enough bits to play with
 	if (p_range > 128)
 	{
-		// we want (512 * p_position) / p_range) - 256
+		// we want (512 * p_value) / p_range) - 256
 		// this is bound to generate some nasty overflows though
 		
-		// first we create one bit of extra space to play with by halving the length (we can get the sign later)
-		// we get ((256 * p_position) / (p_range / 2)) - 256
-		uint16_t halfLength = p_length / 2;
-		uint16_t delta = (p_position > halfLength) ? (p_position - halfLength) : (halfLength - p_position);
+		// first we create one bit of extra space to play with by halving the range (we can get the sign later)
+		// we get ((256 * p_value) / (p_range / 2)) - 256
+		uint16_t halfRange = p_range / 2;
+		uint16_t delta = (p_value > halfRange) ? (p_value - halfRange) : (halfRange - p_value);
 		
 		// then we calculate how many bits we have left to play with
-		uint8 bits = 0;
+		uint8_t bits = 0;
 		{
-			uint16_t scratch = halfLength;
+			uint16_t scratch = halfRange;
 			while (scratch < 0x8000) // keep going until msb is on
 			{
-				++bits
+				++bits;
 				scratch <<= 1;
 			}
 		}
-		// now we do (delta * (2 ^ bits)) / (halfLength / (2 ^ (8 - bits)))
-		// which is the same as (delta * 256) / halfLength
+		// now we do (delta * (2 ^ bits)) / (halfRange / (2 ^ (8 - bits)))
+		// which is the same as (delta * 256) / halfRange
 		delta <<= bits;
-		delta /= (halfLength >> (8 - bits));
+		delta /= (halfRange >> (8 - bits));
 		
-		return (p_position >= halfLength) ? delta : -delta;
+		return (p_value >= halfRange) ? delta : -delta;
 	}
 	else
 	{
 		// plenty of bits to play with, direct calculation
-		return static_cast<int16_t>((p_position * 512) / p_length) - 256;
+		return static_cast<int16_t>((p_value * 512) / p_range) - 256;
 	}
 }
 
 
-uint16_t normalizedToMicros(int16_t p_normal)
+uint16_t normalizedToMicros(int16_t p_normal, uint16_t p_range)
 {
 	(void)p_normal;
+	(void)p_range;
 	// FIXME!
 	return 0;
 }

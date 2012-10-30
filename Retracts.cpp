@@ -11,6 +11,12 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
+#if defined(ARDUINO) && ARDUINO >= 100
+	#include <Arduino.h>
+#else
+	#include <wiring.h>
+#endif
+
 #include <Retracts.h>
 #include <util.h>
 
@@ -78,14 +84,14 @@ uint16_t Retracts::getGearSpeed() const
 }
 
 
-void Retracts::setDelay(sint16_t p_delay)
+void Retracts::setDelay(int16_t p_delay)
 {
 	m_delay = p_delay;
 	updateTimeline();
 }
 	
 
-sint16_t Retracts::getDelay() const
+int16_t Retracts::getDelay() const
 {
 	return m_delay;
 }
@@ -194,7 +200,7 @@ void Retracts::update()
 	}
 	
 	// calculate positions of doors and gear
-	sint16_t doorsTime = m_time - m_doorsStart;
+	int16_t doorsTime = m_time - m_doorsStart;
 	if (doorsTime < 0)
 	{
 		doorsTime = 0;
@@ -204,7 +210,7 @@ void Retracts::update()
 		doorsTime = m_doorsSpeed;
 	}
 	
-	sint16_t gearTime = m_time - m_gearStart;
+	int16_t gearTime = m_time - m_gearStart;
 	if (gearTime < 0)
 	{
 		gearTime = 0;
