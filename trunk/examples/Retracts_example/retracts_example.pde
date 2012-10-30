@@ -58,6 +58,11 @@ void setup()
 	g_Retracts.setDoorsSpeed(4000); // The time it takes to open/close the doors in milliseconds
 	g_Retracts.setGearSpeed(6000); // The time it takes to lower/raise the gear in milliseconds
 	
+	// fill the input buffer with some initial values
+	// this is safe since Retracts initializes with gear lowered and doors open by default
+	g_input[0] = rc::normalizedToMicros(g_Retracts.getDoorsPosition());
+	g_input[1] = rc::normalizedToMicros(g_Retracts.getGearPosition());
+	
 	// we can also specify a delay, with this there will be a short pause between the movement of
 	// the doors and the gear. If you specify a negative value there will be a overlap in movement.
 	// In this case we want the gear to start lowering 1.5 seconds before the doors have opened completely
