@@ -48,8 +48,8 @@ void setup()
 	g_PPMOut.setPauseLength(10448); // length of pause after last channel in microseconds
 	// note: this is also called the end of frame, or start of frame, and is usually around 10ms
 	
-	// start PPMOut, use pin 9 (use false to use pin 10 as output)
-	g_PPMOut.start(true);
+	// start PPMOut, use pin 9 (pins 9 and 10 are preferred)
+	g_PPMOut.start(9);
 }
 
 void loop()

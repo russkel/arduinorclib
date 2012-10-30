@@ -47,7 +47,7 @@ m_timings(const_cast<uint16_t*>(m_channelTimings) + p_maxChannels)
 }
 
 
-void PPMOut::start(bool p_a, bool p_invert)
+void PPMOut::start(uint8_t p_pin, bool p_invert)
 {
 	// stop timer 1
 	rc::Timer1::stop();
@@ -58,16 +58,24 @@ void PPMOut::start(bool p_a, bool p_invert)
 	// Fill timings buffer with data from channelTimings buffer (set up a complete PPM frame)
 	updateTimings();
 	
-	uint8_t pin = p_a ? 9 : 10;
 	m_timingPos = p_invert ? 0 : 1;
 	
 	pinMode(pin, OUTPUT);
 	
 	// First disable the output compare match A interrupt
 	rc::Timer1::setCompareMatch(false, true);
-
+	
 	// Configure timer1 Toggle OC1A/OC1B on Compare Match
-	rc::Timer1::setToggle(true, p_a);
+	if (p_pin == 9 || p_pin == 10)
+	{
+		rc::Timer1::setToggle(p_pin == 9, p_a);
+	}
+	else
+	{
+		m_mask = digitalPinToBitMask(<PIN NUMBER>);
+		uint8_t port = digitalPinToPort(<PIN NUMBER>);
+		m_port = portInputRegister(port);
+	}
 	
 	// set compare value
 	OCR1A = TCNT1 + m_timings[p_invert ? m_timingCount - 1 : 0];
@@ -168,6 +176,12 @@ void PPMOut::isr()
 {
 	// set the compare register with the next value
 	OCR1A += m_timings[m_timingPos];
+	
+	// toggle pin, pins 9 and 10 will toggle themselves
+	if (m_port != 0)
+	{
+		*m_port |= m_mask;
+	}
 	
 	// update position
 	++m_timingPos;
