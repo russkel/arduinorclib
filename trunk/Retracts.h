@@ -68,15 +68,15 @@ public:
 	
 	/*! \brief Sets the delay between the doors and the gear.
 	    \param p_delay The delay in milliseconds, range [-10000 - 10000] (-10 - 10 sec).
-		\note A negative delay means the gear will lower before the doors have opened completely.
-		      This can only be used in combination with a dual servo setup. The library will ensure
-			  that the landing gear will not be lowered completely before the doors are completely open
-			  and vice versa. */
-	void setDelay(sint16_t p_delay);
-		
+	    \note A negative delay means the gear will lower before the doors have opened completely.
+	          This can only be used in combination with a dual servo setup. The library will ensure
+	          that the landing gear will not be lowered completely before the doors are completely open
+	          and vice versa. */
+	void setDelay(int16_t p_delay);
+	
 	/*! \brief Gets the delay between the doors and the gear.
 	    \return The delay in milliseconds, range [-10000 - 10000] (-10 - 10 sec).*/
-	sint16_t getDelay() const;
+	int16_t getDelay() const;
 	
 	/*! \brief Opens the doors (if any) and lowers the gear.*/
 	void down();

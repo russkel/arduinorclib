@@ -16,6 +16,7 @@
 #else
 	#include <avr/interrupt.h>
 	#include <wiring.h>
+	#include <pins_arduino.h>
 #endif
 
 #include <PPMOut.h>
@@ -60,7 +61,7 @@ void PPMOut::start(uint8_t p_pin, bool p_invert)
 	
 	m_timingPos = p_invert ? 0 : 1;
 	
-	pinMode(pin, OUTPUT);
+	pinMode(p_pin, OUTPUT);
 	
 	// First disable the output compare match A interrupt
 	rc::Timer1::setCompareMatch(false, true);
@@ -68,12 +69,12 @@ void PPMOut::start(uint8_t p_pin, bool p_invert)
 	// Configure timer1 Toggle OC1A/OC1B on Compare Match
 	if (p_pin == 9 || p_pin == 10)
 	{
-		rc::Timer1::setToggle(p_pin == 9, p_a);
+		rc::Timer1::setToggle(true, p_pin == 9);
 	}
 	else
 	{
-		m_mask = digitalPinToBitMask(<PIN NUMBER>);
-		uint8_t port = digitalPinToPort(<PIN NUMBER>);
+		m_mask = digitalPinToBitMask(p_pin);
+		uint8_t port = digitalPinToPort(p_pin);
 		m_port = portInputRegister(port);
 	}
 	
