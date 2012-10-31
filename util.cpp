@@ -141,6 +141,18 @@ uint16_t normalizedToMicros(int16_t p_normal, uint16_t p_range)
 }
 
 
+int16_t clampNormalized(int16_t p_value)
+{
+	return (p_value > 256) ? 256 : ((p_value < -256) ? -256 : p_value);
+}
+	
+
+int16_t clamp140(int16_t p_value)
+{
+	return (p_value > 358) ? 358 : ((p_value < -358) ? -358 : p_value);
+}
+
+
 void setCenter(uint16_t p_center)
 {
 	s_center = p_center;
