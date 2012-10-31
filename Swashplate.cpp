@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <Swashplate.h>
+#include <util.h>
 
 
 namespace rc
@@ -86,25 +87,9 @@ void Swashplate::apply(int16_t p_ail,
                        int16_t& p_pitOUT,
                        int16_t& p_ele2OUT) const
 {
-	// input is in [-358 - 358] range, so we risk overflows
-	// also keep in mind that mix may be negative
-	bool ailneg = p_ail < 0;
-	uint16_t ail =  static_cast<uint16_t>(ailneg ? -p_ail : p_ail);
-	ailneg ^= m_ailMix < 0;
-	ail = (ail * static_cast<uint16_t>(m_ailMix > 0 ? m_ailMix : -m_ailMix)) / 100;
-	p_ail = ailneg ? -static_cast<int16_t>(ail) : static_cast<int16_t>(ail);
-	
-	bool eleneg = p_ele < 0;
-	uint16_t ele =  static_cast<uint16_t>(eleneg ? -p_ele : p_ele);
-	eleneg ^= m_eleMix < 0;
-	ele = (ele * static_cast<uint16_t>(m_eleMix > 0 ? m_eleMix : -m_eleMix)) / 100;
-	p_ele = eleneg ? -static_cast<int16_t>(ele) : static_cast<int16_t>(ele);
-	
-	bool pitneg = p_pit < 0;
-	uint16_t pit =  static_cast<uint16_t>(pitneg ? -p_pit : p_pit);
-	pitneg ^= m_pitMix < 0;
-	pit = (pit * static_cast<uint16_t>(m_pitMix > 0 ? m_pitMix : -m_pitMix)) / 100;
-	p_pit = pitneg ? -static_cast<int16_t>(pit) : static_cast<int16_t>(pit);
+	p_ail = mix(p_ail, m_ailMix);
+	p_ele = mix(p_ele, m_eleMix);
+	p_pit = mix(p_pit, m_pitMix);
 	
 	switch (m_type)
 	{

@@ -1,6 +1,10 @@
 Version 0.3
 - ADD: Issue [#24] Landing gear support
 - CHG: PPMOut may use any pin as output pin
+- ADD: Issue [#25] Wing type mixing
+- ADD: Issue [#26] Tail type mixing
+- ADD: Issue [#27] Flaps support
+- ADD: Issue [#29] Airbrake support
 
 Version 0.2
 - BUG: Issue [#19] Incorrect timings in PPMOut
