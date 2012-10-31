@@ -48,6 +48,16 @@ namespace rc
 	    \return Value in range.*/
 	uint16_t normalizedToRange(int16_t p_normal, uint16_t p_range);
 	
+	/*! \brief Clamp a normalized value to the [-256 - 256] range.
+	    \param p_value Any value which is supposed to be inside the [-256 - 256] range but may not be.
+	    \return Value clamped to the range [-256 - 256].*/
+	int16_t clampNormalized(int16_t p_value);
+	
+	/*! \brief Clamp a 140% value to the [-358 - 358] range.
+	    \param p_value Any value which is supposed to be inside the [-358 - 358] range but may not be.
+	    \return Value clamped to the 140% range [-358 - 358].*/
+	int16_t clamp140(int16_t p_value);
+	
 	/*! \brief Sets servo center.
 	    \param p_center Center of servo in microseconds.*/
 	void setCenter(uint16_t p_center);

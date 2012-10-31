@@ -24,7 +24,7 @@ namespace rc
  *  \brief     Class to encapsulate retractable landing gear functionality.
  *  \details   This class provides controls for doors and landing gear.
  *  \author    Daniel van den Ouden
- *  \date      Feb-2012
+ *  \date      Oct-2012
  *  \copyright Public Domain.
  */
 class Retracts
@@ -43,7 +43,7 @@ public:
 	Retracts(Type p_type = Type_NoDoor);
 	
 	/*! \brief Sets retracts type
-	    \param p_type Gyro mode to set.*/
+	    \param p_type Retracts type to set.*/
 	void setType(Type p_type);
 	
 	/*! \brief Gets retracts type.
