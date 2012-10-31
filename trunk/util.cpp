@@ -153,6 +153,18 @@ int16_t clamp140(int16_t p_value)
 }
 
 
+int16_t mix(int16_t p_value, int8_t p_mix)
+{
+	// value is in [-358 - 358] range, so we risk overflows
+	// also keep in mind that mix may be negative
+	bool valneg = p_value < 0;
+	uint16_t value =  static_cast<uint16_t>(valneg ? -p_value : p_value);
+	valneg ^= p_mix < 0;
+	value = (value * static_cast<uint16_t>(p_mix > 0 ? p_mix : -p_mix)) / 100;
+	return valneg ? -static_cast<int16_t>(value) : static_cast<int16_t>(value);
+}
+
+
 void setCenter(uint16_t p_center)
 {
 	s_center = p_center;

@@ -58,6 +58,12 @@ namespace rc
 	    \return Value clamped to the 140% range [-358 - 358].*/
 	int16_t clamp140(int16_t p_value);
 	
+	/*! \brief Mix a value.
+	    \param p_value A value in the 140% range [-358 - 358].
+	    \param p_mix An amount of mix [-100 - 100]
+	    \return Mix applied to value.*/
+	int16_t mix(int16_t p_value, int8_t p_mix);
+	
 	/*! \brief Sets servo center.
 	    \param p_center Center of servo in microseconds.*/
 	void setCenter(uint16_t p_center);
