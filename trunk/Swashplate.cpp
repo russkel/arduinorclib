@@ -11,6 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
+#include <output.h>
 #include <Swashplate.h>
 #include <util.h>
 
@@ -90,7 +91,7 @@ void Swashplate::apply(int16_t p_ail,
 	apply(p_ail, p_ele, p_pit);
 	p_ailOUT  = getOutput(Output_AIL1);
 	p_eleOUT  = getOutput(Output_ELE1);
-	p_pitOUT  = getOutput(Output_PIT1);
+	p_pitOUT  = getOutput(Output_PIT);
 	p_ele2OUT = getOutput(Output_ELE2);
 }
 
@@ -114,59 +115,59 @@ void Swashplate::apply(int16_t p_ail, int16_t p_ele, int16_t p_pit) const
 		
 		case Type_H2:
 		{
-			setOuput(Output_ELE1,  p_ele);
-			setOuput(Output_AIL1,  p_ail + p_pit);
-			setOuput(Output_PIT,  -p_ail + p_pit);
+			setOutput(Output_ELE1,  p_ele);
+			setOutput(Output_AIL1,  p_ail + p_pit);
+			setOutput(Output_PIT,  -p_ail + p_pit);
 		}
 		break;
 		
 		case Type_HE3:
 		{
-			setOuput(Output_ELE1,  p_ele + p_pit);
-			setOuput(Output_AIL1,  p_ail + p_pit);
-			setOuput(Output_PIT,  -p_ail + p_pit);
+			setOutput(Output_ELE1,  p_ele + p_pit);
+			setOutput(Output_AIL1,  p_ail + p_pit);
+			setOutput(Output_PIT,  -p_ail + p_pit);
 		}
 		break;
 		
 		case Type_HR3:
 		{
-			setOuput(Output_ELE1,  p_ele + p_pit);
-			setOuput(Output_AIL1,  p_ail + p_pit -(p_ele >> 1));
-			setOuput(Output_PIT,  -p_ail + p_pit -(p_ele >> 1));
+			setOutput(Output_ELE1,  p_ele + p_pit);
+			setOutput(Output_AIL1,  p_ail + p_pit -(p_ele >> 1));
+			setOutput(Output_PIT,  -p_ail + p_pit -(p_ele >> 1));
 		}
 		break;
 		
 		case Type_HN3:
 		{
-			setOuput(Output_ELE1,  p_ele + p_pit -(p_ail >> 1));
-			setOuput(Output_AIL1,  p_ail + p_pit);
-			setOuput(Output_PIT,  -p_ele + p_pit -(p_ail >> 1));
+			setOutput(Output_ELE1,  p_ele + p_pit -(p_ail >> 1));
+			setOutput(Output_AIL1,  p_ail + p_pit);
+			setOutput(Output_PIT,  -p_ele + p_pit -(p_ail >> 1));
 		}
 		break;
 		
 		case Type_H3:
 		{
-			setOuput(Output_ELE1,  p_ele + p_pit);
-			setOuput(Output_AIL1, -p_ele + p_ail + p_pit);
-			setOuput(Output_PIT,  -p_ele - p_ail + p_pit);
+			setOutput(Output_ELE1,  p_ele + p_pit);
+			setOutput(Output_AIL1, -p_ele + p_ail + p_pit);
+			setOutput(Output_PIT,  -p_ele - p_ail + p_pit);
 		}
 		break;
 		
 		case Type_H4:
 		{
-			setOuput(Output_ELE1,  p_ele + p_pit);
-			setOuput(Output_ELE2, -p_ele + p_pit);
-			setOuput(Output_AIL1,  p_ail + p_pit);
-			setOuput(Output_PIT,  -p_ail + p_pit);
+			setOutput(Output_ELE1,  p_ele + p_pit);
+			setOutput(Output_ELE2, -p_ele + p_pit);
+			setOutput(Output_AIL1,  p_ail + p_pit);
+			setOutput(Output_PIT,  -p_ail + p_pit);
 		}
 		break;
 		
 		case Type_H4X:
 		{
-			setOuput(Output_ELE1,  (p_ele >> 1) - (p_ail >> 1) + p_pit);
-			setOuput(Output_ELE2, -(p_ele >> 1) + (p_ail >> 1) + p_pit);
-			setOuput(Output_AIL1,  (p_ele >> 1) + (p_ail >> 1) + p_pit);
-			setOuput(Output_PIT,  -(p_ele >> 1) - (p_ail >> 1) + p_pit);
+			setOutput(Output_ELE1,  (p_ele >> 1) - (p_ail >> 1) + p_pit);
+			setOutput(Output_ELE2, -(p_ele >> 1) + (p_ail >> 1) + p_pit);
+			setOutput(Output_AIL1,  (p_ele >> 1) + (p_ail >> 1) + p_pit);
+			setOutput(Output_PIT,  -(p_ele >> 1) - (p_ail >> 1) + p_pit);
 		}
 		break;
 	}
