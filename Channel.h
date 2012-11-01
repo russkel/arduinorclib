@@ -16,6 +16,8 @@
 
 #include <inttypes.h>
 
+#include <output.h>
+
 
 namespace rc
 {
@@ -31,8 +33,16 @@ class Channel
 {
 public:
 	/*! \brief Constructs a Channel object
-	*/
-	Channel();
+	    \param p_input Which function output to use as channel input.*/
+	Channel(Output p_input = Output_None);
+	
+	/*! \brief Sets channel input source.
+	    \param p_input The channel's input source.*/
+	void setInput(Output p_input);
+	
+	/*! \brief Gets the channel's input source.
+	    \return The channel's input source.*/
+	Output getInput() const;
 	
 	/*! \brief Sets channel reverse.
 	    \param p_reverse Whether the channel should be reversed.*/
@@ -71,11 +81,16 @@ public:
 	    \return Normalized channel value, range [-256 - 256].*/
 	int16_t apply(int16_t p_value) const;
 	
+	/*! \brief Applies channel transformations to specified input source.
+	    \return Normalized channel value, range [-256 - 256].*/
+	int16_t apply() const;
+	
 private:
 	bool     m_reversed; //!< Channel reverse?
 	uint8_t  m_epMin;    //!< End point minimum
 	uint8_t  m_epMax;    //!< End point maximum
 	int8_t   m_subtrim;  //!< Subtrim
+	Output   m_input;    //!< Input source
 };
 /** \example channel_example.pde
  * This is an example of how to use the Channel class.

@@ -19,14 +19,27 @@ namespace rc
 
 // Public functions
 
-Channel::Channel()
+Channel::Channel(Output p_input)
 :
 m_reversed(false),
 m_epMin(100),
 m_epMax(100),
-m_subtrim(0)
+m_subtrim(0),
+m_input(p_input)
 {
 	
+}
+
+
+void Channel::setInput(Output p_input)
+{
+	m_input = p_input;
+}
+
+
+Output Channel::getInput() const
+{
+	return m_input;
 }
 
 
@@ -97,6 +110,12 @@ int16_t Channel::apply(int16_t p_value) const
 	
 	// apply channel reverse
 	return m_reversed ? -p_value : p_value;
+}
+
+
+int16_t Channel::apply() const
+{
+	return apply(getOutput(m_input));
 }
 
 

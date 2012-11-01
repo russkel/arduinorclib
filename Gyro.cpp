@@ -19,12 +19,25 @@ namespace rc
 
 // Public functions
 
-Gyro::Gyro()
+Gyro::Gyro(Output p_output)
 :
 m_type(Type_Normal),
-m_mode(Mode_Normal)
+m_mode(Mode_Normal),
+m_output(p_output)
 {
 	
+}
+
+
+void Gyro::setOutput(Output p_output)
+{
+	m_output = p_output;
+}
+
+
+Output Gyro::getOutput()
+{
+	return m_output;
 }
 
 
@@ -88,6 +101,10 @@ int16_t Gyro::apply() const
 			val = val - 50; // range [-50 - 50]
 			val *= 512; // range [-25600 - 25600]
 			val /= 100; // range [-256 - 256]
+			if (m_output != Output_None)
+			{
+				setOutput(m_output, val);
+			}
 			return val;
 		}
 		break;
@@ -102,6 +119,10 @@ int16_t Gyro::apply() const
 			// range [-100 - 100]
 			val *= 256; // range [-25600 - 25600]
 			val /= 100; // range [-256 - 256]
+			if (m_output != Output_None)
+			{
+				setOutput(m_output, val);
+			}
 			return val;
 		}
 		break;

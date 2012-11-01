@@ -103,6 +103,9 @@ void setup()
 	g_swash.setPitMix(50);
 	
 	// gyro settings
+	g_gyro[0].setOutput(Output_GYR1); // both gyro's need to have the same output
+	g_gyro[1].setOutput(Output_GYR1); // we want to use one at a time and the result on a single channel
+	
 	g_gyro[0].setType(rc::Gyro::Type_AVCS);
 	g_gyro[1].setType(rc::Gyro::Type_AVCS);
 	
@@ -123,6 +126,18 @@ void setup()
 	g_channelValues[3] = rc::normalizedToMicros(0);
 	g_channelValues[4] = rc::normalizedToMicros(0);
 	g_channelValues[5] = rc::normalizedToMicros(0);
+	
+	// Set up channel mappings
+	// This acts like "glue", we can tell a channel where to fetch its input from
+	// Various functions write their output to predefined or user settable locations
+	// A channel can fetch its input from these locations
+	// Multiple channels may use the same input
+	g_channels[0].setInput(Output_AIL1);
+	g_channels[1].setInput(Output_ELE1);
+	g_channels[2].setInput(Output_THR1);
+	g_channels[3].setInput(Output_RUD1);
+	g_channels[4].setInput(Output_GYR1);
+	g_channels[5].setInput(Output_PIT);
 	
 	// set up PPM
 	g_PPMOut.setPulseLength(448);   // default pulse length used by Esky hardware
@@ -167,21 +182,21 @@ void loop()
 		PIT = g_pitCurve[flightmode].apply(PIT);
 	}
 	
-	int16_t dummy; // we need a dummy value
+	// apply swashplate mixing, will write to output system (AIL1, ELE1 and PIT)
+	g_swash.apply(AIL, ELE, PIT);
 	
-	// apply swashplate mixing
-	g_swash.apply(AIL, ELE, PIT, AIL, ELE, PIT, dummy);
+	// handle gyro, will write to output system (GYR1; see setup() )
+	g_gyro[flightmode].apply();
 	
-	// handle gyro
-	int16_t GYR = g_gyro[flightmode].apply();
+	// set rudder and throttle output, these need to be set manually
+	setOutput(Output_RUD1, RUD);
+	setOutput(Output_THR1, THR);
 	
 	// perform channel transformations and set channel values
-	g_channelValues[0] = rc::normalizedToMicros(g_channels[0].apply(AIL));
-	g_channelValues[1] = rc::normalizedToMicros(g_channels[1].apply(ELE));
-	g_channelValues[2] = rc::normalizedToMicros(g_channels[2].apply(THR));
-	g_channelValues[3] = rc::normalizedToMicros(g_channels[3].apply(RUD));
-	g_channelValues[4] = rc::normalizedToMicros(g_channels[4].apply(GYR));
-	g_channelValues[5] = rc::normalizedToMicros(g_channels[5].apply(PIT));
+	for (uint8_t i = 0; i < ChannelCount; ++i)
+	{
+		g_channelValues[i] = rc::normalizedToMicros(g_channels[i].apply());
+	}
 	
 	// Tell PPMOut that new values are ready
 	g_PPMOut.update();
