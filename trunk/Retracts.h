@@ -154,9 +154,6 @@ private:
 	int16_t m_gearStart;  //!< Time at which the gear starts raising
 	int16_t m_doorsEnd;   //!< Time at which the doors are closed
 	int16_t m_gearEnd;    //!< Time at which the gear is raised
-	
-	int16_t m_doorsPosition; //!< Current position of the doors
-	int16_t m_gearPosition;  //!< Current position of the gear
 };
 
 /** \example retracts_example.pde

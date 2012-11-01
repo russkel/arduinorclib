@@ -95,6 +95,12 @@ public:
 	           int16_t& p_eleOUT,
 	           int16_t& p_pitOUT,
 	           int16_t& p_ele2OUT) const;
+			   
+	/*! \brief Applies swashplate mixing.
+	    \param p_ail The amount of aileron input, range 140% [-358 - 358].
+	    \param p_ele The amount of elevator input, range 140% [-358 - 358].
+	    \param p_pit The amount of pitch input, range 140% [-358 - 358].*/
+	void apply(int16_t p_ail, int16_t p_ele, int16_t p_pit) const;
 	
 private:
 	Type  m_type;    //!< Swashplate type

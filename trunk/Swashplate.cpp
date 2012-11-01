@@ -87,6 +87,16 @@ void Swashplate::apply(int16_t p_ail,
                        int16_t& p_pitOUT,
                        int16_t& p_ele2OUT) const
 {
+	apply(p_ail, p_ele, p_pit);
+	p_ailOUT  = getOutput(Output_AIL1);
+	p_eleOUT  = getOutput(Output_ELE1);
+	p_pitOUT  = getOutput(Output_PIT1);
+	p_ele2OUT = getOutput(Output_ELE2);
+}
+
+
+void Swashplate::apply(int16_t p_ail, int16_t p_ele, int16_t p_pit) const
+{
 	p_ail = mix(p_ail, m_ailMix);
 	p_ele = mix(p_ele, m_eleMix);
 	p_pit = mix(p_pit, m_pitMix);
@@ -96,67 +106,67 @@ void Swashplate::apply(int16_t p_ail,
 		case Type_H1:
 		default:
 		{
-			p_ailOUT = p_ail;
-			p_eleOUT = p_ele;
-			p_pitOUT = p_pit;
+			setOutput(Output_AIL1, p_ail);
+			setOutput(Output_ELE1, p_ele);
+			setOutput(Output_PIT,  p_pit);
 		}
 		break;
 		
 		case Type_H2:
 		{
-			p_eleOUT = p_ele;
-			p_ailOUT = p_ail + p_pit;
-			p_pitOUT = -p_ail + p_pit;
+			setOuput(Output_ELE1,  p_ele);
+			setOuput(Output_AIL1,  p_ail + p_pit);
+			setOuput(Output_PIT,  -p_ail + p_pit);
 		}
 		break;
 		
 		case Type_HE3:
 		{
-			p_eleOUT = p_ele + p_pit;
-			p_ailOUT = p_ail + p_pit;
-			p_pitOUT = -p_ail + p_pit;
+			setOuput(Output_ELE1,  p_ele + p_pit);
+			setOuput(Output_AIL1,  p_ail + p_pit);
+			setOuput(Output_PIT,  -p_ail + p_pit);
 		}
 		break;
 		
 		case Type_HR3:
 		{
-			p_eleOUT = p_ele + p_pit;
-			p_ailOUT = p_ail + p_pit -(p_ele >> 1);
-			p_pitOUT = -p_ail + p_pit -(p_ele >> 1);
+			setOuput(Output_ELE1,  p_ele + p_pit);
+			setOuput(Output_AIL1,  p_ail + p_pit -(p_ele >> 1));
+			setOuput(Output_PIT,  -p_ail + p_pit -(p_ele >> 1));
 		}
 		break;
 		
 		case Type_HN3:
 		{
-			p_eleOUT = p_ele + p_pit -(p_ail >> 1);
-			p_ailOUT = p_ail + p_pit;
-			p_pitOUT = -p_ele + p_pit -(p_ail >> 1);
+			setOuput(Output_ELE1,  p_ele + p_pit -(p_ail >> 1));
+			setOuput(Output_AIL1,  p_ail + p_pit);
+			setOuput(Output_PIT,  -p_ele + p_pit -(p_ail >> 1));
 		}
 		break;
 		
 		case Type_H3:
 		{
-			p_eleOUT = p_ele + p_pit;
-			p_ailOUT = -p_ele + p_ail + p_pit;
-			p_pitOUT = -p_ele - p_ail + p_pit;
+			setOuput(Output_ELE1,  p_ele + p_pit);
+			setOuput(Output_AIL1, -p_ele + p_ail + p_pit);
+			setOuput(Output_PIT,  -p_ele - p_ail + p_pit);
 		}
 		break;
 		
 		case Type_H4:
 		{
-			p_eleOUT  = p_ele + p_pit;
-			p_ele2OUT = -p_ele + p_pit;
-			p_ailOUT  = p_ail + p_pit;
-			p_pitOUT  = -p_ail + p_pit;
+			setOuput(Output_ELE1,  p_ele + p_pit);
+			setOuput(Output_ELE2, -p_ele + p_pit);
+			setOuput(Output_AIL1,  p_ail + p_pit);
+			setOuput(Output_PIT,  -p_ail + p_pit);
 		}
 		break;
 		
 		case Type_H4X:
 		{
-			p_eleOUT  = (p_ele >> 1) - (p_ail >> 1) + p_pit;
-			p_ele2OUT = -(p_ele >> 1) + (p_ail >> 1) + p_pit;
-			p_ailOUT  = (p_ele >> 1) + (p_ail >> 1) + p_pit;
-			p_pitOUT  = -(p_ele >> 1) - (p_ail >> 1) + p_pit;
+			setOuput(Output_ELE1,  (p_ele >> 1) - (p_ail >> 1) + p_pit);
+			setOuput(Output_ELE2, -(p_ele >> 1) + (p_ail >> 1) + p_pit);
+			setOuput(Output_AIL1,  (p_ele >> 1) + (p_ail >> 1) + p_pit);
+			setOuput(Output_PIT,  -(p_ele >> 1) - (p_ail >> 1) + p_pit);
 		}
 		break;
 	}

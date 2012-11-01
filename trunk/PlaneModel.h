@@ -16,6 +16,8 @@
 
 #include <inttypes.h>
 
+#include <output.h>
+
 
 namespace rc
 {
@@ -70,26 +72,6 @@ public:
 		BrakeCount_0 = 0, //!< No airbrake servos
 		BrakeCount_1 = 1, //!< Single airbrake servo
 		BrakeCount_2 = 2  //!< Dual airbrake servos
-	};
-	
-	enum Servo //! Servo index
-	{
-		Servo_AIL1, //!< Aileron servo 1, Main aileron
-		Servo_AIL2, //!< Aileron servo 2, Main aileron
-		Servo_AIL3, //!< Aileron servo 3, Chip aileron
-		Servo_AIL4, //!< Aileron servo 4, Chip aileron
-		Servo_ELE1, //!< Elevator servo 1/V-Tail 1, aileron 5 at ailevator
-		Servo_ELE2, //!< Elevator servo 2/V-Tail 2, aileron 5 at ailevator
-		Servo_RUD1, //!< Rudder servo 1/V-Tail 2/Winglet
-		Servo_RUD2, //!< Rudder servo 2/V-Tail 1/Winglet
-		Servo_FLP1, //!< Flap servo 1, Camber flap
-		Servo_FLP2, //!< Flap servo 2, Camber flap
-		Servo_FLP3, //!< Flap servo 3, Brake flap
-		Servo_FLP4, //!< Flap servo 4, Brake flap
-		Servo_BRK1, //!< Airbrake servo 1
-		Servo_BRK2, //!< Airbrake servo 2
-		
-		Servo_Count
 	};
 	
 	/*! \brief Constructs a PlaneModel object*/
@@ -205,11 +187,6 @@ public:
 	           int16_t p_flp,
 	           int16_t p_brk);
 	
-	/*! \brief Gets the position of a servo.
-	    \param p_servo The servo to get the position of.
-		\return Servo position, range 140% [-358 - 358].*/
-	int16_t getServo(Servo p_servo) const;
-	
 private:
 	void applyTail(int16_t p_ail, int16_t p_ele, int16_t p_rud);
 	void applyRudder(int16_t p_rud);
@@ -230,8 +207,6 @@ private:
 	
 	int8_t m_vtailEle; //!< Amount of elevator mix in V-Tail
 	int8_t m_vtailRud; //!< Amount of rudder mix in V-Tail
-	
-	int16_t m_servos[Servo_Count]; //!< Servo positions
 };
 
 /** \example planemodel_example.pde

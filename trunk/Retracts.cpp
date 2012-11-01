@@ -17,6 +17,7 @@
 	#include <wiring.h>
 #endif
 
+#include <output.h>
 #include <Retracts.h>
 #include <util.h>
 
@@ -38,9 +39,7 @@ m_time(0),
 m_doorsStart(0),
 m_gearStart(0),
 m_doorsEnd(m_doorsSpeed),
-m_gearEnd(m_gearSpeed),
-m_doorsPosition(-256),
-m_gearPosition(-256)
+m_gearEnd(m_gearSpeed)
 {
 	
 }
@@ -225,18 +224,19 @@ void Retracts::update()
 	{
 	default:
 	case Type_NoDoor:
-		m_gearPosition = rangeToNormalized(static_cast<uint16_t>(gearTime), m_gearSpeed);
+		setOutput(Output_GEAR, rangeToNormalized(static_cast<uint16_t>(gearTime), m_gearSpeed));
 		break;
 		
 	case Type_Single:
-		m_gearPosition = m_doorsPosition = 
+		setOutput(Output_GEAR,
 			(rangeToNormalized(static_cast<uint16_t>(gearTime), m_gearSpeed) + 
-			 rangeToNormalized(static_cast<uint16_t>(doorsTime), m_doorsSpeed)) / 2;
+			 rangeToNormalized(static_cast<uint16_t>(doorsTime), m_doorsSpeed)) / 2);
+		setOutput(Output_DOOR, getOutput(Output_GEAR));
 		break;
 		
 	case Type_Dual:
-		m_gearPosition = rangeToNormalized(static_cast<uint16_t>(gearTime), m_gearSpeed);
-		m_doorsPosition = rangeToNormalized(static_cast<uint16_t>(doorsTime), m_doorsSpeed);
+		setOutput(Output_GEAR, rangeToNormalized(static_cast<uint16_t>(gearTime), m_gearSpeed));
+		setOutput(Output_DOOR, rangeToNormalized(static_cast<uint16_t>(doorsTime), m_doorsSpeed));
 		break;
 	}
 }
@@ -244,13 +244,13 @@ void Retracts::update()
 
 int16_t Retracts::getDoorsPosition() const
 {
-	return m_doorsPosition;
+	return getOutput(Output_DOOR);
 }
 
 
 int16_t Retracts::getGearPosition() const
 {
-	return m_gearPosition;
+	return getOutput(Output_GEAR);
 }
 
 
