@@ -8,7 +8,6 @@
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
-** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -89,6 +88,30 @@ void PlaneModel::setAileronCount(AileronCount p_count)
 PlaneModel::AileronCount PlaneModel::getAileronCount() const
 {
 	return m_ailerons;
+}
+
+
+void PlaneModel::setFlapCount(FlapCount p_count)
+{
+	m_flaps = p_count;
+}
+
+
+PlaneModel::FlapCount PlaneModel::getFlapCount() const
+{
+	return m_flaps;
+}
+
+
+void PlaneModel::setBrakeCount(BrakeCount p_count)
+{
+	m_brakes = p_count;
+}
+
+
+PlaneModel::BrakeCount PlaneModel::getBrakeCount() const
+{
+	return m_brakes;
 }
 
 
