@@ -35,7 +35,7 @@ void Gyro::setOutput(Output p_output)
 }
 
 
-Output Gyro::getOutput()
+Output Gyro::getOutput() const
 {
 	return m_output;
 }
@@ -103,7 +103,7 @@ int16_t Gyro::apply() const
 			val /= 100; // range [-256 - 256]
 			if (m_output != Output_None)
 			{
-				setOutput(m_output, val);
+				rc::setOutput(m_output, val);
 			}
 			return val;
 		}
@@ -121,7 +121,7 @@ int16_t Gyro::apply() const
 			val /= 100; // range [-256 - 256]
 			if (m_output != Output_None)
 			{
-				setOutput(m_output, val);
+				rc::setOutput(m_output, val);
 			}
 			return val;
 		}

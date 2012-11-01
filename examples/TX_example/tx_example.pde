@@ -103,8 +103,8 @@ void setup()
 	g_swash.setPitMix(50);
 	
 	// gyro settings
-	g_gyro[0].setOutput(Output_GYR1); // both gyro's need to have the same output
-	g_gyro[1].setOutput(Output_GYR1); // we want to use one at a time and the result on a single channel
+	g_gyro[0].setOutput(rc::Output_GYR1); // both gyro's need to have the same output
+	g_gyro[1].setOutput(rc::Output_GYR1); // we want to use one at a time and the result on a single channel
 	
 	g_gyro[0].setType(rc::Gyro::Type_AVCS);
 	g_gyro[1].setType(rc::Gyro::Type_AVCS);
@@ -132,12 +132,12 @@ void setup()
 	// Various functions write their output to predefined or user settable locations
 	// A channel can fetch its input from these locations
 	// Multiple channels may use the same input
-	g_channels[0].setInput(Output_AIL1);
-	g_channels[1].setInput(Output_ELE1);
-	g_channels[2].setInput(Output_THR1);
-	g_channels[3].setInput(Output_RUD1);
-	g_channels[4].setInput(Output_GYR1);
-	g_channels[5].setInput(Output_PIT);
+	g_channels[0].setInput(rc::Output_AIL1);
+	g_channels[1].setInput(rc::Output_ELE1);
+	g_channels[2].setInput(rc::Output_THR1);
+	g_channels[3].setInput(rc::Output_RUD1);
+	g_channels[4].setInput(rc::Output_GYR1);
+	g_channels[5].setInput(rc::Output_PIT);
 	
 	// set up PPM
 	g_PPMOut.setPulseLength(448);   // default pulse length used by Esky hardware
@@ -189,8 +189,8 @@ void loop()
 	g_gyro[flightmode].apply();
 	
 	// set rudder and throttle output, these need to be set manually
-	setOutput(Output_RUD1, RUD);
-	setOutput(Output_THR1, THR);
+	rc::setOutput(rc::Output_RUD1, RUD);
+	rc::setOutput(rc::Output_THR1, THR);
 	
 	// perform channel transformations and set channel values
 	for (uint8_t i = 0; i < ChannelCount; ++i)
