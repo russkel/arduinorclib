@@ -62,6 +62,10 @@ void setup()
 	g_plane.setAileronCount(rc::PlaneModel::AileronCount_2); // dual aileron servos
 	g_plane.setFlapCount(rc::PlaneModel::FlapCount_1); // single flap servo
 	// since we're dealing with a pretty straightforward model, we don't have to set all sorts of mixes
+	// we do have two ailerons, so we'll set some aileron differential
+	// this also affects elevons in case of a flying wing
+	// if we had dual elevator servos (ailevator) we could set ailevator differential separately
+	g_plane.setAileronDifferential(10); // limit upward movement of ailerons by 10%
 	
 	// PlaneModel will take aileron/elevator/rudder/flap/airbrake input and
 	// calculate how the servos should move. Results are stored in the global
