@@ -32,11 +32,13 @@ PPMIn::PPMIn(uint16_t* p_results, uint8_t* p_work, uint8_t p_maxChannels)
 m_state(State_Startup),
 m_channels(0),
 m_pauseLength(8000),
+m_timeout(500),
 m_results(p_results),
 m_work(reinterpret_cast<uint16_t*>(p_work)),
 m_maxChannels(p_maxChannels),
 m_idx(0),
 m_newFrame(false),
+m_lastFrameTime(0),
 m_lastTime(0),
 m_high(false)
 {
@@ -71,6 +73,12 @@ bool PPMIn::isStable() const
 }
 
 
+bool PPMIn::isLost() const
+{
+	return m_state == State_Lost;
+}
+
+
 uint8_t PPMIn::getChannels() const
 {
 	return m_channels;
@@ -94,6 +102,7 @@ void PPMIn::pinChanged(bool p_high)
 	{
 	default:
 	case State_Startup:
+	case State_Lost:
 		{
 			if (cnt - m_lastTime >= m_pauseLength)
 			{
@@ -156,11 +165,21 @@ bool PPMIn::update()
 	if (m_newFrame)
 	{
 		m_newFrame = false;
+		m_lastFrameTime = static_cast<uint16_t>(millis());
 		for (uint8_t i = 0; i < m_channels && i < m_maxChannels; ++i)
 		{
 			m_results[i] = m_work[i] >> 1;
 		}
 		return true;
+	}
+	else if (m_state == State_Stable)
+	{
+		uint16_t delta = static_cast<uint16_t>(millis()) - m_lastFrameTime;
+		if (delta >= m_timeout)
+		{
+			// signal lost
+			m_state = State_Lost;
+		}
 	}
 	return false;
 }
