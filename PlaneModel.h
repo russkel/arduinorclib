@@ -125,6 +125,26 @@ public:
 	    \return The number of brake servos.*/
 	BrakeCount getBrakeCount() const;
 	
+	/*! \brief Sets the amount of aileron differential
+	    \param p_rate The amount of aileron differential [-100 - 100].
+	    \note Affects Aileron and Elevon, NOT Ailevator.*/
+	void setAileronDifferential(int8_t p_rate);
+	
+	/*! \brief Gets the amount of aileron differential
+	    \return The amount of aileron differential [-100 - 100].
+	    \note Affects Aileron and Elevon, NOT Ailevator.*/
+	int8_t getAileronDifferential() const;
+	
+	/*! \brief Sets the amount of winglet differential
+	    \param p_rate The amount of winglet differential [-100 - 100].
+	    \note Affects only models with RudderType_Winglet.*/
+	void setWingletDifferential(int8_t p_rate);
+	
+	/*! \brief Gets the amount of winglet differential
+	    \return The amount of winglet differential [-100 - 100].
+	    \note Only valid for models with RudderType_Winglet.*/
+	int8_t getWingletDifferential() const;
+	
 	/*! \brief Sets the amount of aileron mix for elevon
 	    \param p_rate The amount of aileron to mix into the elevators [-100 - 100].
 	    \note Only used in combination with WingType_Tailless.*/
@@ -185,16 +205,6 @@ public:
 	    \note Only used in combination with WingType_VTail.*/
 	int8_t getVTailRudderMix() const;
 	
-	/*! \brief Sets the amount of aileron differential
-	    \param p_rate The amount of aileron differential [-100 - 100].
-	    \note Affects Aileron and Elevon, NOT Ailevator.*/
-	void setAileronDifferential(int8_t p_rate);
-	
-	/*! \brief Gets the amount of aileron differential
-	    \return The amount of aileron differential [-100 - 100].
-	    \note Affects Aileron and Elevon, NOT Ailevator.*/
-	int8_t getAileronDifferential() const;
-	
 	/*! \brief Applies input to the servos.
 	    \param p_ail Aileron input, range 140% [-358 - 358].
 	    \param p_ele Elevator input, range 140% [-358 - 358].
@@ -213,7 +223,7 @@ private:
 	void applyFlaps(int16_t p_flp, int16_t p_brk);
 	void applyBrakes(int16_t p_brk);
 	
-	int16_t applyAilDif(int16_t p_input, int8_t p_dif);
+	int16_t applyDiff(int16_t p_input, int8_t p_diff);
 	
 	WingType     m_wing;     //!< Wing type
 	TailType     m_tail;     //!< Tail type
@@ -222,7 +232,8 @@ private:
 	FlapCount    m_flaps;    //!< Number of flap servos
 	BrakeCount   m_brakes;   //!< Number of airbrake servos
 	
-	int8_t m_ailDiff; //!< Amount of aileron differential
+	int8_t m_ailDiff;     //!< Amount of aileron differential
+	int8_t m_wingletDiff; //!< Amount of winglet differential
 	
 	int8_t m_elevonAil; //!< Amount of aileron mixing in ailevon (tailless wings)
 	int8_t m_elevonEle; //!< Amount of elevator mixing in ailevon (tailless wings)
