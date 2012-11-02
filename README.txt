@@ -1,20 +1,22 @@
 Version 0.3
-- ADD: Issue [#24] Landing gear support
+- ADD: Landing gear support [#24]
 - CHG: PPMOut may use any pin as output pin
-- ADD: Issue [#25] Wing type mixing
-- ADD: Issue [#26] Tail type mixing
-- ADD: Issue [#27] Flaps support
-- ADD: Issue [#29] Airbrake support
+- ADD: Wing type mixing [#25]
+- ADD: Tail type mixing [#26]
+- ADD: Flaps support [#27]
+- ADD: Airbrake support [#29]
+- BUG: PPMIn detects loss of signal [#34]
+- ADD: Aileron differential [#35] 
 
 Version 0.2
-- BUG: Issue [#19] Incorrect timings in PPMOut
-- CHG: Issue [#18] Use of Timer1 refactored for shared use
-- CHG: Issue [#20] Signal properties Center and Travel have been moved to utility functions
-- ADD: Issue [#2]  PPMIn, PPM reader/decoder (trainer port)
-- ADD: Issue [#16] ServoIn, Servo signal reader/decoder
-- ADD: Issue [#17] ServoOut, Servo signal writer/encoder
-- CHG: Issue [#22] Remove all use of normalized values from Signal generating/reading code
-- CHG: Issue [#23] Timer1 code and interrupts moved to separate class
+- BUG: Incorrect timings in PPMOut [#19]
+- CHG: Use of Timer1 refactored for shared use [#18]
+- CHG: Signal properties Center and Travel have been moved to utility functions [#20]
+- ADD: PPMIn, PPM reader/decoder (trainer port) [#2]
+- ADD: ServoIn, Servo signal reader/decoder [#16]
+- ADD: ServoOut, Servo signal writer/encoder [#17]
+- CHG: Remove all use of normalized values from Signal generating/reading code [#22]
+- CHG: Timer1 code and interrupts moved to separate class [#23]
 
 Version 0.1
 - ADD: AIPin, analog input; trim, reverse, calibration
