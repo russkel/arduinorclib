@@ -60,9 +60,22 @@ public:
 	    \return The minimum pause length in microseconds.*/
 	uint16_t getPauseLength() const;
 	
+	/*! \brief Sets minimum amount of time without signal after which the signal is considered lost.
+	    \param p_length Minimum timeout time in milliseconds.
+	    \warning Don't set this lower than your expected frame length (total length of pause + channels). */
+	void setTimeout(uint16_t p_length);
+	
+	/*! \brief Gets amount of time without signal after which the signal is considered lost.
+	    \return The minimum timeout time in milliseconds.*/
+	uint16_t getTimeout() const;
+	
 	/*! \brief Checks if the input signal is stable.
 	    \return Return true if a stable signal has been received. */
 	bool isStable() const;
+	
+	/*! \brief Checks if the input signal has been lost.
+	    \return Return true if the signal has been lost. */
+	bool isLost() const;
 	
 	/*! \brief Gets the number of channels in the signal.
 	    \return The number of channels found in the last received signal. */
@@ -73,7 +86,8 @@ public:
 	void pinChanged(bool p_high);
 	
 	/*! \brief Updates the result buffer with new values.
-	    \return Whether anything has been updated.*/
+	    \return Whether anything has been updated.
+	    \note Call this often to detect loss of signal early.*/
 	bool update();
 	
 private:
@@ -82,19 +96,22 @@ private:
 		State_Startup,   //!< Just started, no signal received yet.
 		State_Listening, //!< Received first end of frame.
 		State_Stable,    //!< Received second end of frame, stable.
-		State_Confused   //!< Something unexpected happened.
+		State_Confused,  //!< Something unexpected happened.
+		State_Lost       //!< Signal has been lost (no valid signal for a while).
 	};
 	
 	State    m_state;       //!< Current state of input signal.
 	uint8_t  m_channels;    //!< Number of channels in input signal.
 	uint16_t m_pauseLength; //!< Minimum pause length in microseconds.
+	uint16_t m_timeout;     //!< Time in milliseconds without signal after which the signal is considered "lost".
 	
 	uint16_t* m_results;     //!< Results buffer.
 	uint16_t* m_work;        //!< Work buffer.
 	uint8_t   m_maxChannels; //!< Maximum number of channels to fit buffers.
 	uint8_t   m_idx;         //!< Current index in buffer.
 	
-	volatile bool m_newFrame;        //!< Whether a new frame is available or not.
+	volatile bool m_newFrame;      //!< Whether a new frame is available or not.
+	uint16_t      m_lastFrameTime; //!< Last time a new frame has been found
 	
 	uint16_t m_lastTime; //!< Time of last interrupt.
 	bool     m_high;     //!< Whether the incoming signal uses high pulses.

@@ -41,6 +41,9 @@ void setup()
 	// enable pin change interrupt 0
 	PCICR = (1 << PCIE0);
 	
+	// set a timeout (default 500 milliseconds)
+	g_PPMIn.setTimeout(1000);
+	
 	// start listening
 	g_PPMIn.start();
 }
@@ -54,6 +57,10 @@ void loop()
 	if (g_PPMIn.isStable())
 	{
 		// do magic, incoming values available in g_values in microseconds.
+	}
+	else if (g_PPMIn.isLost())
+	{
+		// signal has been lost (no new valid frames for 'timeout' milliseconds)
 	}
 }
 
