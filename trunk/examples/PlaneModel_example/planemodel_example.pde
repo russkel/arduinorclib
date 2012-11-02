@@ -9,7 +9,6 @@
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
 ** Website: http://sourceforge.net/p/arduinorclib/
-** Demonstration: https://www.youtube.com/watch?v=wCi2PpY_LIs
 ** -------------------------------------------------------------------------*/
 
 #include <AIPin.h>
