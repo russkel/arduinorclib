@@ -33,9 +33,11 @@ m_rudder(RudderType_Normal),
 m_ailerons(AileronCount_1),
 m_flaps(FlapCount_0),
 m_brakes(BrakeCount_0),
+m_ailDiff(0),
 m_elevonAil(50),
 m_elevonEle(50),
 m_ailevator(0),
+m_ailevatorDiff(0),
 m_vtailEle(50),
 m_vtailRud(50)
 {
@@ -115,6 +117,18 @@ PlaneModel::BrakeCount PlaneModel::getBrakeCount() const
 }
 
 
+void PlaneModel::setAileronDifferential(int8_t p_rate)
+{
+	m_ailDiff = p_rate;
+}
+
+
+int8_t PlaneModel::getAileronDifferential() const
+{
+	return m_ailDiff;
+}
+
+
 void PlaneModel::setElevonAileronMix(int8_t p_rate)
 {
 	m_elevonAil = p_rate;
@@ -151,6 +165,18 @@ int8_t PlaneModel::getAilevatorMix() const
 }
 
 
+void PlaneModel::setAilevatorDifferential(int8_t p_rate)
+{
+	m_ailevatorDiff = p_rate;
+}
+
+
+int8_t PlaneModel::getAilevatorDifferential() const
+{
+	return m_ailevatorDiff;
+}
+
+
 void PlaneModel::setVTailElevatorMix(int8_t p_rate)
 {
 	m_vtailEle = p_rate;
@@ -184,17 +210,19 @@ void PlaneModel::apply(int16_t p_ail, int16_t p_ele, int16_t p_rud, int16_t p_fl
 		switch (m_ailerons)
 		{
 		case AileronCount_4:
-			setOutput(Output_AIL4, -p_ail);
-			setOutput(Output_AIL3,  p_ail);
+			setOutput(Output_AIL4, applyAilDif(-p_ail, m_ailDiff));
+			setOutput(Output_AIL3, applyAilDif( p_ail, m_ailDiff));
 			// FALL THROUGH
 			
 		case AileronCount_2:
-			setOutput(Output_AIL2, -p_ail);
-			// FALL THROUGH
+			setOutput(Output_AIL2, applyAilDif(-p_ail, m_ailDiff));
+			setOutput(Output_AIL1, applyAilDif(p_ail, m_ailDiff));
+			break;
 			
 		default:
 		case AileronCount_1:
-			setOutput(Output_AIL1,  p_ail);
+			// NOTE: no aileron differential if we have just one aileron servo
+			setOutput(Output_AIL1, p_ail);
 			break;
 		}
 		applyTail(p_ail, p_ele, p_rud);
@@ -207,14 +235,14 @@ void PlaneModel::apply(int16_t p_ail, int16_t p_ele, int16_t p_rud, int16_t p_fl
 		switch (m_ailerons)
 		{
 		case AileronCount_4:
-			setOutput(Output_AIL4, -ail + ele);
-			setOutput(Output_AIL3,  ail + ele);
+			setOutput(Output_AIL4, applyAilDif(-ail, m_ailDiff) + ele);
+			setOutput(Output_AIL3, applyAilDif( ail, m_ailDiff) + ele);
 			// FALL THROUGH
 		
 		default:		
 		case AileronCount_2:
-			setOutput(Output_AIL2, -ail + ele);
-			setOutput(Output_AIL1,  ail + ele);
+			setOutput(Output_AIL2, applyAilDif(-ail, m_ailDiff) + ele);
+			setOutput(Output_AIL1, applyAilDif( ail, m_ailDiff) + ele);
 			break;
 		}
 		applyRudder(p_rud);
@@ -250,8 +278,8 @@ void PlaneModel::applyTail(int16_t p_ail, int16_t p_ele, int16_t p_rud)
 	case TailType_Ailevator:
 		{
 			int16_t ail = mix(p_ail, m_ailevator);
-			setOutput(Output_ELE1, p_ele + ail);
-			setOutput(Output_ELE2, p_ele - ail);
+			setOutput(Output_ELE1, p_ele + applyAilDif( ail, m_ailevatorDiff));
+			setOutput(Output_ELE2, p_ele + applyAilDif(-ail, m_ailevatorDiff));
 			setOutput(Output_RUD1, p_rud);
 		}
 		break;
@@ -319,6 +347,24 @@ void PlaneModel::applyBrakes(int16_t p_brk)
 	default:
 		break;
 	}
+}
+
+
+int16_t PlaneModel::applyAilDif(int16_t p_input, int8_t p_diff) const
+{
+	if (p_diff == 0 || p_input == 0)
+	{
+		return p_input;
+	}
+	if (p_input < 0 && p_diff < 0)
+	{
+		return p_input;
+	}
+	if (p_input > 0 && p_diff > 0)
+	{
+		return p_input;
+	}
+	return mix(p_input, 100 - (p_diff > 0 ? p_diff : -p_diff));
 }
 
 

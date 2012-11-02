@@ -127,60 +127,80 @@ public:
 	
 	/*! \brief Sets the amount of aileron mix for elevon
 	    \param p_rate The amount of aileron to mix into the elevators [-100 - 100].
-		\note Only used in combination with WingType_Tailless.*/
+	    \note Only used in combination with WingType_Tailless.*/
 	void setElevonAileronMix(int8_t p_rate);
 	
 	/*! \brief Gets the amount of aileron mix for elevon
 	    \return The amount of aileron to mix into the elevators [-100 - 100].
-		\note Only used in combination with WingType_Tailless.*/
+	    \note Only used in combination with WingType_Tailless.*/
 	int8_t getElevonAileronMix() const;
 	
 	/*! \brief Sets the amount of elevator mix for elevon
 	    \param p_rate The amount of elevator to mix into the elevators [-100 - 100].
-		\note Only used in combination with WingType_Tailless.*/
+	    \note Only used in combination with WingType_Tailless.*/
 	void setElevonElevatorMix(int8_t p_rate);
 	
 	/*! \brief Gets the amount of elevator mix for elevon
 	    \return The amount of elevator to mix into the elevators [-100 - 100].
-		\note Only used in combination with WingType_Tailless.*/
+	    \note Only used in combination with WingType_Tailless.*/
 	int8_t getElevonElevatorMix() const;
 	
 	/*! \brief Sets the amount of aileron mix for ailevator
 	    \param p_rate The amount of aileron to mix into the elevators [-100 - 100].
-		\note Only used in combination with TailType_Ailevator.*/
+	    \note Only used in combination with TailType_Ailevator.*/
 	void setAilevatorMix(int8_t p_rate);
 	
 	/*! \brief Gets the amount of aileron mix for ailevator
 	    \return The amount of aileron to mix into the elevators [-100 - 100].
-		\note Only used in combination with TailType_Ailevator.*/
+	    \note Only used in combination with TailType_Ailevator.*/
 	int8_t getAilevatorMix() const;
+	
+	/*! \brief Sets the amount of aileron differential for ailevator
+	    \param p_rate The amount of aileron differential for the elevators [-100 - 100].
+	    \note Only used in combination with TailType_Ailevator.*/
+	void setAilevatorDifferential(int8_t p_rate);
+	
+	/*! \brief Gets the amount of aileron differential for ailevator
+	    \return The amount of aileron differential for the elevators [-100 - 100].
+	    \note Only used in combination with TailType_Ailevator.*/
+	int8_t getAilevatorDifferential() const;
 	
 	/*! \brief Sets the amount of elevator mix for V-Tail
 	    \param p_rate The amount of elevator to mix into the rudders [-100 - 100].
-		\note Only used in combination with WingType_VTail.*/
+	    \note Only used in combination with WingType_VTail.*/
 	void setVTailElevatorMix(int8_t p_rate);
 	
 	/*! \brief Gets the amount of elevator mix for V-Tail
 	    \return The amount of elevator to mix into the rudders [-100 - 100].
-		\note Only used in combination with WingType_VTail.*/
+	    \note Only used in combination with WingType_VTail.*/
 	int8_t getVTailElevatorMix() const;
 	
 	/*! \brief Sets the amount of rudder mix for V-Tail
 	    \param p_rate The amount of rudder to mix into the rudders [-100 - 100].
-		\note Only used in combination with WingType_VTail.*/
+	    \note Only used in combination with WingType_VTail.*/
 	void setVTailRudderMix(int8_t p_rate);
 	
 	/*! \brief Gets the amount of rudder mix for V-Tail
 	    \return The amount of rudder to mix into the rudders [-100 - 100].
-		\note Only used in combination with WingType_VTail.*/
+	    \note Only used in combination with WingType_VTail.*/
 	int8_t getVTailRudderMix() const;
+	
+	/*! \brief Sets the amount of aileron differential
+	    \param p_rate The amount of aileron differential [-100 - 100].
+	    \note Affects Aileron and Elevon, NOT Ailevator.*/
+	void setAileronDifferential(int8_t p_rate);
+	
+	/*! \brief Gets the amount of aileron differential
+	    \return The amount of aileron differential [-100 - 100].
+	    \note Affects Aileron and Elevon, NOT Ailevator.*/
+	int8_t getAileronDifferential() const;
 	
 	/*! \brief Applies input to the servos.
 	    \param p_ail Aileron input, range 140% [-358 - 358].
-		\param p_ele Elevator input, range 140% [-358 - 358].
-		\param p_rud Rudder input, range 140% [-358 - 358].
-		\param p_flp Camber (flap) input, range 140% [-358 - 358].
-		\param p_brk Airbrake (+ flap) input, range 140% [-358 - 358].*/
+	    \param p_ele Elevator input, range 140% [-358 - 358].
+	    \param p_rud Rudder input, range 140% [-358 - 358].
+	    \param p_flp Camber (flap) input, range 140% [-358 - 358].
+	    \param p_brk Airbrake (+ flap) input, range 140% [-358 - 358].*/
 	void apply(int16_t p_ail,
 	           int16_t p_ele,
 	           int16_t p_rud,
@@ -193,6 +213,8 @@ private:
 	void applyFlaps(int16_t p_flp, int16_t p_brk);
 	void applyBrakes(int16_t p_brk);
 	
+	int16_t applyAilDif(int16_t p_input, int8_t p_dif);
+	
 	WingType     m_wing;     //!< Wing type
 	TailType     m_tail;     //!< Tail type
 	RudderType   m_rudder;   //!< Rudder type
@@ -200,10 +222,13 @@ private:
 	FlapCount    m_flaps;    //!< Number of flap servos
 	BrakeCount   m_brakes;   //!< Number of airbrake servos
 	
+	int8_t m_ailDiff; //!< Amount of aileron differential
+	
 	int8_t m_elevonAil; //!< Amount of aileron mixing in ailevon (tailless wings)
 	int8_t m_elevonEle; //!< Amount of elevator mixing in ailevon (tailless wings)
 	
-	int8_t m_ailevator; //!< Amount of aileron to elevator mix
+	int8_t m_ailevator;     //!< Amount of aileron to elevator mix
+	int8_t m_ailevatorDiff; //!< Amount of aileron differential for ailevator
 	
 	int8_t m_vtailEle; //!< Amount of elevator mix in V-Tail
 	int8_t m_vtailRud; //!< Amount of rudder mix in V-Tail
