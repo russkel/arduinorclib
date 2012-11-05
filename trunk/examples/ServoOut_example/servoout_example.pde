@@ -64,4 +64,13 @@ void loop()
 	
 	// tell ServoOut there are new values available in the input buffer
 	g_ServoOut.update();
+	
+	// Just a quick note here to keep in mind
+	// If you're having problems getting your servos to work properly, i.e. servos are not responding well
+	// or seem to miss their input signal every couple of seconds, then the servos may be disturbing their control signal.
+	// This happens especially when you've connected the servos directly to the Arduino and when they are of poor quality.
+	// The motor of the servo will cause drops in the voltage of the Arduino which will mess with the generated signal,
+	// I've had this happen to me while using some cheap Esky micro servos. If you hook the signal up to a scope you
+	// can see voltage drops in the signal every few hundred microseconds while the servo's motor is working.
+	// To fix this you need a couple of decoupling capacitors, google for more details ;)
 }
