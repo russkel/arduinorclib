@@ -6,7 +6,8 @@ Version 0.3
 - ADD: Flaps support [#27]
 - ADD: Airbrake support [#29]
 - BUG: PPMIn detects loss of signal [#34]
-- ADD: Aileron differential [#35] 
+- ADD: Aileron differential [#35]
+- ADD: FlycamOne support [#40]
 
 Version 0.2
 - BUG: Incorrect timings in PPMOut [#19]
