@@ -168,13 +168,13 @@ int16_t FlycamOne::update()
 					}
 					m_coolDown = true;
 				}
-				else if(delta >= m_duration + Timing_CoolDown)
+				else if (delta >= m_duration + Timing_CoolDown)
 				{
 					if (m_command == Command_ChangeCamModeTwice)
 					{
 						// do it again!
 						m_command = Command_ChangeCamMode;
-						m_startTime += p_delta;
+						m_startTime += delta;
 					}
 					else
 					{
@@ -269,7 +269,7 @@ void FlycamOne::handleChangeSensor()
 }
 
 
-void FlycamOne::handleStartStop(uint16_t p_delta)
+void FlycamOne::handleStartStop()
 {
 	if (m_camMode != CamMode_Photo)
 	{
