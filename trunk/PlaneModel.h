@@ -223,7 +223,7 @@ private:
 	void applyFlaps(int16_t p_flp, int16_t p_brk);
 	void applyBrakes(int16_t p_brk);
 	
-	int16_t applyDiff(int16_t p_input, int8_t p_diff);
+	int16_t applyDiff(int16_t p_input, int8_t p_diff) const;
 	
 	WingType     m_wing;     //!< Wing type
 	TailType     m_tail;     //!< Tail type
