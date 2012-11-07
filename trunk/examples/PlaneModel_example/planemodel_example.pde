@@ -46,9 +46,9 @@ rc::PlaneModel g_plane;
 rc::DIPin g_flp(7);
 
 // And we use three analog input pins for controls
-rc::DIPin g_ail(A0);
-rc::DIPin g_ele(A1);
-rc::DIPin g_rud(A2);
+rc::AIPin g_ail(A0);
+rc::AIPin g_ele(A1);
+rc::AIPin g_rud(A2);
 
 // we can use some Channels here to set endpoints, or reverse actions
 rc::Channel g_channels[SERVOS];
@@ -97,7 +97,7 @@ void setup()
 		digitalWrite(g_pinsOut[i], LOW);
 		
 		// filll the input buffer with sane values
-		g_input[0] = rc::normalizedToMicros(0);
+		g_input[i] = rc::normalizedToMicros(0);
 	}
 	
 	g_ServoOut.start();
