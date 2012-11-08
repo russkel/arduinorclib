@@ -21,7 +21,7 @@ namespace rc
 
 Curve::Curve(Input p_input)
 :
-ConfigurableInput(p_input)
+InputProcessor(p_input)
 {
 	// set up a linear curve by default
 	m_points[0] = -256;

@@ -3,15 +3,15 @@
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** ConfigurableInput.cpp
-** Base class for classes having an input
+** InputSource.cpp
+** Base class for classes having an input and performing operations on it
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <ConfigurableInput.h>
+#include <InputSource.h>
 
 
 namespace rc
@@ -19,25 +19,35 @@ namespace rc
 
 // Public functions
 
-void ConfigurableInput::setInput(Input p_input)
+void InputSource::setDestination(Input p_index)
 {
-	m_input = p_input;
+	m_destination = p_index;
 }
 
 
-Input ConfigurableInput::getInput() const
+Input InputSource::getDestination() const
 {
-	return m_input;
+	return m_destination;
 }
 
 
 // Protected functions
 
-ConfigurableInput::ConfigurableInput(Input p_input)
+InputSource::InputSource(Input p_index)
 :
-m_input(p_input)
+m_destination(p_index)
 {
 	
+}
+
+
+int16_t InputSource::writeInputValue(int16_t p_value) const
+{
+	if (m_destination != Input_None)
+	{
+		rc::setInput(m_destination, p_value);
+	}
+	return p_value;
 }
 
 

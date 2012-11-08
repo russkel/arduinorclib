@@ -1,13 +1,13 @@
-#ifndef INC_RC_CONFIGURABLEINPUT_H
-#define INC_RC_CONFIGURABLEINPUT_H
+#ifndef INC_RC_INPUTPROCESSOR_H
+#define INC_RC_INPUTPROCESSOR_H
 
 /* ---------------------------------------------------------------------------
 ** This software is in the public domain, furnished "as is", without technical
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** ConfigurableInput.h
-** Base class for classes having an input
+** InputProcessor.h
+** Base class for classes taking input
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
@@ -23,13 +23,13 @@ namespace rc
 {
 
 /*! 
- *  \brief     Base class for classes having configurable input
- *  \details   If a class can use configurable input, derive from this.
+ *  \brief     Base class for classes taking input
+ *  \details   If a class uses input from the input storage, derive from this.
  *  \author    Daniel van den Ouden
  *  \date      Nov-2012
  *  \copyright Public Domain.
  */
-class ConfigurableInput
+class InputProcessor
 {
 public:
 	/*! \brief Sets the input index.
@@ -41,9 +41,9 @@ public:
 	Input getInput() const;
 
 protected:
-	/*! \brief Constructs a DualRates object
+	/*! \brief Constructs an InputProcessor object
 	    \param p_input Index to use as source input.*/
-	ConfigurableInput(Input p_input = Input_None);
+	InputProcessor(Input p_input = Input_None);
 
 	Input m_input;
 };
@@ -51,4 +51,4 @@ protected:
 
 } // namespace end
 
-#endif // INC_RC_CONFIGURABLEINPUT_H
+#endif // INC_RC_INPUTPROCESSOR_H
