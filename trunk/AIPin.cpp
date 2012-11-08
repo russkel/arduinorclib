@@ -188,7 +188,7 @@ int16_t AIPin::read() const
 
 // Private functions
 
-int16_t AIPin::writeResult(int16_t p_result)
+int16_t AIPin::writeResult(int16_t p_result) const
 {
 	if (m_output != Input_None)
 	{

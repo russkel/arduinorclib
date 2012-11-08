@@ -113,7 +113,7 @@ public:
 	int16_t read() const;
 	
 private:
-	int16_t writeResult(int16_t p_result);
+	int16_t writeResult(int16_t p_result) const;
 
 	uint8_t  m_pin;      //!< Hardware pin.
 	Input    m_output;   //!< Input index to store output.

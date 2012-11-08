@@ -19,7 +19,9 @@ namespace rc
 
 // Public functions
 
-Curve::Curve()
+Curve::Curve(Input p_input)
+:
+ConfigurableInput(p_input)
 {
 	// set up a linear curve by default
 	m_points[0] = -256;
@@ -80,6 +82,15 @@ int16_t Curve::apply(int16_t p_value) const
 	highval = highval * rem;
 	
 	return (lowval + highval) >> 6; // weighted average
+}
+
+
+int16_t Curve::apply() const
+{
+	if (m_input != Input_None)
+	{
+		return apply(rc::getInput(m_input));
+	}
 }
 
 

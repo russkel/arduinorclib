@@ -16,6 +16,8 @@
 
 #include <inttypes.h>
 
+#include <ConfigurableInput.h>
+
 
 namespace rc
 {
@@ -27,7 +29,7 @@ namespace rc
  *  \date      Feb-2012
  *  \copyright Public Domain.
  */
-class Curve
+class Curve : public ConfigurableInput
 {
 public:
 	/*! \brief Nameless enum, magic number hiding. */
@@ -37,8 +39,8 @@ public:
 	};
 	
 	/*! \brief Constructs a Curve object
-	*/
-	Curve();
+	    \param p_input Input source.*/
+	Curve(Input p_input = Input_None);
 	
 	/*! \brief Sets a curve point.
 	    \param p_point The point to set, range [0 - Curve::PointCount-1].
@@ -64,6 +66,10 @@ public:
 	    \param p_value Source value to apply curve to, range [-256 - 256].
 	    \return curve applied p_value, range [-256 - 256].*/
 	int16_t apply(int16_t p_value) const;
+	
+	/*! \brief Applies curve to configured input.
+	    \return curve applied p_value, range [-256 - 256].*/
+	int16_t apply() const;
 	
 private:
 	int16_t m_points[PointCount]; //!< Points

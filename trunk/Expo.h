@@ -16,6 +16,8 @@
 
 #include <inttypes.h>
 
+#include <InputModifier.h>
+
 
 namespace rc
 {
@@ -27,17 +29,13 @@ namespace rc
  *  \date      Feb-2012
  *  \copyright Public Domain.
  */
-class Expo
+class Expo : public InputModifier
 {
 public:
 	/*! \brief Constructs an Expo object
 	    \param p_expo The expo to set, range [-100 - 100].
 	    \param p_index Input index to use for input and output.*/
-	Expo(int8_t p_expo = 0, Input p_index = Index_None);
-
-	/*! \brief Copy constructor
-	    \param p_rhs Object to copy with.*/
-	Expo(const Expo& p_rhs);
+	Expo(int8_t p_expo = 0, Input p_index = Input_None);
 	
 	
 	/*! \brief Sets the expo.
@@ -47,14 +45,6 @@ public:
 	/*! \brief Gets expo.
 	    \return The current expo, range [-100 - 100].*/
 	int8_t get() const;
-	
-	/*! \brief Sets Input index to use as input and output.
-	    \param p_output The index to use.*/
-	void setIndex(Input p_output);
-	
-	/*! \brief Gets the Input index to use as input and output.
-	    \return The index used as input and output.*/
-	Input getIndex() const;
 	
 	/*! \brief Copy assignment operator.
 	    \param p_rhs Object to copy.
@@ -88,7 +78,6 @@ public:
 	
 private:
 	int8_t m_expo;
-	Input  m_index;
 	
 };
 /** \example expo_example.pde
