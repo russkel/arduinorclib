@@ -31,8 +31,9 @@ class Expo
 {
 public:
 	/*! \brief Constructs an Expo object
-	    \param p_expo The expo to set, range [-100 - 100].*/
-	Expo(int8_t p_expo = 0);
+	    \param p_expo The expo to set, range [-100 - 100].
+	    \param p_index Input index to use for input and output.*/
+	Expo(int8_t p_expo = 0, Input p_index = Index_None);
 
 	/*! \brief Copy constructor
 	    \param p_rhs Object to copy with.*/
@@ -46,6 +47,14 @@ public:
 	/*! \brief Gets expo.
 	    \return The current expo, range [-100 - 100].*/
 	int8_t get() const;
+	
+	/*! \brief Sets Input index to use as input and output.
+	    \param p_output The index to use.*/
+	void setIndex(Input p_output);
+	
+	/*! \brief Gets the Input index to use as input and output.
+	    \return The index used as input and output.*/
+	Input getIndex() const;
 	
 	/*! \brief Copy assignment operator.
 	    \param p_rhs Object to copy.
@@ -71,11 +80,16 @@ public:
 	
 	/*! \brief Applies expo.
 	    \param p_value Source value to apply expo to, range [-256 - 256].
-	    \return expo applies p_value.*/
+	    \return expo applied to p_value.*/
 	int16_t apply(int16_t p_value) const;
+	
+	/*! \brief Applies expo to the set input.*/
+	void apply() const;
 	
 private:
 	int8_t m_expo;
+	Input  m_index;
+	
 };
 /** \example expo_example.pde
  * This is an example of how to use the Expo class.

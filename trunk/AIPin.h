@@ -16,6 +16,8 @@
 
 #include <inttypes.h>
 
+#include <input.h>
+
 
 namespace rc
 {
@@ -31,8 +33,9 @@ class AIPin
 {
 public:
 	/*! \brief Constructs an AIPin object.
-	    \param p_pin The hardware pin to use.*/
-	AIPin(uint8_t p_pin);
+	    \param p_pin The hardware pin to use.
+	    \param p_output The input index to use as output.*/
+	AIPin(uint8_t p_pin, Input p_output = Input_None);
 	
 	/*! \brief Sets the hardware pin to use.
 	    \param p_pin The hardware pin to use.*/
@@ -41,6 +44,14 @@ public:
 	/*! \brief Gets the hardware pin.
 	    \return The current hardware pin.*/
 	uint8_t getPin() const;
+	
+	/*! \brief Sets Input index to use as output.
+	    \param p_output The index to use.*/
+	void setOutput(Input p_output);
+	
+	/*! \brief Gets the Input index to use for output.
+	    \return The index used for output.*/
+	Input getOutput() const;
 	
 	/*! \brief Assignment operator, sets hardware pin.
 	    \param p_pin The hardware pin to use.
@@ -102,7 +113,10 @@ public:
 	int16_t read() const;
 	
 private:
+	int16_t writeResult(int16_t p_result);
+
 	uint8_t  m_pin;      //!< Hardware pin.
+	Input    m_output;   //!< Input index to store output.
 	bool     m_reversed; //!< Input reverse.
 	int8_t   m_trim;     //!< Trim.
 	uint16_t m_center;   //!< Calibration center.
