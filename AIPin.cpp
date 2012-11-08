@@ -25,8 +25,9 @@ namespace rc
 
 // Public functions
 
-AIPin::AIPin(uint8_t p_pin)
+AIPin::AIPin(uint8_t p_pin, Input p_output)
 :
+m_output(p_output),
 m_reversed(false),
 m_trim(0),
 m_center(511),
@@ -47,6 +48,18 @@ void AIPin::setPin(uint8_t p_pin)
 uint8_t AIPin::getPin() const
 {
 	return m_pin;
+}
+
+
+void AIPin::setOutput(Input p_output)
+{
+	m_output = p_output;
+}
+
+
+Input AIPin::getOutput() const
+{
+	return m_output;
 }
 
 
@@ -142,8 +155,8 @@ int16_t AIPin::read() const
 	raw += m_trim;
 	
 	// early abort
-	if (raw <= m_min) return -256;
-	if (raw >= m_max) return  256;
+	if (raw <= m_min) return writeResult(-256);
+	if (raw >= m_max) return writeResult( 256);
 	
 	// calculate distance from center and maximum distance from center
 	uint16_t out = raw > m_center ?   raw - m_center : m_center -   raw;
@@ -169,7 +182,19 @@ int16_t AIPin::read() const
 		--bits;
 	}
 	
-	return (raw < m_center) ? -out : out;
+	return writeResult((raw < m_center) ? -out : out);
+}
+
+
+// Private functions
+
+int16_t AIPin::writeResult(int16_t p_result)
+{
+	if (m_output != Input_None)
+	{
+		setInput(m_output, p_result);
+	}
+	return p_result;
 }
 
 

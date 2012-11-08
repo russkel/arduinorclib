@@ -30,9 +30,10 @@ static const uint8_t s_expoNeg[EXPO_POINTS] = {101, 128, 147, 161, 174, 185, 194
 
 // Public functions
 
-Expo::Expo(int8_t p_expo)
+Expo::Expo(int8_t p_expo, Input p_index)
 :
-m_expo(p_expo)
+m_expo(p_expo),
+m_index(p_index)
 {
 	
 }
@@ -40,7 +41,8 @@ m_expo(p_expo)
 
 Expo::Expo(const Expo& p_rhs)
 :
-m_expo(p_rhs.m_expo)
+m_expo(p_rhs.m_expo),
+m_index(p_rhs.m_index)
 {
 	
 }
@@ -58,6 +60,18 @@ int8_t Expo::get() const
 }
 
 
+void Expo::setIndex(Input p_index)
+{
+	m_index = p_index;
+}
+
+
+Input Expo::getIndex() const
+{
+	return m_index;
+}
+
+
 Expo& Expo::operator = (int8_t p_rhs)
 {
 	m_expo = p_rhs;
@@ -67,7 +81,8 @@ Expo& Expo::operator = (int8_t p_rhs)
 
 Expo& Expo::operator = (const Expo& p_rhs)
 {
-	m_expo = p_rhs.m_expo;
+	m_expo  = p_rhs.m_expo;
+	m_index = p_rhs.m_index;
 	return *this;
 }
 
@@ -95,7 +110,7 @@ int16_t Expo::apply(int16_t p_value) const
 	if (m_expo == 0)
 	{
 		// early abort
-		return p_value;
+		return writeResult(p_value);
 	}
 	
 	int8_t expo = m_expo;
@@ -131,7 +146,16 @@ int16_t Expo::apply(int16_t p_value) const
 	// get weighted average between linear and expo value
 	uint16_t out = ((p_value * (100 - expo)) + (expoval * expo)) / 100;
 	
-	return neg ? -out : out;
+	return writeResult(neg ? -out : out);
+}
+
+
+void Expo::apply() const
+{
+	if (m_index != Input_None)
+	{
+		rc::setInput(m_index, apply(rc::getInput(m_index)));
+	}
 }
 
 
