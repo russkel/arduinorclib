@@ -19,17 +19,10 @@ namespace rc
 
 // Public functions
 
-DualRates::DualRates(uint8_t p_rate)
+DualRates::DualRates(uint8_t p_rate, Input p_index)
 :
+InputModifier(p_index),
 m_rate(p_rate)
-{
-	
-}
-
-
-DualRates::DualRates(const DualRates& p_rhs)
-:
-m_rate(p_rhs.m_rate)
 {
 	
 }
@@ -87,6 +80,15 @@ int16_t DualRates::apply(int16_t p_value) const
 	uint16_t val = static_cast<uint16_t>(neg ? (-p_value) : p_value);
 	val = (val * m_rate) / 100;
 	return neg ? -static_cast<int16_t>(val) : static_cast<int16_t>(val);
+}
+
+
+void DualRates::apply() const
+{
+	if (m_index != Input_None)
+	{
+		rc::setInput(m_index, apply(rc::getInput(m_index)));
+	}
 }
 
 

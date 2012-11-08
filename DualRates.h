@@ -16,6 +16,8 @@
 
 #include <inttypes.h>
 
+#include <InputModifier.h>
+
 
 namespace rc
 {
@@ -27,16 +29,13 @@ namespace rc
  *  \date      Feb-2012
  *  \copyright Public Domain.
  */
-class DualRates
+class DualRates : public InputModifier
 {
 public:
 	/*! \brief Constructs a DualRates object
-	    \param p_rate The rate to set, range [0 - 140].*/
-	DualRates(uint8_t p_rate = 100);
-	
-	/*! \brief Copy constructor
-	    \param p_rhs Object to copy with.*/
-	DualRates(const DualRates& p_rhs);
+	    \param p_rate The rate to set, range [0 - 140].
+	    \param p_index Input index to use as input/output.*/
+	DualRates(uint8_t p_rate = 100, Input p_index = Input_None);
 	
 	
 	/*! \brief Sets the rate.
@@ -73,6 +72,9 @@ public:
 	    \param p_value Source value to apply d/r to, range [-256 - 256].
 	    \return d/r applied p_value, range 140% [-358 - 358].*/
 	int16_t apply(int16_t p_value) const;
+	
+	/*! \brief Applies dual rates to configured input.*/
+	void apply() const;
 	
 private:
 	uint8_t m_rate;

@@ -16,7 +16,7 @@
 
 #include <inttypes.h>
 
-#include <ConfigurableInput.h>
+#include <InputProcessor.h>
 
 
 namespace rc
@@ -29,7 +29,7 @@ namespace rc
  *  \date      Feb-2012
  *  \copyright Public Domain.
  */
-class Curve : public ConfigurableInput
+class Curve : public InputProcessor
 {
 public:
 	/*! \brief Nameless enum, magic number hiding. */
