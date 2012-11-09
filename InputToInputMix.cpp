@@ -20,12 +20,14 @@ namespace rc
 
 // Public functions
 
-InputToInputMix::InputToInputMix(int8_t p_mix, Input p_source, Input p_index)
+InputToInputMix::InputToInputMix(int8_t p_mix, bool p_abs, Input p_source, Input p_index)
 :
 InputProcessor(p_source),
-InputModifier(p_index)
+InputModifier(p_index),
+m_mix(p_mix),
+m_abs(p_abc)
 {
-	m_mix = p_mix;
+	
 }
 
 
@@ -41,8 +43,24 @@ int8_t InputToInputMix::getMix() const
 }
 
 
+void InputToInputMix::setUseAbs(bool p_abs)
+{
+	m_abs = p_abs;
+}
+
+
+bool InputToInputMix::getUseAbs() const
+{
+	return m_abs;
+}
+
+
 int16_t InputToInputMix::apply(int16_t p_master, int16_t p_slave) const
 {
+	if (m_abs)
+	{
+		p_master = p_master < 0 ? -p_master : p_master;
+	}
 	return rc::clamp140(p_slave + rc::mix(p_master, m_mix));
 }
 

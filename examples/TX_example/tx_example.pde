@@ -20,6 +20,7 @@
 #include <Expo.h>
 #include <Gyro.h>
 #include <InputOutputPipe.h>
+#include <InputToInputMix.h>
 #include <PPMOut.h>
 #include <Swashplate.h>
 #include <ThrottleHold.h>
@@ -101,6 +102,12 @@ rc::PPMOut g_PPMOut(ChannelCount, g_channelValues, g_PPMWork, ChannelCount);
 // Set up pipes for direct input to output copying
 rc::InputOutputPipe g_throttle(rc::Input_THR, rc::Output_THR1);
 rc::InputOutputPipe g_rudder(rc::Input_RUD, rc::Output_RUD1);
+
+// Swash to throttle mixing
+// we need to use abs, this will make sure that any negative input from aileron or elevator will
+// be treated as positive. Otherwise we would get an decrease in throttle when we move to one side.
+rc::InputToInputMix g_ailToThr(5, true, rc::Input_AIL, rc::Input_THR); // 5%, use abs, from aileron, to throttle
+rc::InputToInputMix g_eleToThr(5, true, rc::Input_ELE, rc::Input_THR); // 5%, use abs, from elevator, to throttle
 
 
 void setup()
@@ -188,6 +195,14 @@ void loop()
 		g_thrCurve[flightmode].apply(); // reads from THR, writes to THR
 	}
 	
+	// apply swash to throttle mixing
+	g_ailToThr.apply();
+	g_eleToThr.apply();
+	
+	// END OF INPUT HANDLING
+	// up to here we've only dealt with filling the input system and applying transformations to it
+	// now we will start using the input values to control output
+	
 	// apply swashplate mixing,
 	// will read from input system (AIL, ELE and PIT)
 	// will write to output system (AIL1, ELE1 and PIT (and ELE2 for four servo setup))
@@ -201,6 +216,12 @@ void loop()
 	// output system (RUD1 and THR1); see their declaration.
 	g_rudder.apply();
 	g_throttle.apply();
+	
+	// END OF OUTPUT HANDLING
+	// Now we've filled all the parts of the output system we need (AIL1, ELE1, THR1, RUD1, GYR1 and PIT1)
+	// now we can start using the output to generate a signal or data packet
+	// Well, almost. Channel does perform some transformations, but these aren't written back into the output system
+	// since more than one channel may use the same output as source.
 	
 	// perform channel transformations and set channel values
 	for (uint8_t i = 0; i < ChannelCount; ++i)

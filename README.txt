@@ -10,6 +10,7 @@ Version 0.3
 - ADD: FlycamOne support [#40]
 - ADD: Smooth transitions on switched [#33]
 - ADD: Throttle hold
+- ADD: Input to input mix [#31]
 
 Version 0.2
 - BUG: Incorrect timings in PPMOut [#19]
