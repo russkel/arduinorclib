@@ -144,7 +144,7 @@ private:
 	
 	uint16_t m_doorsSpeed; //!< Speed at which the doors open in milliseconds
 	uint16_t m_gearSpeed;  //!< Speed at which the gear moves in milliseconds
-	int16_t m_delay;      //!< Delay between the doors and gear in milliseconds
+	int16_t  m_delay;      //!< Delay between the doors and gear in milliseconds
 	
 	unsigned long m_lastTime; //!< Last time the update was called (used to calculate delta)
 	
