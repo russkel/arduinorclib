@@ -40,9 +40,9 @@ public:
 	};
 	
 	/*! \brief Constructs a Curve object
-	    \param p_input Input source.
+	    \param p_source Input source.
 	    \param p_destination Where results should be written to.*/
-	Curve(Input p_input = Input_None, Input p_destination = Input_None);
+	Curve(Input p_source = Input_None, Input p_destination = Input_None);
 	
 	/*! \brief Sets a curve point.
 	    \param p_point The point to set, range [0 - Curve::PointCount-1].

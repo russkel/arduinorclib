@@ -9,6 +9,7 @@ Version 0.3
 - ADD: Aileron differential [#35]
 - ADD: FlycamOne support [#40]
 - ADD: Smooth transitions on switched [#33]
+- ADD: Throttle hold
 
 Version 0.2
 - BUG: Incorrect timings in PPMOut [#19]

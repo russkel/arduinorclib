@@ -22,6 +22,7 @@
 #include <InputOutputPipe.h>
 #include <PPMOut.h>
 #include <Swashplate.h>
+#include <ThrottleHold.h>
 #include <Timer1.h>
 #include <util.h>
 
@@ -54,17 +55,33 @@ rc::Curve g_pitCurve[2] = { rc::Curve(rc::Input_THR, rc::Input_PIT), rc::Curve(r
 rc::Curve g_thrCurve[2] = { rc::Curve(rc::Input_THR, rc::Input_THR), rc::Curve(rc::Input_THR, rc::Input_THR) };
 
 // throttle hold
-rc::Curve g_pitCurveHold  = rc::Curve(rc::Input_THR, rc::Input_PIT);
-int16_t   g_throttleHoldThrottle = -256;
+rc::Curve        g_pitCurveHold  = rc::Curve(rc::Input_THR, rc::Input_PIT);
+rc::ThrottleHold g_throttleHold(); // Default throttle level is -256, default in/output is THR
 
-// channel transformations
-rc::Channel g_channels[ChannelCount];
+// channel transformations, we can specify a source for the channel
+// This acts like "glue", we can tell a channel where to fetch its input from
+// Various functions write their output to predefined or user settable locations
+// A channel can fetch its input from these locations
+// Multiple channels may use the same input
+rc::Channel g_channels[ChannelCount] =
+{
+	rc::Channel(rc::Output_AIL1),
+	rc::Channel(rc::Output_ELE1),
+	rc::Channel(rc::Output_THR1),
+	rc::Channel(rc::Output_RUD1),
+	rc::Channel(rc::Output_GYR1),
+	rc::Channel(rc::Output_PIT)
+};
 
 // swashplate
 rc::Swashplate g_swash;
 
-// gyro
-rc::Gyro g_gyro[2];
+// gyro, we have two sets of settings, for each flightmode one
+rc::Gyro g_gyro[2] =
+{
+	rc::Gyro(rc::Output_GYR1), // Both need to write to the same output
+	rc::Gyro(rc::Output_GYR1)  // We only use the one of the active flightmode
+};
 
 // Channel values in microseconds
 uint16_t g_channelValues[ChannelCount] = {0};
@@ -116,9 +133,6 @@ void setup()
 	g_swash.setPitMix(50);
 	
 	// gyro settings
-	g_gyro[0].setDestination(rc::Output_GYR1); // both gyro's need to have the same output
-	g_gyro[1].setDestination(rc::Output_GYR1); // we want to use one at a time and the result on a single channel
-	
 	g_gyro[0].setType(rc::Gyro::Type_AVCS);
 	g_gyro[1].setType(rc::Gyro::Type_AVCS);
 	
@@ -140,18 +154,6 @@ void setup()
 	g_channelValues[4] = rc::normalizedToMicros(0);
 	g_channelValues[5] = rc::normalizedToMicros(0);
 	
-	// Set up channel mappings
-	// This acts like "glue", we can tell a channel where to fetch its input from
-	// Various functions write their output to predefined or user settable locations
-	// A channel can fetch its input from these locations
-	// Multiple channels may use the same input
-	g_channels[0].setInput(rc::Output_AIL1);
-	g_channels[1].setInput(rc::Output_ELE1);
-	g_channels[2].setInput(rc::Output_THR1);
-	g_channels[3].setInput(rc::Output_RUD1);
-	g_channels[4].setInput(rc::Output_GYR1);
-	g_channels[5].setInput(rc::Output_PIT);
-	
 	// set up PPM
 	g_PPMOut.setPulseLength(448);   // default pulse length used by Esky hardware
 	g_PPMOut.setPauseLength(10448); // default pause length used by Esky hardware
@@ -162,8 +164,8 @@ void setup()
 void loop()
 {
 	// read digital values
-	uint8_t flightmode   = g_dPins[0].read();
-	uint8_t throttleHold = g_dPins[1].read();
+	uint8_t flightmode   = g_dPins[0].read() ? 1 : 0;
+	bool    throttleHold = g_dPins[1].read();
 		
 	// read analog values, these write to the input system (AIL, ELE, THR and RUD)
 	g_aPins[0].read(); // aileron
@@ -188,8 +190,8 @@ void loop()
 	// we need to apply the pitch curve BEFORE modifying the throttle
 	if (throttleHold)
 	{
-		g_pitCurveHold.apply(); // reads from THR, writes to PIT
-		rc::setInput(Input_THR, g_throttleHoldThrottle); // overwrite THR
+		g_pitCurveHold.apply();     // reads from THR, writes to PIT
+		g_throttleHold.apply(true); // reads from THR, writes to THR
 	}
 	else
 	{
@@ -205,8 +207,8 @@ void loop()
 	// handle gyro, will write to output system (GYR1; see setup() )
 	g_gyro[flightmode].apply();
 	
-	// set rudder and throttle output, these need to be set manually
-	// take their input from input system (RUD and THR) and write to
+	// apply rudder and throttle mapping
+	// these take their input from input system (RUD and THR) and write to
 	// output system (RUD1 and THR1); see their declaration.
 	g_rudder.apply();
 	g_throttle.apply();

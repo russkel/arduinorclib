@@ -19,27 +19,15 @@ namespace rc
 
 // Public functions
 
-Channel::Channel(Output p_input)
+Channel::Channel(Output p_source)
 :
+OutputProcessor(p_source),
 m_reversed(false),
 m_epMin(100),
 m_epMax(100),
-m_subtrim(0),
-m_input(p_input)
+m_subtrim(0)
 {
 	
-}
-
-
-void Channel::setInput(Output p_input)
-{
-	m_input = p_input;
-}
-
-
-Output Channel::getInput() const
-{
-	return m_input;
 }
 
 
@@ -115,7 +103,7 @@ int16_t Channel::apply(int16_t p_value) const
 
 int16_t Channel::apply() const
 {
-	return apply(getOutput(m_input));
+	return apply(rc::getOutput(m_source));
 }
 
 

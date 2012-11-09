@@ -19,23 +19,23 @@ namespace rc
 
 // Public functions
 
-void InputProcessor::setInput(Input p_input)
+void InputProcessor::setSource(Input p_source)
 {
-	m_input = p_input;
+	m_source = p_source;
 }
 
 
-Input InputProcessor::getInput() const
+Input InputProcessor::getSource() const
 {
-	return m_input;
+	return m_source;
 }
 
 
 // Protected functions
 
-InputProcessor::InputProcessor(Input p_input)
+InputProcessor::InputProcessor(Input p_source)
 :
-m_input(p_input)
+m_source(p_source)
 {
 	
 }

@@ -3,15 +3,15 @@
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** InputOutputPipe.cpp
-** Class copying from input directly to output
+** OutputProcessor.cpp
+** Base class for classes taking output
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <InputOutputPipe.h>
+#include <OutputProcessor.h>
 
 
 namespace rc
@@ -19,21 +19,25 @@ namespace rc
 
 // Public functions
 
-InputOutputPipe::InputOutputPipe(Input p_source, Output p_destination)
-:
-InputProcessor(p_source),
-OutputSource(p_destination)
+void OutputProcessor::setSource(Output p_source)
 {
-	
+	m_source = p_source;
 }
 
 
-void InputOutputPipe::apply() const
+Output OutputProcessor::getSource() const
 {
-	if (m_source != Input_None)
-	{
-		writeOutputValue(rc::getInput(m_source));
-	}
+	return m_source;
+}
+
+
+// Protected functions
+
+OutputProcessor::OutputProcessor(Output p_source)
+:
+m_source(p_source)
+{
+	
 }
 
 

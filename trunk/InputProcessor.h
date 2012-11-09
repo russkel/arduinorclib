@@ -33,19 +33,19 @@ class InputProcessor
 {
 public:
 	/*! \brief Sets the input index.
-	    \param p_input Index to use as source input.*/
-	void setInput(Input p_input);
+	    \param p_source Index to use as source input.*/
+	void setSource(Input p_source);
 	
 	/*! \brief Gets the input index.
 	    \return Index currently used as source input.*/
-	Input getInput() const;
+	Input getSource() const;
 	
 protected:
 	/*! \brief Constructs an InputProcessor object
-	    \param p_input Index to use as source input.*/
-	InputProcessor(Input p_input = Input_None);
+	    \param p_source Index to use as source input.*/
+	InputProcessor(Input p_source = Input_None);
 	
-	Input m_input; //!< Index of input to use as source.
+	Input m_source; //!< Index of input to use as source.
 };
 
 
