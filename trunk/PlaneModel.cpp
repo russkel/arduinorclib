@@ -267,6 +267,16 @@ void PlaneModel::apply(int16_t p_ail, int16_t p_ele, int16_t p_rud, int16_t p_fl
 }
 
 
+void PlaneModel::apply()
+{
+	apply(getInput(Input_AIL),
+	      getInput(Input_ELE),
+	      getInput(Input_RUD),
+	      getInput(Input_FLP),
+	      getInput(Input_BRK));
+}
+
+
 // Private functions
 
 void PlaneModel::applyTail(int16_t p_ail, int16_t p_ele, int16_t p_rud)

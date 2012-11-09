@@ -217,6 +217,9 @@ public:
 	           int16_t p_flp,
 	           int16_t p_brk);
 	
+	/*! \brief Applies input from input system to the servos.*/
+	void apply();
+	
 private:
 	void applyTail(int16_t p_ail, int16_t p_ele, int16_t p_rud);
 	void applyRudder(int16_t p_rud);
