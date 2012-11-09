@@ -203,7 +203,7 @@ void FlycamOne::setCommand(Command p_command)
 	case Command_ChangeCamMode:      // FALL THROUGH
 	case Command_ChangeCamModeTwice: m_duration = Timing_CamMode;    break;
 	case Command_ChangeSensorMode:   m_duration = Timing_SensorMode; break;
-	case Timing_StartStop:           m_duration = Command_StartStop; break;
+	case Command_StartStop:          m_duration = Timing_StartStop;  break;
 	default:
 		m_duration = 0;
 		m_command  = Command_Idle;
