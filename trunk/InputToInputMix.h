@@ -35,10 +35,12 @@ class InputToInputMix : public InputProcessor, InputModifier
 public:
 	/*! \brief Constructs an InputToInputMix object
 	    \param p_mix The amount of mix to use, range [-100 - 100].
+	    \param p_abs Whether to use absolute values for master.
 	    \param p_source Input source: master.
 	    \param p_index Index the mix should be applied to: slave.*/
 	InputToInputMix(int8_t p_mix = 0,
 	                Input p_source = Input_None,
+	                bool p_abs = false,
 	                Input p_index = Input_None);
 	
 	/*! \brief Sets the amount of mix.
@@ -48,6 +50,14 @@ public:
 	/*! \brief Gets the amount of mix.
 	    \return The current amount of mix, range [-100 - 100].*/
 	int8_t getMix() const;
+	
+	/*! \brief Sets whether to use absolute values for master.
+	    \param p_abs Whether to use absolute values for master.*/
+	void setUseAbs(bool p_abs);
+	
+	/*! \brief Gets whether to use absolute values for master.
+	    \return Whether to use absolute values for master.*/
+	bool getUseAbs() const;
 	
 	/*! \brief Applies mix.
 	    \param p_master Value that will be mixed, range [-358 - 358].
@@ -60,6 +70,7 @@ public:
 	
 private:
 	int8_t m_mix; //!< Amount of mix to apply
+	bool   m_abs; //!< Whether to use absolute values for master.
 };
 /** \example inputtoinputmix_example.pde
  * This is an example of how to use the InputToInputMix class.

@@ -19,6 +19,7 @@ InputModifier	KEYWORD1
 InputOutputPipe	KEYWORD1
 InputProcessor	KEYWORD1
 InputSource	KEYWORD1
+InputToInputMix	KEYWORD1
 OutputSource	KEYWORD1
 OutputProcessor	KEYWORD1
 PlaneModel	KEYWORD1
