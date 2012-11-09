@@ -24,7 +24,7 @@ namespace rc
 
 /*! 
  *  \brief     Base class for classes acting as a source of input
- *  \details   If a class can modify provide input, derive from this.
+ *  \details   If a class can provide input, derive from this.
  *  \author    Daniel van den Ouden
  *  \date      Nov-2012
  *  \copyright Public Domain.

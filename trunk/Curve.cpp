@@ -19,9 +19,10 @@ namespace rc
 
 // Public functions
 
-Curve::Curve(Input p_input)
+Curve::Curve(Input p_input, Input p_destination)
 :
-InputProcessor(p_input)
+InputProcessor(p_input),
+InputSource(p_destination)
 {
 	// set up a linear curve by default
 	m_points[0] = -256;
@@ -81,7 +82,7 @@ int16_t Curve::apply(int16_t p_value) const
 	lowval  = lowval * (64 - rem);
 	highval = highval * rem;
 	
-	return (lowval + highval) >> 6; // weighted average
+	return writeInputValue((lowval + highval) >> 6); // weighted average
 }
 
 

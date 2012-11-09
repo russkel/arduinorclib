@@ -11,6 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
+#include <input.h>
 #include <output.h>
 #include <Swashplate.h>
 #include <util.h>
@@ -171,6 +172,12 @@ void Swashplate::apply(int16_t p_ail, int16_t p_ele, int16_t p_pit) const
 		}
 		break;
 	}
+}
+
+
+void Swashplate::apply() const
+{
+	apply(getInput(Input_AIL), getInput(Input_ELE), getInput(Input_PIT));
 }
 
 
