@@ -20,6 +20,7 @@ InputOutputPipe	KEYWORD1
 InputProcessor	KEYWORD1
 InputSource	KEYWORD1
 OutputSource	KEYWORD1
+OutputProcessor	KEYWORD1
 PlaneModel	KEYWORD1
 PPMIn	KEYWORD1
 PPMOut	KEYWORD1
@@ -27,6 +28,7 @@ Retracts	KEYWORD1
 ServoIn	KEYWORD1
 ServoOut	KEYWORD1
 Swashplate	KEYWORD1
+ThrottleHold	KEYWORD1
 Timer1	KEYWORD1
 rc	KEYWORD1
 

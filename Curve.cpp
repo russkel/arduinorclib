@@ -19,9 +19,9 @@ namespace rc
 
 // Public functions
 
-Curve::Curve(Input p_input, Input p_destination)
+Curve::Curve(Input p_source, Input p_destination)
 :
-InputProcessor(p_input),
+InputProcessor(p_source),
 InputSource(p_destination)
 {
 	// set up a linear curve by default
@@ -88,9 +88,9 @@ int16_t Curve::apply(int16_t p_value) const
 
 int16_t Curve::apply() const
 {
-	if (m_input != Input_None)
+	if (m_source != Input_None)
 	{
-		return apply(rc::getInput(m_input));
+		return apply(rc::getInput(m_source));
 	}
 }
 
