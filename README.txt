@@ -8,6 +8,7 @@ Version 0.3
 - BUG: PPMIn detects loss of signal [#34]
 - ADD: Aileron differential [#35]
 - ADD: FlycamOne support [#40]
+- ADD: Smooth transitions on switched [#33]
 
 Version 0.2
 - BUG: Incorrect timings in PPMOut [#19]
