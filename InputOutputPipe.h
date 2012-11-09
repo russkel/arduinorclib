@@ -40,7 +40,7 @@ public:
 	
 	/*! \brief Fetches input and writes output.*/
 	void apply() const;
-
+	
 };
 
 

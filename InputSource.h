@@ -39,7 +39,7 @@ public:
 	/*! \brief Gets the destination index.
 	    \return Index currently used destination for the input.*/
 	Input getDestination() const;
-
+	
 protected:
 	/*! \brief Constructs an InputSource object
 	    \param p_index Index to use as destination for the input.*/
@@ -49,8 +49,8 @@ protected:
 	    \param p_value Value to write.
 	    \return p_value.*/
 	int16_t writeInputValue(int16_t p_value) const;
-
-	Input m_destination;
+	
+	Input m_destination; //!< Index of input to use as destination.
 };
 
 
