@@ -102,6 +102,9 @@ public:
 	    \param p_pit The amount of pitch input, range 140% [-358 - 358].*/
 	void apply(int16_t p_ail, int16_t p_ele, int16_t p_pit) const;
 	
+	/*! \brief Applies swashplate mixing. Fetches input from input system.*/
+	void apply(int16_t p_ail, int16_t p_ele, int16_t p_pit) const;
+	
 private:
 	Type  m_type;    //!< Swashplate type
 	int8_t m_ailMix; //!< Amount of aileron mix

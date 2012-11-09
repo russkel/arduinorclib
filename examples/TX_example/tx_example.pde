@@ -19,6 +19,7 @@
 #include <DualRates.h>
 #include <Expo.h>
 #include <Gyro.h>
+#include <InputOutputPipe.h>
 #include <PPMOut.h>
 #include <Swashplate.h>
 #include <Timer1.h>
@@ -30,24 +31,30 @@ enum
 };
 
 // input related variables
-rc::AIPin g_aPins[4] = { rc::AIPin(A0), rc::AIPin(A1), rc::AIPin(A2), rc::AIPin(A3) };
+rc::AIPin g_aPins[4] = 
+{
+	rc::AIPin(A0, rc::Input_AIL), // we have to specify an input pint
+	rc::AIPin(A1, rc::Input_ELE), // and we can optionally specify an index in the centralized
+	rc::AIPin(A2, rc::Input_THR), // input buffer where results should be written to
+	rc::AIPin(A3, rc::Input_RUD)
+};
 rc::DIPin g_dPins[2] = { rc::DIPin(3), rc::DIPin(4) };
 
 // Expo/DR, we use one expo and one dr per control and per flightmode
-rc::Expo g_ailExpo[2] = {rc::Expo(-30), rc::Expo(-10)};
-rc::Expo g_eleExpo[2] = {rc::Expo(-30), rc::Expo(-10)};
-rc::Expo g_rudExpo[2] = {rc::Expo(-20), rc::Expo(0)};
+rc::Expo g_ailExpo[2] = {rc::Expo(-30, rc::Input_AIL), rc::Expo(-10, rc::Input_AIL)}; // also specify what index of the input
+rc::Expo g_eleExpo[2] = {rc::Expo(-30, rc::Input_ELE), rc::Expo(-10, rc::Input_ELE)}; // buffer the expo should work on (optionally)
+rc::Expo g_rudExpo[2] = {rc::Expo(-20, rc::Input_RUD), rc::Expo(0,   rc::Input_RUD)};
 
-rc::DualRates g_ailDR[2] = {rc::DualRates(80), rc::DualRates(100)};
-rc::DualRates g_eleDR[2] = {rc::DualRates(80), rc::DualRates(100)};
-rc::DualRates g_rudDR[2] = {rc::DualRates(80), rc::DualRates(100)};
+rc::DualRates g_ailDR[2] = {rc::DualRates(80, rc::Input_AIL), rc::DualRates(100, rc::Input_AIL)}; // also specify what index of the input
+rc::DualRates g_eleDR[2] = {rc::DualRates(80, rc::Input_ELE), rc::DualRates(100, rc::Input_ELE)}; // buffer the expo should work on (optionally)
+rc::DualRates g_rudDR[2] = {rc::DualRates(80, rc::Input_RUD), rc::DualRates(100, rc::Input_RUD)};
 
-// throttle and pitch curves
-rc::Curve g_thrCurve[2];
-rc::Curve g_pitCurve[2];
+// pitch and throttle curves, supply source and destination (both optional)
+rc::Curve g_pitCurve[2] = { rc::Curve(rc::Input_THR, rc::Input_PIT), rc::Curve(rc::Input_THR, rc::Input_PIT) };
+rc::Curve g_thrCurve[2] = { rc::Curve(rc::Input_THR, rc::Input_THR), rc::Curve(rc::Input_THR, rc::Input_THR) };
 
 // throttle hold
-rc::Curve g_pitCurveHold  = rc::Curve();
+rc::Curve g_pitCurveHold  = rc::Curve(rc::Input_THR, rc::Input_PIT);
 int16_t   g_throttleHoldThrottle = -256;
 
 // channel transformations
@@ -66,6 +73,10 @@ uint16_t g_channelValues[ChannelCount] = {0};
 uint8_t    g_PPMWork[PPMOUT_WORK_SIZE(ChannelCount)];
 rc::PPMOut g_PPMOut(ChannelCount, g_channelValues, g_PPMWork, ChannelCount);
 
+// Set up pipes for direct input to output copying
+rc::InputOutputPipe g_throttle(rc::Input_THR, rc::Output_THR1);
+rc::InputOutputPipe g_rudder(rc::Input_RUD, rc::Output_RUD1);
+
 
 void setup()
 {
@@ -79,13 +90,15 @@ void setup()
 	g_aPins[3].setCalibration( 67, 502,  924); // Left horizontal, rudder
 	g_aPins[3].setReverse(true);               // potentiometer mounted upside down
 	
-	// throttle curves
+	// by default curves are linear (from -256 to 256) so we only need to change those that aren't linear
+	
+	// throttle curves (normal throttle is linear, idle-up throttle is V shaped)
 	g_thrCurve[1][0] = 256;
 	g_thrCurve[1][1] = 192;
 	g_thrCurve[1][2] = 128;
 	g_thrCurve[1][3] = 64;
 	
-	// pitch curves
+	// pitch curves (normal pitch runs from 0 to 256, idle-up from -256 - 256)
 	g_pitCurve[0][0] = 0;
 	g_pitCurve[0][1] = 32;
 	g_pitCurve[0][2] = 64;
@@ -103,8 +116,8 @@ void setup()
 	g_swash.setPitMix(50);
 	
 	// gyro settings
-	g_gyro[0].setOutput(rc::Output_GYR1); // both gyro's need to have the same output
-	g_gyro[1].setOutput(rc::Output_GYR1); // we want to use one at a time and the result on a single channel
+	g_gyro[0].setDestination(rc::Output_GYR1); // both gyro's need to have the same output
+	g_gyro[1].setDestination(rc::Output_GYR1); // we want to use one at a time and the result on a single channel
 	
 	g_gyro[0].setType(rc::Gyro::Type_AVCS);
 	g_gyro[1].setType(rc::Gyro::Type_AVCS);
@@ -152,45 +165,51 @@ void loop()
 	uint8_t flightmode   = g_dPins[0].read();
 	uint8_t throttleHold = g_dPins[1].read();
 		
-	// read analog values
-	int16_t AIL = g_aPins[0].read(); // aileron
-	int16_t ELE = g_aPins[1].read(); // elevator
-	int16_t THR = g_aPins[2].read(); // throttle/pitch
-	int16_t RUD = g_aPins[3].read(); // rudder
+	// read analog values, these write to the input system (AIL, ELE, THR and RUD)
+	g_aPins[0].read(); // aileron
+	g_aPins[1].read(); // elevator
+	g_aPins[2].read(); // throttle/pitch
+	g_aPins[3].read(); // rudder
 	
-	// apply expo and dual rates to input
-	AIL = g_ailExpo[flightmode].apply(AIL);
-	AIL = g_ailDR[flightmode].apply(AIL);
+	// apply expo and dual rates to input, these read from and write to input system
+	g_ailExpo[flightmode].apply();
+	g_ailDR[flightmode].apply();
 	
-	ELE = g_eleExpo[flightmode].apply(ELE);
-	ELE = g_eleDR[flightmode].apply(ELE);
+	g_eleExpo[flightmode].apply();
+	g_eleDR[flightmode].apply();
 	
-	RUD = g_rudExpo[flightmode].apply(RUD);
-	RUD = g_rudDR[flightmode].apply(RUD);
-	
-	int16_t PIT = THR; // same stick
+	g_rudExpo[flightmode].apply();
+	g_rudDR[flightmode].apply();
 	
 	// apply pitch and throttle curves and handle throttle hold
+	// A quick but important note here
+	// Because the throttle curve overwrites the throttle input value
+	// and the pitch curve also uses the throttle input as source
+	// we need to apply the pitch curve BEFORE modifying the throttle
 	if (throttleHold)
 	{
-		THR = g_throttleHoldThrottle;
-		PIT = g_pitCurveHold.apply(PIT);
+		g_pitCurveHold.apply(); // reads from THR, writes to PIT
+		rc::setInput(Input_THR, g_throttleHoldThrottle); // overwrite THR
 	}
 	else
 	{
-		THR = g_thrCurve[flightmode].apply(THR);
-		PIT = g_pitCurve[flightmode].apply(PIT);
+		g_pitCurve[flightmode].apply(); // reads from THR, writes to PIT
+		g_thrCurve[flightmode].apply(); // reads from THR, writes to THR
 	}
 	
-	// apply swashplate mixing, will write to output system (AIL1, ELE1 and PIT)
-	g_swash.apply(AIL, ELE, PIT);
+	// apply swashplate mixing,
+	// will read from input system (AIL, ELE and PIT)
+	// will write to output system (AIL1, ELE1 and PIT (and ELE2 for four servo setup))
+	g_swash.apply();
 	
 	// handle gyro, will write to output system (GYR1; see setup() )
 	g_gyro[flightmode].apply();
 	
 	// set rudder and throttle output, these need to be set manually
-	rc::setOutput(rc::Output_RUD1, RUD);
-	rc::setOutput(rc::Output_THR1, THR);
+	// take their input from input system (RUD and THR) and write to
+	// output system (RUD1 and THR1); see their declaration.
+	g_rudder.apply();
+	g_throttle.apply();
 	
 	// perform channel transformations and set channel values
 	for (uint8_t i = 0; i < ChannelCount; ++i)

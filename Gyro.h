@@ -16,7 +16,7 @@
 
 #include <inttypes.h>
 
-#include <output.h>
+#include <OutputSource.h>
 
 
 namespace rc
@@ -29,7 +29,7 @@ namespace rc
  *  \date      Feb-2012
  *  \copyright Public Domain.
  */
-class Gyro
+class Gyro : public OutputSource
 {
 public:
 	enum Type //! Type of gyro
@@ -48,14 +48,6 @@ public:
 	/*! \brief Constructs a Gyro object
 	    \param p_output Output destination.*/
 	Gyro(Output p_output = Output_None);
-	
-	/*! \brief Sets Output destination
-	    \param p_output Output destination to set.*/
-	void setOutput(Output p_output);
-	
-	/*! \brief Gets Output destination.
-	    \return The gyro Output destination currently set.*/
-	Output getOutput() const;
 	
 	/*! \brief Sets gyro type
 	    \param p_type Gyro mode to set.*/
@@ -98,7 +90,6 @@ private:
 	Type   m_type;   //!< Gyro type
 	Mode   m_mode;   //!< Mode of operation (in case of AVCS type)
 	int8_t m_gain;   //!< Gain [0 - 100]
-	Output m_output; //!< Output destination
 };
 /** \example gyro_example.pde
  * This is an example of how to use the Gyro class.

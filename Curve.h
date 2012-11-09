@@ -17,6 +17,7 @@
 #include <inttypes.h>
 
 #include <InputProcessor.h>
+#include <InputSource.h>
 
 
 namespace rc
@@ -29,7 +30,7 @@ namespace rc
  *  \date      Feb-2012
  *  \copyright Public Domain.
  */
-class Curve : public InputProcessor
+class Curve : public InputProcessor, InputSource
 {
 public:
 	/*! \brief Nameless enum, magic number hiding. */
@@ -39,8 +40,9 @@ public:
 	};
 	
 	/*! \brief Constructs a Curve object
-	    \param p_input Input source.*/
-	Curve(Input p_input = Input_None);
+	    \param p_input Input source.
+	    \param p_destination Where results should be written to.*/
+	Curve(Input p_input = Input_None, Input p_destination = Input_None);
 	
 	/*! \brief Sets a curve point.
 	    \param p_point The point to set, range [0 - Curve::PointCount-1].
