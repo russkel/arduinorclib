@@ -112,3 +112,6 @@ Input_RUD	LITERAL1
 Input_FLP	LITERAL1
 Input_BRK	LITERAL1
 Input_PIT	LITERAL1
+DefaultCurve_Linear	LITERAL1
+DefaultCurve_HalfLinear	LITERAL1
+DefaultCurve_V	LITERAL1

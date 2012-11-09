@@ -11,29 +11,36 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
+#include <avr/pgmspace.h>
+
 #include <Curve.h>
 
 
 namespace rc
 {
 
+static const int16_t PROGMEM sc_defaults[DefaultCurve_Count][PointCount] =
+{
+	{-256, -192, -128, -64,   0,  64, 128, 192, 256}, // DefaultCurve_Linear
+	{   0,   32,   64,  96, 128, 160, 192, 224, 256}, // DefaultCurve_HalfLinear
+	{ 256,  192,  128,  64,   0,  64, 128, 192, 256}  // DefaultCurve_V
+};
+
+
 // Public functions
 
-Curve::Curve(Input p_source, Input p_destination)
+Curve::Curve(DefaultCurve p_curve, Input p_source, Input p_destination)
 :
 InputProcessor(p_source),
 InputSource(p_destination)
 {
-	// set up a linear curve by default
-	m_points[0] = -256;
-	m_points[1] = -192;
-	m_points[2] = -128;
-	m_points[3] = -64;
-	m_points[4] = 0;
-	m_points[5] = 64;
-	m_points[6] = 128;
-	m_points[7] = 192;
-	m_points[8] = 256;
+	loadCurve(p_curve);
+}
+
+
+void Curve::loadCurve(DefaultCurve p_curve)
+{
+	memcpy_P(m_points, sc_defaults[p_curve], sizeof(int16_t) * PointCount);
 }
 
 

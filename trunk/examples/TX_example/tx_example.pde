@@ -51,11 +51,19 @@ rc::DualRates g_eleDR[2] = {rc::DualRates(80, rc::Input_ELE), rc::DualRates(100,
 rc::DualRates g_rudDR[2] = {rc::DualRates(80, rc::Input_RUD), rc::DualRates(100, rc::Input_RUD)};
 
 // pitch and throttle curves, supply source and destination (both optional)
-rc::Curve g_pitCurve[2] = { rc::Curve(rc::Input_THR, rc::Input_PIT), rc::Curve(rc::Input_THR, rc::Input_PIT) };
-rc::Curve g_thrCurve[2] = { rc::Curve(rc::Input_THR, rc::Input_THR), rc::Curve(rc::Input_THR, rc::Input_THR) };
+rc::Curve g_pitCurve[2] =
+{
+	rc::Curve(rc::Curve::DefaultCurve_HalfLinear, rc::Input_THR, rc::Input_PIT), // normal curve, only positive pitch
+	rc::Curve(rc::Curve::DefaultCurve_Linear,     rc::Input_THR, rc::Input_PIT)  // idle up curve
+};
+rc::Curve g_thrCurve[2] =
+{
+	rc::Curve(rc::Curve::DefaultCurve_Linear, rc::Input_THR, rc::Input_THR), // normal curve
+	rc::Curve(rc::Curve::DefaultCurve_V,      rc::Input_THR, rc::Input_THR)  // idle up curve, V shaped
+};
 
 // throttle hold
-rc::Curve        g_pitCurveHold  = rc::Curve(rc::Input_THR, rc::Input_PIT);
+rc::Curve        g_pitCurveHold = rc::Curve(rc::Curve::DefaultCurve_Linear, rc::Input_THR, rc::Input_PIT);
 rc::ThrottleHold g_throttleHold(); // Default throttle level is -256, default in/output is THR
 
 // channel transformations, we can specify a source for the channel
@@ -106,25 +114,6 @@ void setup()
 	g_aPins[2].setCalibration( 27, 435,  834); // Left vertical, throttle
 	g_aPins[3].setCalibration( 67, 502,  924); // Left horizontal, rudder
 	g_aPins[3].setReverse(true);               // potentiometer mounted upside down
-	
-	// by default curves are linear (from -256 to 256) so we only need to change those that aren't linear
-	
-	// throttle curves (normal throttle is linear, idle-up throttle is V shaped)
-	g_thrCurve[1][0] = 256;
-	g_thrCurve[1][1] = 192;
-	g_thrCurve[1][2] = 128;
-	g_thrCurve[1][3] = 64;
-	
-	// pitch curves (normal pitch runs from 0 to 256, idle-up from -256 - 256)
-	g_pitCurve[0][0] = 0;
-	g_pitCurve[0][1] = 32;
-	g_pitCurve[0][2] = 64;
-	g_pitCurve[0][3] = 96;
-	g_pitCurve[0][4] = 128;
-	g_pitCurve[0][5] = 160;
-	g_pitCurve[0][6] = 192;
-	g_pitCurve[0][7] = 224;
-	g_pitCurve[0][8] = 256;
 	
 	// swashplate settings
 	g_swash.setType(rc::Swashplate::Type_HR3);

@@ -29,6 +29,8 @@ void setup()
 	// in this case we don't need to set the rest of the values since they're
 	// already correct, so our final curve looks like
 	// 256, 192, 128, 64, 0, 64, 128, 192, 256
+	// we could also load the default V curve (which is identical) like this:
+	g_curve.loadCurve(rc::Curve::DefaultCurve_V);
 }
 
 void loop()
