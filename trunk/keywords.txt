@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For TX
+# Syntax Coloring Map For ArduinoRCLib
 #######################################
 
 #######################################
@@ -9,11 +9,17 @@
 AIPin	KEYWORD1
 Channel	KEYWORD1
 Curve	KEYWORD1
+DAIPin	KEYWORD1
 DIPin	KEYWORD1
 DualRates	KEYWORD1
 Expo	KEYWORD1
 FlycamOne	KEYWORD1
 Gyro	KEYWORD1
+InputModifier	KEYWORD1
+InputOutputPipe	KEYWORD1
+InputProcessor	KEYWORD1
+InputSource	KEYWORD1
+OutputSource	KEYWORD1
 PlaneModel	KEYWORD1
 PPMIn	KEYWORD1
 PPMOut	KEYWORD1
@@ -97,3 +103,10 @@ CamMode_Serial	LITERAL1
 CamMode_Photo	LITERAL1
 SensorMode_Normal	LITERAL1
 SensorMode_Flipped	LITERAL1
+Input_AIL	LITERAL1
+Input_ELE	LITERAL1
+Input_THR	LITERAL1
+Input_RUD	LITERAL1
+Input_FLP	LITERAL1
+Input_BRK	LITERAL1
+Input_PIT	LITERAL1
