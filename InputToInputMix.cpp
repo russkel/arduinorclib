@@ -25,7 +25,7 @@ InputToInputMix::InputToInputMix(int8_t p_mix, bool p_abs, Input p_source, Input
 InputProcessor(p_source),
 InputModifier(p_index),
 m_mix(p_mix),
-m_abs(p_abc)
+m_abs(p_abs)
 {
 	
 }

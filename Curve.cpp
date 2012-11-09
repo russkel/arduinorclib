@@ -19,7 +19,7 @@
 namespace rc
 {
 
-static const int16_t PROGMEM sc_defaults[DefaultCurve_Count][PointCount] =
+static const int16_t PROGMEM sc_defaults[Curve::DefaultCurve_Count][Curve::PointCount] =
 {
 	{-256, -192, -128, -64,   0,  64, 128, 192, 256}, // DefaultCurve_Linear
 	{   0,   32,   64,  96, 128, 160, 192, 224, 256}, // DefaultCurve_HalfLinear

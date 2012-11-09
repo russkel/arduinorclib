@@ -17,7 +17,7 @@
 #include <inttypes.h>
 
 #include <InputProcessor.h>
-#include <InputSource.h>
+#include <InputModifier.h>
 
 
 namespace rc
@@ -39,8 +39,8 @@ public:
 	    \param p_source Input source: master.
 	    \param p_index Index the mix should be applied to: slave.*/
 	InputToInputMix(int8_t p_mix = 0,
-	                Input p_source = Input_None,
 	                bool p_abs = false,
+	                Input p_source = Input_None,
 	                Input p_index = Input_None);
 	
 	/*! \brief Sets the amount of mix.

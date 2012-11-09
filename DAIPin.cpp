@@ -18,6 +18,7 @@
 #endif
 
 #include <DAIPin.h>
+#include <util.h>
 
 
 namespace rc
@@ -25,7 +26,7 @@ namespace rc
 
 // Public functions
 
-DAIPin::DAIPin(uint8_t p_pin, Input p_destination = Input_None)
+DAIPin::DAIPin(uint8_t p_pin, Input p_destination)
 :
 DIPin(p_pin),
 InputSource(p_destination),
@@ -54,13 +55,13 @@ void DAIPin::setDuration(uint16_t p_duration)
 }
 
 
-int16_t DAIPin::getDuration() const
+uint16_t DAIPin::getDuration() const
 {
 	return m_duration;
 }
 
 
-int16_t DAIPin::update() const
+int16_t DAIPin::update()
 {
 	uint16_t now = static_cast<uint16_t>(millis());
 	uint16_t delta = now - m_lastTime;
@@ -71,7 +72,7 @@ int16_t DAIPin::update() const
 		// move up
 		if (m_duration == 0)
 		{
-			return writeOutputValue(256);
+			return writeInputValue(256);
 		}
 		
 		m_time += delta;
@@ -87,7 +88,7 @@ int16_t DAIPin::update() const
 		// move down
 		if (m_duration == 0)
 		{
-			return writeOutputValue(-256);
+			return writeInputValue(-256);
 		}
 		
 		// clamp
@@ -100,7 +101,7 @@ int16_t DAIPin::update() const
 			m_time -= delta;
 		}
 	}
-	return writeOutputValue(rangeToNormalized(m_time, m_duration));
+	return writeInputValue(rc::rangeToNormalized(m_time, m_duration));
 }
 
 

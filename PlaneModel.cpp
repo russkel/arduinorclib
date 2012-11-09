@@ -16,6 +16,7 @@
 	#include <wiring.h>
 #endif
 
+#include <input.h>
 #include <PlaneModel.h>
 #include <util.h>
 
