@@ -39,13 +39,13 @@ public:
 	/*! \brief Gets the input index.
 	    \return Index currently used as source input.*/
 	Input getIndex() const;
-
+	
 protected:
 	/*! \brief Constructs a InputModifier object
 	    \param p_index Index to use as source input.*/
 	InputModifier(Input p_index = Input_None);
-
-	Input m_index;
+	
+	Input m_index; //!< Index of input to perform modification on
 };
 
 

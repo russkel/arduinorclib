@@ -34,8 +34,8 @@ class AIPin : public InputSource
 public:
 	/*! \brief Constructs an AIPin object.
 	    \param p_pin The hardware pin to use.
-	    \param p_output The index to use as destination.*/
-	AIPin(uint8_t p_pin, Input p_index = Input_None);
+	    \param p_destination The index to use as destination.*/
+	AIPin(uint8_t p_pin, Input p_destination = Input_None);
 	
 	/*! \brief Sets the hardware pin to use.
 	    \param p_pin The hardware pin to use.*/

@@ -42,7 +42,7 @@ public:
 		Type_H4X,  //!< Same as H4 but rotated 45 deg ccw
 		Type_Count
 	};
-
+	
 	
 	/*! \brief Constructs a Swashplate object
 	*/
@@ -103,7 +103,7 @@ public:
 	void apply(int16_t p_ail, int16_t p_ele, int16_t p_pit) const;
 	
 	/*! \brief Applies swashplate mixing. Fetches input from input system.*/
-	void apply(int16_t p_ail, int16_t p_ele, int16_t p_pit) const;
+	void apply() const;
 	
 private:
 	Type  m_type;    //!< Swashplate type

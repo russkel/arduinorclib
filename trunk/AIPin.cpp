@@ -25,9 +25,9 @@ namespace rc
 
 // Public functions
 
-AIPin::AIPin(uint8_t p_pin, Input p_index)
+AIPin::AIPin(uint8_t p_pin, Input p_destination)
 :
-InputSource(p_index),
+InputSource(p_destination),
 m_reversed(false),
 m_trim(0),
 m_center(511),

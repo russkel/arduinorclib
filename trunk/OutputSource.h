@@ -39,7 +39,7 @@ public:
 	/*! \brief Gets the destination index.
 	    \return Index currently used destination for the output.*/
 	Output getDestination() const;
-
+	
 protected:
 	/*! \brief Constructs an OutputSource object
 	    \param p_index Index to use as destination for the output.*/
@@ -49,8 +49,8 @@ protected:
 	    \param p_value Value to write.
 	    \return p_value.*/
 	int16_t writeOutputValue(int16_t p_value) const;
-
-	Output m_destination;
+	
+	Output m_destination; //!< Index of output to use as destination
 };
 
 
