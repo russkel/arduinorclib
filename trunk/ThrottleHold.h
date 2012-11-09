@@ -35,7 +35,7 @@ public:
 	/*! \brief Constructs a ThrottleHold object
 	    \param p_throttle The throttle level during hold, range [-256 - 256].
 	    \param p_index Input index to use for input and output.*/
-	ThrottleHold(int16_t p_throttle = -256, Input p_index = Input_Thr);
+	ThrottleHold(int16_t p_throttle = -256, Input p_index = Input_THR);
 	
 	
 	/*! \brief Sets the throttle level during hold.
