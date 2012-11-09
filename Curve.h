@@ -39,10 +39,26 @@ public:
 		PointCount = 9 //!< Amount of points in the curve
 	};
 	
+	enum DefaultCurve //! Default curves
+	{
+		DefaultCurve_Linear,     //!< Linear curve [-256 - 256]
+		DefaultCurve_HalfLinear, //!< Half linear curve [0 - 256]
+		DefaultCurve_V,          //!< V shaped curve [256 - 0 - 256]
+		
+		DefaultCurve_Count
+	};
+	
 	/*! \brief Constructs a Curve object
+	    \param p_curve Default curve to initialize with.
 	    \param p_source Input source.
 	    \param p_destination Where results should be written to.*/
-	Curve(Input p_source = Input_None, Input p_destination = Input_None);
+	Curve(DefaultCurve p_curve = DefaultCurve_Linear,
+	      Input p_source = Input_None,
+	      Input p_destination = Input_None);
+	
+	/*! \brief Loads a default curve.
+	    \param p_curve Curve to load.*/
+	void loadCurve(DefaultCurve p_curve);
 	
 	/*! \brief Sets a curve point.
 	    \param p_point The point to set, range [0 - Curve::PointCount-1].
