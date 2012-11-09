@@ -67,6 +67,18 @@ uint16_t PPMIn::getPauseLength() const
 }
 
 
+void PPMIn::setTimeout(uint16_t p_length)
+{
+	m_timeout = p_length;
+}
+
+
+uint16_t PPMIn::getTimeout() const
+{
+	return m_timeout;
+}
+
+
 bool PPMIn::isStable() const
 {
 	return m_state == State_Stable;
