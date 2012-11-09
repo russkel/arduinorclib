@@ -33,7 +33,7 @@ uint8_t  g_work[SERVOOUT_WORK_SIZE(SERVOS)]; // we need to have a work buffer fo
 rc::ServoOut g_ServoOut(g_pinsOut, g_input, g_work, SERVOS);
 
 // FlycamOne object
-rc::FlycamOne g_cam();
+rc::FlycamOne g_cam;
 
 // We use a digital input pin as a switch
 rc::DIPin g_switch(3);
