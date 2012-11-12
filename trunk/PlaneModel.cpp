@@ -38,7 +38,7 @@ m_ailDiff(0),
 m_wingletDiff(0),
 m_elevonAil(50),
 m_elevonEle(50),
-m_ailevator(0),
+m_ailevator(50),
 m_ailevatorDiff(0),
 m_vtailEle(50),
 m_vtailRud(50)
