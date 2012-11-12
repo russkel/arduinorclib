@@ -65,7 +65,7 @@ rc::Curve g_thrCurve[2] =
 
 // throttle hold
 rc::Curve        g_pitCurveHold = rc::Curve(rc::Curve::DefaultCurve_Linear, rc::Input_THR, rc::Input_PIT);
-rc::ThrottleHold g_throttleHold(); // Default throttle level is -256, default in/output is THR
+rc::ThrottleHold g_throttleHold; // Default throttle level is -256, default in/output is THR
 
 // channel transformations, we can specify a source for the channel
 // This acts like "glue", we can tell a channel where to fetch its input from

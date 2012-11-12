@@ -72,11 +72,11 @@ void setup()
 	// Consult PlaneModel.h to see which servos are used for each configuration.
 	// The cool thing is that you can tell a Channel object to fetch its input
 	// from the output buffer; you simply tell it which index to use.
-	g_channels[0].setInput(rc::Output_AIL1); // First aileron servo
-	g_channels[1].setInput(rc::Output_AIL2); // Second aileron servo
-	g_channels[2].setInput(rc::Output_ELE1); // First (and in our case, only) elevator servo
-	g_channels[3].setInput(rc::Output_RUD1); // First (and in our case, only) rudder servo
-	g_channels[4].setInput(rc::Output_FLP1); // First (and in our case, only) flap servo
+	g_channels[0].setSource(rc::Output_AIL1); // First aileron servo
+	g_channels[1].setSource(rc::Output_AIL2); // Second aileron servo
+	g_channels[2].setSource(rc::Output_ELE1); // First (and in our case, only) elevator servo
+	g_channels[3].setSource(rc::Output_RUD1); // First (and in our case, only) rudder servo
+	g_channels[4].setSource(rc::Output_FLP1); // First (and in our case, only) flap servo
 	// It's also possible to have multiple channels share the same rc::Output_XXXN,
 	// each channel still has its own subtrim, endpoints and reverse settings.
 	// For example you may have have multiple landing gear servos, they'll all share
