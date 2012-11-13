@@ -13,8 +13,10 @@
 
 #include <AIPin.h>
 
-// we create an AIPin on analog pin A0 by simply specifying the pin number
-rc::AIPin g_pin(A0);
+// We create an AIPin on analog pin A0 by simply specifying the pin number
+// The second parameter is optional, it specifies a destination in the
+// input system, in this case Aileron input.
+rc::AIPin g_pin(A0, rc::Input_AIL);
 
 void setup()
 {
@@ -38,5 +40,11 @@ void loop()
 	// and if it's 940 or above it'll return 256.
 	// if it's anywhere in between it'll map it linearly.
 	// we can then use the value for further modification
-	// or we can transmit it using the PPMOut class
+	
+	// you can also get the value using the input system:
+	normalized = rc::getInput(rc::Input_AIL);
+	// various classes can perform transformations on the input system
+	// for example Curve, DualRate, Expo and InputToInputMix
+	// other classes can use the input system as source of their parameters
+	// like the Swashplate and PlaneModel classes
 }

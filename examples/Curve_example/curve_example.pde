@@ -30,7 +30,13 @@ void setup()
 	// already correct, so our final curve looks like
 	// 256, 192, 128, 64, 0, 64, 128, 192, 256
 	// we could also load the default V curve (which is identical) like this:
-	g_curve.loadCurve(rc::Curve::DefaultCurve_V);
+	// g_curve.loadCurve(rc::Curve::DefaultCurve_V);
+	
+	// it is also possible to use Curves in combination with the input system
+	// you can specify a source and destination (which may be the same)
+	// g_curve.setSource(rc::Input_AIL);
+	// g_curve.setDestination(rc::Input_AIL);
+	// you can also specify the source and destination as a constructor parameter
 }
 
 void loop()
@@ -41,6 +47,11 @@ void loop()
 	
 	// and apply the curve
 	normalized = g_curve.apply(normalized);
+	
+	// if you had used the input system you would not have needed to specify any parameters
+	// g_curve.apply();
+	// will get it's input from the input system and write it back to the input system
+	// it'll still return the result though, in case you want it or didn't specify a destination
 	
 	// we can then use the transformed value for further modification
 	// or we can transmit it using the PPMOut class
