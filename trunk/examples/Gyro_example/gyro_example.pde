@@ -20,6 +20,11 @@ void setup()
 {
 	// set up the gyro type, heading hold type in this case
 	g_gyro.setType(rc::Gyro::Type_AVCS);
+	
+	// you can also use Gyro in combination with the output system
+	// g_gyro.setDestination(rc::Output_GYR1);
+	// or specify it in the constructor
+	// results will be written to the output system
 }
 
 void loop()
@@ -36,6 +41,10 @@ void loop()
 	
 	// get the normalized channel value corresponding to the mode and gain
 	int16_t chGyro = g_gyro.apply();
+	
+	// when using the output system, you can also get the result using
+	// rc::getOutput(rc::Output_GYR1);
+	// or use a Channel which uses Output_GYR1 as source!
 	
 	// we can now transmit this value using the PPMOut class
 }

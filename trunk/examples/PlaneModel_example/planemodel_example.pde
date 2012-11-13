@@ -45,10 +45,12 @@ rc::PlaneModel g_plane;
 // We use a digital input pin as a switch for the flaps, you could also use an analog input
 rc::DIPin g_flp(7);
 
-// And we use three analog input pins for controls
-rc::AIPin g_ail(A0);
-rc::AIPin g_ele(A1);
-rc::AIPin g_rud(A2);
+// And we use three analog input pins for controls, we'll also use the input system
+// so we specify their destinations
+rc::AIPin g_ail(A0, rc::Input_AIL);
+rc::AIPin g_ele(A1, rc::Input_ELE);
+rc::AIPin g_rud(A2, rc::Input_RUD);
+// PlaneModel also uses Input_FLP and Input_BRK, we'll handle those later
 
 // we can use some Channels here to set endpoints, or reverse actions
 rc::Channel g_channels[SERVOS];
@@ -108,13 +110,21 @@ void loop()
 	// Set a certain amount of flap if the flap switch is flicked, 0 otherwise
 	int16_t flp = g_flp.read() ? 64 : 0;
 	
-	// Read input
-	int16_t ail = g_ail.read();
-	int16_t ele = g_ele.read();
-	int16_t rud = g_rud.read();
+	// Read input, we don't need to catch the result
+	// they're stored in the input system
+	g_ail.read(); // writes to Input_AIL
+	g_ele.read(); // writes to Input_ELE
+	g_rud.read(); // writes to Input_RUD
+	
+	// we also need to place the flap input in the input system
+	rc::setInput(rc::Input_FLP, flp);
+	
+	// and we need some value for the airbrake, we'll just set it to 0
+	rc::setInput(rc::Input_BRF, 0);
 	
 	// apply input to the model
-	g_plane.apply(ail, ele, rud, flp, 0); // we have no air brake, so just pass 0
+	g_plane.apply();
+	// you can also specify aileron, elevator, rudder, flap and brake manually as parameters
 	
 	// That's all there's to it.
 	// You can now get the values using rc::getOutput()
