@@ -35,10 +35,20 @@ void loop()
 	int16_t ele = map(analogRead(A1), 0, 1024, -256, 256);
 	int16_t pit = map(analogRead(A2), 0, 1024, -256, 256);
 	
-	int16_t dummy; // we need a dummy value
+	// when using the input system, first write the input to the input system
+	// rc::setInput(rc::Input_AIL, ail);
+	// rc::setInput(rc::Input_ELE, ele);
+	// rc::setInput(rc::Input_PIT, pit);
 	
 	// apply swashplate mixing
-	g_swash.apply(ail, ele, pit, ail, ele, pit, dummy);
+	g_swash.apply(ail, ele, pit);
+	// when using the input system, a simple g_swash.apply(); would have been enough
+	
+	// results have been writen to the output system
+	// rc::getOutput(rc::Output_AIL1);
+	// rc::getOutput(rc::Output_ELE1);
+	// rc::getOutput(rc::Output_PIT);
+	// rc::getOutput(rc::Output_ELE2); (for four servo setups)
 	
 	// we can then use the transformed values for further modification
 	// or we can transmit them using the PPMOut class

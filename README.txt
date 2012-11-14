@@ -8,7 +8,7 @@ Version 0.3
 - BUG: PPMIn detects loss of signal [#34]
 - ADD: Aileron differential [#35]
 - ADD: FlycamOne support [#40]
-- ADD: Smooth transitions on switched [#33]
+- ADD: Smooth transitions on switches [#33]
 - ADD: Throttle hold
 - ADD: Input to input mix [#31]
 
