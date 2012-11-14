@@ -34,8 +34,8 @@ m_doorsSpeed(100),
 m_gearSpeed(100),
 m_delay(0),
 m_lastTime(0),
-m_moveTo(0),
 m_time(0),
+m_moveTo(0),
 m_doorsStart(0),
 m_gearStart(0),
 m_doorsEnd(m_doorsSpeed),
@@ -204,7 +204,7 @@ void Retracts::update()
 	{
 		doorsTime = 0;
 	}
-	else if (doorsTime > m_doorsSpeed)
+	else if (static_cast<uint16_t>(doorsTime) > m_doorsSpeed)
 	{
 		doorsTime = m_doorsSpeed;
 	}
@@ -214,7 +214,7 @@ void Retracts::update()
 	{
 		gearTime = 0;
 	}
-	else if (gearTime > m_gearSpeed)
+	else if (static_cast<uint16_t>(gearTime) > m_gearSpeed)
 	{
 		gearTime = m_gearSpeed;
 	}

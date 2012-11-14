@@ -48,16 +48,16 @@ rc::Expo g_eleExpo[2] = {rc::Expo(-30, rc::Input_ELE), rc::Expo(-10, rc::Input_E
 rc::Expo g_rudExpo[2] = {rc::Expo(-20, rc::Input_RUD), rc::Expo(0,   rc::Input_RUD)};
 
 rc::DualRates g_ailDR[2] = {rc::DualRates(80, rc::Input_AIL), rc::DualRates(100, rc::Input_AIL)}; // also specify what index of the input
-rc::DualRates g_eleDR[2] = {rc::DualRates(80, rc::Input_ELE), rc::DualRates(100, rc::Input_ELE)}; // buffer the expo should work on (optionally)
-rc::DualRates g_rudDR[2] = {rc::DualRates(80, rc::Input_RUD), rc::DualRates(100, rc::Input_RUD)};
+rc::DualRates g_eleDR[2] = {rc::DualRates(80, rc::Input_ELE), rc::DualRates(100, rc::Input_ELE)}; // buffer the dual rates
+rc::DualRates g_rudDR[2] = {rc::DualRates(80, rc::Input_RUD), rc::DualRates(100, rc::Input_RUD)}; // should work on (optionally)
 
 // pitch and throttle curves, supply source and destination (both optional)
-rc::Curve g_pitCurve[2] =
+rc::Curve g_pitCurve[2] = // we'll use throttle as source and pitch as destination
 {
 	rc::Curve(rc::Curve::DefaultCurve_HalfLinear, rc::Input_THR, rc::Input_PIT), // normal curve, only positive pitch
 	rc::Curve(rc::Curve::DefaultCurve_Linear,     rc::Input_THR, rc::Input_PIT)  // idle up curve
 };
-rc::Curve g_thrCurve[2] =
+rc::Curve g_thrCurve[2] = // we'll use throttle as both source and destination
 {
 	rc::Curve(rc::Curve::DefaultCurve_Linear, rc::Input_THR, rc::Input_THR), // normal curve
 	rc::Curve(rc::Curve::DefaultCurve_V,      rc::Input_THR, rc::Input_THR)  // idle up curve, V shaped
@@ -135,12 +135,13 @@ void setup()
 	g_gyro[0].setMode(rc::Gyro::Mode_Normal);
 	g_gyro[1].setMode(rc::Gyro::Mode_AVCS);
 	
-	g_gyro[0] = 50;
-	g_gyro[1] = 75;
+	g_gyro[0] = 50; // set gyro gain to 50%
+	g_gyro[1] = 75; // set gyro gain to 75%
 	
 	// set up normalized -> microseconds conversion
-	rc::setCenter(1520);
-	rc::setTravel(600);
+	rc::setCenter(1520); // servo center point
+	rc::setTravel(600);  // max servo travel from center point
+	// our output signal will lie between 920 and 2120 microseconds (1520 +/- 600)
 	
 	// fill channel values buffer with sane values, all centered
 	g_channelValues[0] = rc::normalizedToMicros(0);

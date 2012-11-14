@@ -19,6 +19,9 @@
 namespace rc
 {
 
+// NOTE: this may give a warning:
+// warning: only initialized variables can be placed into program memory area
+// this may be safely ignored, it's a known compiler bug in arvgcc (which won't happen for .c files)
 static const int16_t PROGMEM sc_defaults[Curve::DefaultCurve_Count][Curve::PointCount] =
 {
 	{-256, -192, -128, -64,   0,  64, 128, 192, 256}, // DefaultCurve_Linear
@@ -99,6 +102,7 @@ int16_t Curve::apply() const
 	{
 		return apply(rc::getInput(m_source));
 	}
+	return 0;
 }
 
 

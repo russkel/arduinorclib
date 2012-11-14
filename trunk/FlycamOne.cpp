@@ -106,6 +106,7 @@ bool FlycamOne::startRecording()
 		return false;
 	}
 	setCommand(Command_StartStop);
+	return true;
 }
 
 
@@ -116,6 +117,7 @@ bool FlycamOne::stopRecording()
 		return false;
 	}
 	setCommand(Command_StartStop);
+	return true;
 }
 
 
@@ -132,6 +134,7 @@ bool FlycamOne::takePhoto()
 		return false;
 	}
 	setCommand(Command_StartStop);
+	return true;
 }
 
 
@@ -165,6 +168,7 @@ int16_t FlycamOne::update()
 					case Command_ChangeCamModeTwice: handleChangeCam();    break;
 					case Command_ChangeSensorMode:   handleChangeSensor(); break;
 					case Command_StartStop:          handleStartStop();    break;
+					default: break;
 					}
 					m_coolDown = true;
 				}

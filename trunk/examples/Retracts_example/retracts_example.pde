@@ -97,6 +97,8 @@ void loop()
 	// but for the sake of this example we'll just ignore that for now.
 	g_input[0] = rc::normalizedToMicros(g_Retracts.getDoorsPosition());
 	g_input[1] = rc::normalizedToMicros(g_Retracts.getGearPosition());
+	// Retracts also writes to the output system (Output_GEAR and Output_DOOR)
+	// You can just use two rc::Channels and tell them to use those indices as source
 	
 	// tell ServoOut there are new values available in the input buffer
 	g_ServoOut.update();
