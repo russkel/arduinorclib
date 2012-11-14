@@ -120,7 +120,7 @@ void loop()
 	rc::setInput(rc::Input_FLP, flp);
 	
 	// and we need some value for the airbrake, we'll just set it to 0
-	rc::setInput(rc::Input_BRF, 0);
+	rc::setInput(rc::Input_BRK, 0);
 	
 	// apply input to the model
 	g_plane.apply();

@@ -28,7 +28,7 @@ namespace rc
  *  \date      Nov-2012
  *  \copyright Public Domain.
  */
-class DAIPin : public DIPin, InputSource
+class DAIPin : public DIPin, public InputSource
 {
 public:
 	/*! \brief Constructs an DAIPin object.
