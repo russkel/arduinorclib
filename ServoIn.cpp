@@ -11,13 +11,9 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include <Arduino.h>
-#else
-	#include <avr/interrupt.h>
-	#include <wiring.h>
-#endif
+#include <Arduino.h>
 
+#include <rc_debug_lib.h>
 #include <ServoIn.h>
 #include <Timer1.h>
 
@@ -41,6 +37,7 @@ m_pulseLength(m_pulseStart + p_maxServos)
 
 void ServoIn::start(bool p_high)
 {
+	RC_TRACE("start high: %d", p_high);
 	m_high = p_high;
 	
 	// clean buffers

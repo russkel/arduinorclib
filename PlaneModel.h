@@ -34,22 +34,28 @@ class PlaneModel
 public:
 	enum WingType //! Type of wings
 	{
-		WingType_Tailed,  //!< Tailed setup with separate control surfaces for elevator, uses at least AIL1
-		WingType_Tailless //!< Tailless setup/Flying wing, uses elevon for combined aileron/elevator action, uses at least AIL1+2
+		WingType_Tailed,   //!< Tailed setup with separate control surfaces for elevator, uses at least AIL1
+		WingType_Tailless, //!< Tailless setup/Flying wing, uses elevon for combined aileron/elevator action, uses at least AIL1+2
+		
+		WingType_Count
 	};
 	
 	enum TailType //! Type of tails, only for tailed wings
 	{
-		TailType_Normal,   //!< Normal tail with servo for elevator and rudder, uses ELE1 and RUD1
-		TailType_VTail,    //!< V-Tail/Butterfly tail/Ruddervators setup with two servos for combined elevator and rudder, uses ELE1+RUD2 or RUD1+ELE2 (all valid)
-		TailType_Ailevator //!< Ailevator, three servos, one for tail, two for combined elevator and aileron. Uses ELE1+2 and RUD1
+		TailType_Normal,    //!< Normal tail with servo for elevator and rudder, uses ELE1 and RUD1
+		TailType_VTail,     //!< V-Tail/Butterfly tail/Ruddervators setup with two servos for combined elevator and rudder, uses ELE1+RUD2 or RUD1+ELE2 (all valid)
+		TailType_Ailevator, //!< Ailevator, three servos, one for tail, two for combined elevator and aileron. Uses ELE1+2 and RUD1
+		
+		TailType_Count
 	};
 	
 	enum RudderType //! Type of rudder, only for tailless wings
 	{
-		RudderType_None,   //!< No rudder available
-		RudderType_Normal, //!< Single servo for rudder, uses RUD1
-		RudderType_Winglet //!< Dual servo for winglets (rudders on wingtips), uses RUD1+2
+		RudderType_None,    //!< No rudder available
+		RudderType_Normal,  //!< Single servo for rudder, uses RUD1
+		RudderType_Winglet, //!< Dual servo for winglets (rudders on wingtips), uses RUD1+2
+		
+		RudderType_Count
 	};
 	
 	enum AileronCount //! Number of Aileron servos

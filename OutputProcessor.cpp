@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <OutputProcessor.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc
@@ -21,6 +22,9 @@ namespace rc
 
 void OutputProcessor::setSource(Output p_source)
 {
+	RC_TRACE("set source: %d", p_source);
+	RC_ASSERT(p_source <= Output_Count);
+	
 	m_source = p_source;
 }
 

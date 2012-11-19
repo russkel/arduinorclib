@@ -34,7 +34,9 @@ public:
 	{
 		Type_NoDoor, //!< Single servo, only landing gear (default)
 		Type_Single, //!< Single servo controlling both doors and gear
-		Type_Dual    //!< Dual servos, one for the doors and one for the gear
+		Type_Dual,   //!< Dual servos, one for the doors and one for the gear
+		
+		Type_Count
 	};
 	
 	/*! \brief Constructs a Retracts object

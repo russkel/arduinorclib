@@ -11,14 +11,10 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include <Arduino.h>
-#else
-	#include <avr/interrupt.h>
-	#include <wiring.h>
-#endif
+#include <Arduino.h>
 
 #include <PPMIn.h>
+#include <rc_debug_lib.h>
 #include <Timer1.h>
 
 
@@ -48,6 +44,7 @@ m_high(false)
 
 void PPMIn::start(bool p_high)
 {
+	RC_TRACE("start, signal high: %d", p_high);
 	m_high = p_high;
 	
 	// check if Timer 1 is running or not
@@ -57,6 +54,9 @@ void PPMIn::start(bool p_high)
 
 void PPMIn::setPauseLength(uint16_t p_length)
 {
+	RC_TRACE("set pause length: %u us", p_length);
+	RC_ASSERT_MINMAX(p_length, 0, 32766);
+	
 	m_pauseLength = p_length << 1;
 }
 
@@ -69,6 +69,9 @@ uint16_t PPMIn::getPauseLength() const
 
 void PPMIn::setTimeout(uint16_t p_length)
 {
+	RC_TRACE("set timeout: %u us", p_length);
+	RC_ASSERT_MINMAX(p_length, 0, 32766);
+	
 	m_timeout = p_length;
 }
 
@@ -176,6 +179,7 @@ bool PPMIn::update()
 {
 	if (m_newFrame)
 	{
+		RC_TRACE("received new frame");
 		m_newFrame = false;
 		m_lastFrameTime = static_cast<uint16_t>(millis());
 		for (uint8_t i = 0; i < m_channels && i < m_maxChannels; ++i)
@@ -190,6 +194,7 @@ bool PPMIn::update()
 		if (delta >= m_timeout)
 		{
 			// signal lost
+			RC_TRACE("lost signal");
 			m_state = State_Lost;
 		}
 	}

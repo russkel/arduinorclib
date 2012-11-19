@@ -11,6 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
+#include <rc_debug_lib.h>
 #include <util.h>
 
 
@@ -51,6 +52,8 @@ int16_t microsToNormalized(uint16_t p_micros)
 
 uint16_t normalizedToMicros(int16_t p_normal)
 {
+	RC_ASSERT_MINMAX(p_normal, -256, 256);
+	
 	// we have a normalized value [-256 - 256] which corresponds to full positive or negative servo movement
 	// we need to scale this to a [0 - 2 * s_travel] microseconds range
 	// this needs to be done in multiple stages to prevent overflows while keeping maximum resolution
@@ -134,6 +137,8 @@ int16_t rangeToNormalized(uint16_t p_value, uint16_t p_range)
 
 uint16_t normalizedToMicros(int16_t p_normal, uint16_t p_range)
 {
+	RC_ASSERT_MINMAX(p_normal, -256, 256);
+	
 	(void)p_normal;
 	(void)p_range;
 	// FIXME!
@@ -155,6 +160,9 @@ int16_t clamp140(int16_t p_value)
 
 int16_t mix(int16_t p_value, int8_t p_mix)
 {
+	RC_ASSERT_MINMAX(p_value, -358, 358);
+	RC_ASSERT_MINMAX(p_mix, -100, 100);
+	
 	// value is in [-358 - 358] range, so we risk overflows
 	// also keep in mind that mix may be negative
 	bool valneg = p_value < 0;
@@ -167,6 +175,10 @@ int16_t mix(int16_t p_value, int8_t p_mix)
 
 void setCenter(uint16_t p_center)
 {
+	RC_TRACE("set center: %u ms", p_center);
+	RC_ASSERT_MINMAX(p_center, 0, 32766);
+	RC_ASSERT(p_center >= getTravel());
+	
 	s_center = p_center;
 }
 
@@ -179,6 +191,10 @@ uint16_t getCenter()
 
 void setTravel(uint16_t p_travel)
 {
+	RC_TRACE("set travel: %u ms", p_travel);
+	RC_ASSERT_MINMAX(p_travel, 0, 32766);
+	RC_ASSERT(p_travel <= getCenter());
+	
 	s_travel = p_travel;
 }
 
@@ -191,6 +207,7 @@ uint16_t getTravel()
 
 void loadFutaba()
 {
+	RC_TRACE("load Futaba settings");
 	setCenter(1520);
 	setTravel(600);
 }
@@ -198,6 +215,7 @@ void loadFutaba()
 
 void loadJR()
 {
+	RC_TRACE("load JR settings");
 	setCenter(1500);
 	setTravel(600);
 }

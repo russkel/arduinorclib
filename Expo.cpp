@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <Expo.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc
@@ -41,6 +42,9 @@ m_expo(p_expo)
 
 void Expo::set(int8_t p_expo)
 {
+	RC_TRACE("set expo: %d", p_expo);
+	RC_ASSERT_MINMAX(p_expo, -100, 100);
+	
 	m_expo = p_expo;
 }
 
@@ -53,6 +57,8 @@ int8_t Expo::get() const
 
 Expo& Expo::operator = (int8_t p_rhs)
 {
+	RC_ASSERT_MINMAX(p_rhs, -100, 100);
+	
 	m_expo = p_rhs;
 	return *this;
 }
@@ -86,6 +92,8 @@ const int8_t* Expo::operator & () const
 
 int16_t Expo::apply(int16_t p_value) const
 {
+	RC_ASSERT_MINMAX(p_value, -256, 256);
+	
 	if (m_expo == 0)
 	{
 		// early abort

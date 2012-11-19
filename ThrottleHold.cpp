@@ -11,6 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
+#include <rc_debug_lib.h>
 #include <ThrottleHold.h>
 
 
@@ -29,6 +30,9 @@ m_throttle(p_throttle)
 
 void ThrottleHold::setThrottle(int16_t p_throttle)
 {
+	RC_TRACE("set throttle: %d", p_throttle);
+	RC_ASSERT_MINMAX(p_throttle, -256, 256);
+	
 	m_throttle = p_throttle;
 }
 
@@ -41,6 +45,8 @@ int16_t ThrottleHold::getThrottle() const
 
 int16_t ThrottleHold::apply(bool p_enabled, int16_t p_throttle) const
 {
+	RC_ASSERT_MINMAX(p_throttle, -256, 256);
+	
 	return p_enabled ? m_throttle : p_throttle;
 }
 

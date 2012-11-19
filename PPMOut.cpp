@@ -11,15 +11,10 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include <Arduino.h>
-#else
-	#include <avr/interrupt.h>
-	#include <wiring.h>
-	#include <pins_arduino.h>
-#endif
+#include <Arduino.h>
 
 #include <PPMOut.h>
+#include <rc_debug_lib.h>
 #include <Timer1.h>
 
 
@@ -50,6 +45,8 @@ m_timings(const_cast<uint16_t*>(m_channelTimings) + p_maxChannels)
 
 void PPMOut::start(uint8_t p_pin, bool p_invert)
 {
+	RC_TRACE("start pin: %u invert: %d", p_pin, p_invert);
+	
 	// stop timer 1
 	rc::Timer1::stop();
 	
@@ -91,6 +88,7 @@ void PPMOut::start(uint8_t p_pin, bool p_invert)
 
 void PPMOut::setChannelCount(uint8_t p_channels)
 {
+	RC_TRACE("set channel count %u", p_channels);
 	m_channelCount = p_channels;
 }
 
@@ -103,6 +101,9 @@ uint8_t PPMOut::getChannelCount() const
 
 void PPMOut::setPulseLength(uint16_t p_length)
 {
+	RC_TRACE("set pulse length %u us", p_length);
+	RC_ASSERT_MINMAX(p_length, 0, 32766);
+	
 	m_pulseLength = p_length << 1;
 }
 
@@ -115,6 +116,9 @@ uint16_t PPMOut::getPulseLength() const
 
 void PPMOut::setPauseLength(uint16_t p_length)
 {
+	RC_TRACE("set pause length %u us", p_length);
+	RC_ASSERT_MINMAX(p_length, 0, 32766);
+	
 	m_pauseLength = p_length << 1;
 }
 

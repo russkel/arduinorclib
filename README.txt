@@ -1,3 +1,6 @@
+Version 0.4
+- ADD: Debugging functions [#49]
+
 Version 0.3
 - ADD: Landing gear support [#24]
 - CHG: PPMOut may use any pin as output pin

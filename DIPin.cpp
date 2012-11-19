@@ -11,13 +11,10 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include <Arduino.h>
-#else
-	#include <wiring.h>
-#endif
+#include <Arduino.h>
 
 #include <DIPin.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc
@@ -35,6 +32,7 @@ m_reversed(false)
 
 void DIPin::setPin(uint8_t p_pin)
 {
+	RC_TRACE("set pin: %u", p_pin);
 	m_pin = p_pin;
 	pinMode(p_pin, INPUT);
 }
@@ -61,6 +59,7 @@ DIPin::operator uint8_t () const
 
 void DIPin::setReverse(bool p_reversed)
 {
+	RC_TRACE("set reverse: %d", p_reversed);
 	m_reversed = p_reversed;
 }
 	

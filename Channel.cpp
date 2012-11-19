@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <Channel.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc
@@ -33,6 +34,7 @@ m_subtrim(0)
 
 void Channel::setReverse(bool p_reversed)
 {
+	RC_TRACE("set reverse: %d", p_reversed);
 	m_reversed = p_reversed;
 }
 	
@@ -45,6 +47,8 @@ bool Channel::isReversed() const
 	
 void Channel::setSubtrim(int8_t p_subtrim)
 {
+	RC_TRACE("set subtrim %d", p_subtrim);
+	RC_ASSERT_MINMAX(p_subtrim, -100, 100);
 	m_subtrim = p_subtrim;
 }
 	
@@ -57,6 +61,8 @@ int8_t Channel::getSubtrim() const
 
 void Channel::setEndPointMin(uint8_t p_endPoint)
 {
+	RC_TRACE("set ep min %u", p_endPoint);
+	RC_ASSERT_MINMAX(p_endPoint, 0, 140);
 	m_epMin = p_endPoint;
 }
 	
@@ -69,6 +75,8 @@ uint8_t Channel::getEndPointMin() const
 
 void Channel::setEndPointMax(uint8_t p_endPoint)
 {
+	RC_TRACE("set ep max %u", p_endPoint);
+	RC_ASSERT_MINMAX(p_endPoint, 0, 140);
 	m_epMax = p_endPoint;
 }
 	
@@ -81,6 +89,8 @@ uint8_t Channel::getEndPointMax() const
 
 int16_t Channel::apply(int16_t p_value) const
 {
+	RC_ASSERT_MINMAX(p_value, -358, 358);
+	
 	// apply subtrim
 	p_value += m_subtrim;
 

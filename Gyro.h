@@ -35,13 +35,17 @@ public:
 	enum Type //! Type of gyro
 	{
 		Type_Normal, //!< Normal (Rate mode) gyro
-		Type_AVCS    //!< Heading hold gyro, also capable of rate mode
+		Type_AVCS,   //!< Heading hold gyro, also capable of rate mode
+		
+		Type_Count
 	};
 	
 	enum Mode //! Mode in which the gyro is operating, only for AVCS type gyros
 	{
 		Mode_Normal, //!< Normal mode (Rate mode)
-		Mode_AVCS    //!< AVCS mode (Heading hold mode)
+		Mode_AVCS,   //!< AVCS mode (Heading hold mode)
+		
+		Mode_Count
 	};
 	
 	

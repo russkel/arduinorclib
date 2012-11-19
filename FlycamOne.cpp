@@ -12,13 +12,10 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include <Arduino.h>
-#else
-	#include <wiring.h>
-#endif
+#include <Arduino.h>
 
 #include <FlycamOne.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc
@@ -44,6 +41,9 @@ m_output(p_output)
 
 void FlycamOne::setOutput(Output p_output)
 {
+	RC_TRACE("set output: %d", p_output);
+	RC_ASSERT(p_output <= Output_Count);
+	
 	m_output = p_output;
 }
 
@@ -56,6 +56,8 @@ Output FlycamOne::getOutput() const
 
 bool FlycamOne::setCamMode(CamMode p_mode)
 {
+	RC_ASSERT(p_mode < CamMode_Count);
+	
 	if (isBusy() || isRecording())
 	{
 		return false;
@@ -65,6 +67,8 @@ bool FlycamOne::setCamMode(CamMode p_mode)
 	{
 		return true;
 	}
+	
+	RC_TRACE("set cam mode: %d", p_mode);
 	
 	setCommand(getChangeCamCommand(p_mode));
 	return true;
@@ -79,6 +83,8 @@ FlycamOne::CamMode FlycamOne::getCamMode() const
 	
 bool FlycamOne::setSensorMode(SensorMode p_mode)
 {
+	RC_ASSERT(p_mode < SensorMode_Count);
+	
 	if (isBusy() || isRecording())
 	{
 		return false;
@@ -88,6 +94,9 @@ bool FlycamOne::setSensorMode(SensorMode p_mode)
 	{
 		return true;
 	}
+	
+	RC_TRACE("set sensor mode: %d", p_mode);
+	
 	setCommand(Command_ChangeSensorMode);
 	return true;
 }
@@ -105,6 +114,8 @@ bool FlycamOne::startRecording()
 	{
 		return false;
 	}
+	RC_TRACE("start recording");
+	
 	setCommand(Command_StartStop);
 	return true;
 }
@@ -116,6 +127,8 @@ bool FlycamOne::stopRecording()
 	{
 		return false;
 	}
+	RC_TRACE("stop recording");
+	
 	setCommand(Command_StartStop);
 	return true;
 }
@@ -133,6 +146,8 @@ bool FlycamOne::takePhoto()
 	{
 		return false;
 	}
+	RC_TRACE("take photo");
+	
 	setCommand(Command_StartStop);
 	return true;
 }
@@ -182,6 +197,7 @@ int16_t FlycamOne::update()
 					}
 					else
 					{
+						RC_TRACE("command completed");
 						m_command = Command_Idle;
 					}
 					m_coolDown = false;
@@ -214,6 +230,7 @@ void FlycamOne::setCommand(Command p_command)
 		return;
 	}
 	m_command = p_command;
+	RC_TRACE("set command %d with duration %u", m_command, m_duration);
 }
 
 

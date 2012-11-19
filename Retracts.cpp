@@ -11,13 +11,10 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include <Arduino.h>
-#else
-	#include <wiring.h>
-#endif
+#include <Arduino.h>
 
 #include <output.h>
+#include <rc_debug_lib.h>
 #include <Retracts.h>
 #include <util.h>
 
@@ -47,6 +44,9 @@ m_gearEnd(m_gearSpeed)
 
 void Retracts::setType(Type p_type)
 {
+	RC_TRACE("set type: %d", p_type);
+	RC_ASSERT(p_type < Type_Count);
+	
 	m_type = p_type;
 }
 
@@ -59,6 +59,9 @@ Retracts::Type Retracts::getType() const
 
 void Retracts::setDoorsSpeed(uint16_t p_time)
 {
+	RC_TRACE("set doors speed: %u ms", p_time);
+	RC_ASSERT_MINMAX(p_time, 0, 10000);
+	
 	m_doorsSpeed = p_time;
 	updateTimeline();
 }
@@ -72,6 +75,9 @@ uint16_t Retracts::getDoorsSpeed() const
 
 void Retracts::setGearSpeed(uint16_t p_time)
 {
+	RC_TRACE("set gear speed: %u ms", p_time);
+	RC_ASSERT_MINMAX(p_time, 0, 10000);
+	
 	m_gearSpeed = p_time;
 	updateTimeline();
 }
@@ -85,6 +91,9 @@ uint16_t Retracts::getGearSpeed() const
 
 void Retracts::setDelay(int16_t p_delay)
 {
+	RC_TRACE("set delay: %d ms", p_delay);
+	RC_ASSERT_MINMAX(p_delay, -10000, 10000);
+	
 	m_delay = p_delay;
 	updateTimeline();
 }
@@ -98,36 +107,42 @@ int16_t Retracts::getDelay() const
 
 void Retracts::down()
 {
+	RC_TRACE("down");
 	m_moveTo = 0;
 }
 
 
 void Retracts::up()
 {
+	RC_TRACE("up");
 	m_moveTo = m_doorsEnd > m_gearEnd ? m_doorsEnd : m_gearEnd;
 }
 
 
 void Retracts::openDoors()
 {
+	RC_TRACE("open doors");
 	m_moveTo = m_doorsStart < m_gearStart ? m_doorsStart : m_gearStart;
 }
 
 
 void Retracts::closeDoors()
 {
+	RC_TRACE("close doors");
 	m_moveTo = m_doorsEnd;
 }
 
 
 void Retracts::lowerGear()
 {
+	RC_TRACE("lower gear");
 	m_moveTo = m_gearStart;
 }
 
 
 void Retracts::raiseGear()
 {
+	RC_TRACE("raise gear");
 	m_moveTo = m_gearEnd;
 }
 
@@ -258,6 +273,7 @@ int16_t Retracts::getGearPosition() const
 
 void Retracts::updateTimeline()
 {
+	RC_TRACE("recalculating timeline");
 	m_gearStart = 0;
 	m_gearEnd = m_gearStart + m_gearSpeed;
 	
@@ -283,6 +299,11 @@ void Retracts::updateTimeline()
 		m_doorsEnd   += up;
 		m_gearEnd    += up;
 	}
+	
+	RC_TRACE("doors start at %u ms", m_doorsStart);
+	RC_TRACE("doors end at %u ms",   m_doorsEnd);
+	RC_TRACE("gear starts at %u ms", m_gearStart);
+	RC_TRACE("gear ends at %u ms",   m_gearEnd);
 }
 
 // namespace end
