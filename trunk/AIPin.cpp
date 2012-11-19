@@ -11,13 +11,10 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include <Arduino.h>
-#else
-	#include <wiring.h>
-#endif
+#include <Arduino.h>
 
 #include <AIPin.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc
@@ -40,6 +37,8 @@ m_max(1023)
 
 void AIPin::setPin(uint8_t p_pin)
 {
+	RC_TRACE("set pin: %u", p_pin);
+	
 	m_pin = p_pin;
 	pinMode(p_pin, INPUT);
 }
@@ -66,6 +65,7 @@ AIPin::operator uint8_t () const
 
 void AIPin::setReverse(bool p_reversed)
 {
+	RC_TRACE("set reverse: %d", p_reversed);
 	m_reversed = p_reversed;
 }
 	
@@ -78,6 +78,8 @@ bool AIPin::isReversed() const
 
 void AIPin::setTrim(int8_t p_trim)
 {
+	RC_TRACE("set trim: %d", p_trim);
+	RC_ASSERT_MINMAX(p_trim, -100, 100);
 	m_trim = p_trim;
 }
 	
@@ -90,6 +92,8 @@ int8_t AIPin::getTrim() const
 
 void AIPin::setCenter(uint16_t p_center)
 {
+	RC_TRACE("set center: %u", p_center);
+	RC_ASSERT_MINMAX(p_center, 0, 1023);
 	m_center = p_center;
 }
 
@@ -102,6 +106,8 @@ uint16_t AIPin::getCenter() const
 
 void AIPin::setMin(uint16_t p_min)
 {
+	RC_TRACE("set min: %d", p_min);
+	RC_ASSERT_MINMAX(p_min, 0, 1023);
 	m_min = p_min;
 }
 
@@ -114,6 +120,8 @@ uint16_t AIPin::getMin() const
 
 void AIPin::setMax(uint16_t p_max)
 {
+	RC_TRACE("set max: %d", p_max);
+	RC_ASSERT_MINMAX(p_max, 0, 1023);
 	m_max = p_max;
 }
 
@@ -126,6 +134,7 @@ uint16_t AIPin::getMax() const
 
 void AIPin::setCalibration(uint16_t p_min, uint16_t p_center, uint16_t p_max)
 {
+	RC_TRACE("set calibration");
 	setMin(p_min);
 	setCenter(p_center);
 	setMax(p_max);

@@ -11,14 +11,9 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include <Arduino.h>
-#else
-	#include <avr/interrupt.h>
-	#include <wiring.h>
-#endif
-#include <pins_arduino.h>
+#include <Arduino.h>
 
+#include <rc_debug_lib.h>
 #include <ServoOut.h>
 #include <Timer1.h>
 
@@ -52,6 +47,7 @@ m_idx(0)
 
 void ServoOut::start()
 {
+	RC_TRACE("start");
 	// set initial values
 	update(true);
 	
@@ -74,6 +70,9 @@ void ServoOut::start()
 
 void ServoOut::setPauseLength(uint16_t p_length)
 {
+	RC_TRACE("set pause length: %u us", p_length);
+	RC_ASSERT_MINMAX(p_length, 0, 32766);
+	
 	m_pauseLength = p_length;
 }
 
@@ -99,6 +98,8 @@ void ServoOut::update(bool p_pinsChanged)
 				uint8_t port = digitalPinToPort(m_pins[i]);
 				volatile uint8_t* out = portInputRegister(port);
 				
+				RC_ASSERT_MINMAX(m_values[i], 0, 32766);
+				
 				TIMSK1 &= ~(1 << OCIE1B);
 				m_timings[idx] = m_values[i] << 1;
 				m_ports[idx] = static_cast<uint8_t>(reinterpret_cast<uint16_t>(out) & 0xFF);
@@ -107,6 +108,8 @@ void ServoOut::update(bool p_pinsChanged)
 			}
 			else
 			{
+				RC_ASSERT_MINMAX(m_values[i], 0, 32766);
+				
 				TIMSK1 &= ~(1 << OCIE1B);
 				m_timings[idx] = m_values[i] << 1;
 				TIMSK1 |= (1 << OCIE1B);

@@ -10,14 +10,11 @@
 ** Project: ArduinoRCLib
 ** -------------------------------------------------------------------------*/
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include <Arduino.h>
-#else
-	#include <wiring.h>
-#endif
+#include <Arduino.h>
 
 #include <input.h>
 #include <PlaneModel.h>
+#include <rc_debug_lib.h>
 #include <util.h>
 
 
@@ -49,6 +46,9 @@ m_vtailRud(50)
 
 void PlaneModel::setWingType(WingType p_type)
 {
+	RC_TRACE("set wing type: %d", p_type);
+	RC_ASSERT(p_type < WingType_Count);
+	
 	m_wing = p_type;
 }
 
@@ -61,6 +61,9 @@ PlaneModel::WingType PlaneModel::getWingType() const
 
 void PlaneModel::setTailType(TailType p_type)
 {
+	RC_TRACE("set tail type: %d", p_type);
+	RC_ASSERT(p_type < TailType_Count);
+	
 	m_tail = p_type;
 }
 
@@ -73,6 +76,9 @@ PlaneModel::TailType PlaneModel::getTailType() const
 
 void PlaneModel::setRudderType(RudderType p_type)
 {
+	RC_TRACE("set rudder type: %d", p_type);
+	RC_ASSERT(p_type < RudderType_Count);
+	
 	m_rudder = p_type;
 }
 
@@ -85,6 +91,9 @@ PlaneModel::RudderType PlaneModel::getRudderType() const
 
 void PlaneModel::setAileronCount(AileronCount p_count)
 {
+	RC_TRACE("set aileron count: %d", p_count);
+	// TODO: add assert
+	
 	m_ailerons = p_count;
 }
 
@@ -97,6 +106,9 @@ PlaneModel::AileronCount PlaneModel::getAileronCount() const
 
 void PlaneModel::setFlapCount(FlapCount p_count)
 {
+	RC_TRACE("set flap count: %d", p_count);
+	// TODO: add assert
+	
 	m_flaps = p_count;
 }
 
@@ -109,6 +121,9 @@ PlaneModel::FlapCount PlaneModel::getFlapCount() const
 
 void PlaneModel::setBrakeCount(BrakeCount p_count)
 {
+	RC_TRACE("set brakes count: %d", p_count);
+	// TODO: add assert
+	
 	m_brakes = p_count;
 }
 
@@ -121,6 +136,9 @@ PlaneModel::BrakeCount PlaneModel::getBrakeCount() const
 
 void PlaneModel::setAileronDifferential(int8_t p_rate)
 {
+	RC_TRACE("set ailerdon differential: %d%%", p_rate);
+	RC_ASSERT_MINMAX(p_rate, -100, 100);
+	
 	m_ailDiff = p_rate;
 }
 
@@ -133,6 +151,9 @@ int8_t PlaneModel::getAileronDifferential() const
 
 void PlaneModel::setWingletDifferential(int8_t p_rate)
 {
+	RC_TRACE("set winglet differential: %d%%", p_rate);
+	RC_ASSERT_MINMAX(p_rate, -100, 100);
+	
 	m_wingletDiff = p_rate;
 }
 
@@ -145,6 +166,9 @@ int8_t PlaneModel::getWingletDifferential() const
 
 void PlaneModel::setElevonAileronMix(int8_t p_rate)
 {
+	RC_TRACE("set elevon aileron mix: %d%%", p_rate);
+	RC_ASSERT_MINMAX(p_rate, -100, 100);
+	
 	m_elevonAil = p_rate;
 }
 
@@ -157,6 +181,9 @@ int8_t PlaneModel::getElevonAileronMix() const
 
 void PlaneModel::setElevonElevatorMix(int8_t p_rate)
 {
+	RC_TRACE("set elevon elevator mix: %d%%", p_rate);
+	RC_ASSERT_MINMAX(p_rate, -100, 100);
+	
 	m_elevonEle = p_rate;
 }
 
@@ -169,6 +196,9 @@ int8_t PlaneModel::getElevonElevatorMix() const
 
 void PlaneModel::setAilevatorMix(int8_t p_rate)
 {
+	RC_TRACE("set ailevator mix: %d%%", p_rate);
+	RC_ASSERT_MINMAX(p_rate, -100, 100);
+	
 	m_ailevator = p_rate;
 }
 
@@ -181,6 +211,9 @@ int8_t PlaneModel::getAilevatorMix() const
 
 void PlaneModel::setAilevatorDifferential(int8_t p_rate)
 {
+	RC_TRACE("set ailevator differential: %d%%", p_rate);
+	RC_ASSERT_MINMAX(p_rate, -100, 100);
+	
 	m_ailevatorDiff = p_rate;
 }
 
@@ -193,6 +226,9 @@ int8_t PlaneModel::getAilevatorDifferential() const
 
 void PlaneModel::setVTailElevatorMix(int8_t p_rate)
 {
+	RC_TRACE("set V-Tail elevator mix: %d%%", p_rate);
+	RC_ASSERT_MINMAX(p_rate, -100, 100);
+	
 	m_vtailEle = p_rate;
 }
 
@@ -205,6 +241,9 @@ int8_t PlaneModel::getVTailElevatorMix() const
 
 void PlaneModel::setVTailRudderMix(int8_t p_rate)
 {
+	RC_TRACE("set V-Tail rudder mix: %d%%", p_rate);
+	RC_ASSERT_MINMAX(p_rate, -100, 100);
+	
 	m_vtailRud = p_rate;
 }
 
@@ -217,6 +256,12 @@ int8_t PlaneModel::getVTailRudderMix() const
 
 void PlaneModel::apply(int16_t p_ail, int16_t p_ele, int16_t p_rud, int16_t p_flp, int16_t p_brk)
 {
+	RC_ASSERT_MINMAX(p_ail, -358, 358);
+	RC_ASSERT_MINMAX(p_ele, -358, 358);
+	RC_ASSERT_MINMAX(p_rud, -358, 358);
+	RC_ASSERT_MINMAX(p_flp, -358, 358);
+	RC_ASSERT_MINMAX(p_brk, -358, 358);
+	
 	switch (m_wing)
 	{
 	default:

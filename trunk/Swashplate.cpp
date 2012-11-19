@@ -13,6 +13,7 @@
 
 #include <input.h>
 #include <output.h>
+#include <rc_debug_lib.h>
 #include <Swashplate.h>
 #include <util.h>
 
@@ -35,6 +36,9 @@ m_pitMix(0)
 
 void Swashplate::setType(Type p_type)
 {
+	RC_TRACE("set type: %d", p_type);
+	RC_ASSERT(p_type < Type_Count);
+	
 	m_type = p_type;
 }
 
@@ -47,6 +51,9 @@ Swashplate::Type Swashplate::getType() const
 
 void Swashplate::setAilMix(int8_t p_mix)
 {
+	RC_TRACE("set aileron mix: %d%%", p_mix);
+	RC_ASSERT_MINMAX(p_mix, -100, 100);
+	
 	m_ailMix = p_mix;
 }
 
@@ -59,6 +66,9 @@ int8_t Swashplate::getAilMix() const
 
 void Swashplate::setEleMix(int8_t p_mix)
 {
+	RC_TRACE("set elevator mix: %d%%", p_mix);
+	RC_ASSERT_MINMAX(p_mix, -100, 100);
+	
 	m_eleMix = p_mix;
 }
 
@@ -71,6 +81,9 @@ int8_t Swashplate::getEleMix() const
 
 void Swashplate::setPitMix(int8_t p_mix)
 {
+	RC_TRACE("set pitch mix: %d%%", p_mix);
+	RC_ASSERT_MINMAX(p_mix, -100, 100);
+	
 	m_pitMix = p_mix;
 }
 
@@ -89,6 +102,10 @@ void Swashplate::apply(int16_t p_ail,
                        int16_t& p_pitOUT,
                        int16_t& p_ele2OUT) const
 {
+	RC_ASSERT_MINMAX(p_ail, -358, 358);
+	RC_ASSERT_MINMAX(p_ele, -358, 358);
+	RC_ASSERT_MINMAX(p_pit, -358, 358);
+	
 	apply(p_ail, p_ele, p_pit);
 	p_ailOUT  = getOutput(Output_AIL1);
 	p_eleOUT  = getOutput(Output_ELE1);
@@ -99,6 +116,10 @@ void Swashplate::apply(int16_t p_ail,
 
 void Swashplate::apply(int16_t p_ail, int16_t p_ele, int16_t p_pit) const
 {
+	RC_ASSERT_MINMAX(p_ail, -358, 358);
+	RC_ASSERT_MINMAX(p_ele, -358, 358);
+	RC_ASSERT_MINMAX(p_pit, -358, 358);
+	
 	p_ail = mix(p_ail, m_ailMix);
 	p_ele = mix(p_ele, m_eleMix);
 	p_pit = mix(p_pit, m_pitMix);

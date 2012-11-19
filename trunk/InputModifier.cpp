@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <InputModifier.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc
@@ -21,6 +22,9 @@ namespace rc
 
 void InputModifier::setIndex(Input p_index)
 {
+	RC_TRACE("set index: %d", p_index);
+	RC_ASSERT(p_index <= Input_Count);
+	
 	m_index = p_index;
 }
 

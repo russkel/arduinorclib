@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <InputOutputPipe.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc

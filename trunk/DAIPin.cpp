@@ -11,13 +11,10 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include <Arduino.h>
-#else
-	#include <wiring.h>
-#endif
+#include <Arduino.h>
 
 #include <DAIPin.h>
+#include <rc_debug_lib.h>
 #include <util.h>
 
 
@@ -40,6 +37,9 @@ m_lastTime(0)
 
 void DAIPin::setDuration(uint16_t p_duration)
 {
+	RC_TRACE("set duration: %u", p_duration);
+	RC_ASSERT_MINMAX(p_duration, 0, 10000);
+	
 	m_duration = p_duration;
 	
 	// instantly update, to prevent overflows and such

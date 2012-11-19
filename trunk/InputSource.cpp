@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <InputSource.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc
@@ -19,9 +20,12 @@ namespace rc
 
 // Public functions
 
-void InputSource::setDestination(Input p_index)
+void InputSource::setDestination(Input p_destination)
 {
-	m_destination = p_index;
+	RC_TRACE("set destination: %d", p_destination);
+	RC_ASSERT(p_destination <= Input_Count);
+	
+	m_destination = p_destination;
 }
 
 
@@ -33,9 +37,9 @@ Input InputSource::getDestination() const
 
 // Protected functions
 
-InputSource::InputSource(Input p_index)
+InputSource::InputSource(Input p_destination)
 :
-m_destination(p_index)
+m_destination(p_destination)
 {
 	
 }
@@ -43,8 +47,11 @@ m_destination(p_index)
 
 int16_t InputSource::writeInputValue(int16_t p_value) const
 {
+	RC_ASSERT_MINMAX(p_value, -358, 358);
+	
 	if (m_destination != Input_None)
 	{
+		RC_ASSERT(m_destination < Input_Count);
 		rc::setInput(m_destination, p_value);
 	}
 	return p_value;

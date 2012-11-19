@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <Gyro.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc
@@ -31,6 +32,9 @@ m_mode(Mode_Normal)
 
 void Gyro::setType(Type p_type)
 {
+	RC_TRACE("set type: %d", p_type);
+	RC_ASSERT(p_type < Type_Count);
+	
 	m_type = p_type;
 }
 	
@@ -43,6 +47,9 @@ Gyro::Type Gyro::getType() const
 	
 void Gyro::setMode(Mode p_mode)
 {
+	RC_TRACE("set mode: %d", p_mode);
+	RC_ASSERT(p_mode < Mode_Count);
+	
 	m_mode = p_mode;
 }
 	
@@ -55,6 +62,9 @@ Gyro::Mode Gyro::getMode() const
 	
 void Gyro::setGain(int8_t p_gain)
 {
+	RC_TRACE("set gain: %d", p_gain);
+	RC_ASSERT_MINMAX(p_gain, 0, 100);
+	
 	m_gain = p_gain;
 }
 	
@@ -67,6 +77,7 @@ int8_t Gyro::getGain() const
 
 Gyro& Gyro::operator = (int8_t p_rhs)
 {
+	RC_ASSERT_MINMAX(p_rhs, 0, 100);
 	m_gain = p_rhs;
 	return *this;
 }

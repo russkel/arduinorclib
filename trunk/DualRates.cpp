@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <DualRates.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc
@@ -30,6 +31,9 @@ m_rate(p_rate)
 
 void DualRates::set(uint8_t p_rate)
 {
+	RC_TRACE("set rate: %d%%", p_rate);
+	RC_ASSERT_MINMAX(p_rate, 0, 140);
+	
 	m_rate = p_rate;
 }
 
@@ -74,6 +78,8 @@ const uint8_t* DualRates::operator & () const
 
 int16_t DualRates::apply(int16_t p_value) const
 {
+	RC_ASSERT_MINMAX(p_value, -256, 256);
+	
 	// there's a risk in overflows here, since 256 * 140 > 32K
 	// so we do this unsigned..
 	uint8_t neg = p_value < 0;

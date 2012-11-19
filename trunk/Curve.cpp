@@ -14,6 +14,7 @@
 #include <avr/pgmspace.h>
 
 #include <Curve.h>
+#include <rc_debug_lib.h>
 
 
 namespace rc
@@ -43,12 +44,19 @@ InputSource(p_destination)
 
 void Curve::loadCurve(DefaultCurve p_curve)
 {
+	RC_TRACE("load default: %d", p_curve);
+	RC_ASSERT(p_curve < DefaultCurve_Count);
+	
 	memcpy_P(m_points, sc_defaults[p_curve], sizeof(int16_t) * PointCount);
 }
 
 
 void Curve::setPoint(uint8_t p_point, int16_t p_value)
 {
+	RC_TRACE("set point: %d : %d", p_point, p_value);
+	RC_ASSERT(p_point < PointCount);
+	RC_ASSERT_MINMAX(p_value, -256, 256);
+	
 	if (p_point < PointCount)
 	{
 		m_points[p_point] = p_value;
@@ -58,6 +66,8 @@ void Curve::setPoint(uint8_t p_point, int16_t p_value)
 
 int16_t Curve::getPoint(uint8_t p_point) const
 {
+	RC_ASSERT(p_point < PointCount);
+	
 	if (p_point < PointCount)
 	{
 		return m_points[p_point];
@@ -68,18 +78,24 @@ int16_t Curve::getPoint(uint8_t p_point) const
 
 int16_t& Curve::operator[](uint8_t p_index)
 {
+	RC_ASSERT(p_index < PointCount);
+	
 	return m_points[p_index];
 }
 
 
 const int16_t& Curve::operator[](uint8_t p_index) const
 {
+	RC_ASSERT(p_index < PointCount);
+	
 	return m_points[p_index];
 }
 
 
 int16_t Curve::apply(int16_t p_value) const
 {
+	RC_ASSERT_MINMAX(p_value, -256, 256);
+	
 	p_value += 256; // range [0 - 512]
 	int16_t index = p_value >> 6;   // divide by 64, range [0 - 8]
 	int16_t rem   = p_value & 0x3F; // remainder of division

@@ -38,13 +38,17 @@ public:
 	{
 		CamMode_Video,  //!< Video recording
 		CamMode_Serial, //!< Serial photography
-		CamMode_Photo   //!< Single photo
+		CamMode_Photo,  //!< Single photo
+		
+		CamMode_Count
 	};
 	
 	enum SensorMode        //! Sensor mode
 	{
-		SensorMode_Normal, //!< Normally mounted
-		SensorMode_Flipped //!< Flipped 180 degrees (mounted upside down)
+		SensorMode_Normal,  //!< Normally mounted
+		SensorMode_Flipped, //!< Flipped 180 degrees (mounted upside down)
+		
+		SensorMode_Count
 	};
 	
 	/*! \brief Constructs a FlycamOne object.

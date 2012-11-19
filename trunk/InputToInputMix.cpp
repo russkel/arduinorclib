@@ -12,6 +12,7 @@
 ** -------------------------------------------------------------------------*/
 
 #include <InputToInputMix.h>
+#include <rc_debug_lib.h>
 #include <util.h>
 
 
@@ -33,6 +34,8 @@ m_abs(p_abs)
 
 void InputToInputMix::setMix(int8_t p_mix)
 {
+	RC_TRACE("set mix: %d", p_mix);
+	RC_ASSERT_MINMAX(p_mix, -100, 100);
 	m_mix = p_mix;
 }
 
@@ -45,6 +48,7 @@ int8_t InputToInputMix::getMix() const
 
 void InputToInputMix::setUseAbs(bool p_abs)
 {
+	RC_TRACE("set abs: %d", p_abs);
 	m_abs = p_abs;
 }
 
@@ -57,6 +61,8 @@ bool InputToInputMix::getUseAbs() const
 
 int16_t InputToInputMix::apply(int16_t p_master, int16_t p_slave) const
 {
+	RC_ASSERT_MINMAX(p_master, -358, 358);
+	RC_ASSERT_MINMAX(p_slave, -358, 358);
 	if (m_abs)
 	{
 		p_master = p_master < 0 ? -p_master : p_master;

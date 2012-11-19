@@ -40,6 +40,7 @@ public:
 		Type_H3,   //!< Same as HR3 but 140 degrees, square swash
 		Type_H4,   //!< Same as HE3 but with second ele servo at front, 90 degree four servo setup
 		Type_H4X,  //!< Same as H4 but rotated 45 deg ccw
+		
 		Type_Count
 	};
 	
