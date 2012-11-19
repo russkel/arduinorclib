@@ -7,6 +7,7 @@
 #######################################
 
 AIPin	KEYWORD1
+AIPinCalibrator	KEYWORD1
 Channel	KEYWORD1
 Curve	KEYWORD1
 DAIPin	KEYWORD1
