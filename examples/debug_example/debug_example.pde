@@ -49,10 +49,7 @@ void setup()
 	// make uart implement stdout
 	rc::uart::setStdOut();
 	// we need to do this since the debug functions write everything to stdout
-}
-
-void loop()
-{
+	
 	// There are a bunch of debugging functions available
 	// These are defined as macros, based on the debug level, calls to these
 	// macros will be included or stripped from your project.
@@ -83,6 +80,8 @@ void loop()
 	// to catch programming errors.
 	
 	// First we have the simplest assert
+	// By the way, when running this example you'll want to comment the assert out
+	// or make sure the code 'll pass the asserts ;)
 	uint8_t x = 0;
 	RC_ASSERT(x > 0);
 	// This will trigger the assert since (x > 0) == false
@@ -94,4 +93,33 @@ void loop()
 	
 	// Lastly we have an assert for checking whether a value falls within a range, handy for checking parameters
 	RC_ASSERT_MINMAX(x, 1, 100); // will fail if x < 1 or x > 100
+	
+	// Sometimes you still want to display some sort of error message conditionally,
+	// but you don't want to halt the program, in that case, use RC_CHECK
+	// This is available at error levels 2 and up, and will display warnings
+	// when the condition is not met
+	RC_CHECK(x > 0);
+	RC_CHECK_MSG(x > 0, "Oh no! x (%d is not larger than 0!", x);
+	RC_CHECK_MINMAX(x, 1, 100);
+	
+	// One last technical detail:
+	// All the error strings you pass to these functions are automatically placed in PROGMEM
+	// Filenames and line number are automatically generated and filenames are also in PROGMEM
+	// Parameters are NOT placed in PROGMEM automatically, if you want to pass strings as
+	// parameters, use the PSTR macro to place them in PROGMEM (only works for static strings)
+	// and use %S as formatter instead of %s. For example:
+	bool b = false;
+	RC_DEBUG("b is %S", b ? PSTR("true") : PSTR("false"));
+	
+	// Now you might wonder, what debug level should I use?
+	// During development, use at least level 2 or higher, this way you'll catch all the
+	// asserts and warnings which could indicate programming errors.
+	// When building a release build, turn all debugging features off to reduce
+	// the memory footprint and increase performance
+	
+}
+
+void loop()
+{
+	
 }

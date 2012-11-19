@@ -30,7 +30,7 @@
 // Define Asserts
 #if RC_DEBUG_LEVEL >= 1
 	#define RC_ASSERT(x) \
-		do { if (!(x)) { rc::halt(PSTR(__FILE__), __LINE__, PSTR("failed assertion: %S"), PSTR(#x)); } } while (0)
+		do { if (!(x)) { rc::halt(PSTR(__FILE__), __LINE__, PSTR(#x)); } } while (0)
 	#define RC_ASSERT_MSG(x, fmt, ...) \
 		do { if (!(x)) { rc::halt(PSTR(__FILE__), __LINE__, PSTR(fmt), ##__VA_ARGS__); } } while (0)
 	#define RC_ASSERT_MINMAX(x, min, max) \
@@ -40,6 +40,21 @@
 	#define RC_ASSERT(x)
 	#define RC_ASSERT_MSG(x, fmt, ...)
 	#define RC_ASSERT_MINMAX(x, min, max)
+#endif
+
+// Define Checks
+#if RC_DEBUG_LEVEL >= 2
+	#define RC_CHECK(x) \
+		do { if (!(x)) { rc::warn(PSTR(__FILE__), __LINE__, PSTR("failed check: %S"), PSTR(#x)); } } while (0)
+	#define RC_CHECK_MSG(x, fmt, ...) \
+		do { if (!(x)) { rc::warn(PSTR(__FILE__), __LINE__, PSTR(fmt), ##__VA_ARGS__); } } while (0)
+	#define RC_CHECK_MINMAX(x, min, max) \
+		do { if ((x) > (max) || (x) < (min)) { rc::warn(PSTR(__FILE__), __LINE__, \
+		PSTR("%S (%d) out of bounds [%d - %d]"), PSTR(#x), (x), (min), (max)); } } while (0)
+#else
+	#define RC_CHECK(x)
+	#define RC_CHECK_MSG(x, fmt, ...)
+	#define RC_CHECK_MINMAX(x, min, max)
 #endif
 
 // Define error printing
