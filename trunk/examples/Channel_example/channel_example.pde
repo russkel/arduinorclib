@@ -29,6 +29,12 @@ void setup()
 	// and our servo's center might be a tad bit off
 	g_channel.setSubtrim(20);
 	
+	// furthermore, we'd like to make our servo a bit slower
+	// we can specify the time it takes for the servo to travel
+	// between two extremes (full throw) in deciseconds (0.1 second)
+	// as an example, we'll set it to two seconds (20 deciseconds)
+	g_channel.setSpeed(20);
+	
 	// it is also possible to use the output system as source for a channel
 	// like this: g_channel.setSource(rc::Output_AIL1);
 	// this will map Aileron 1 to the channel.

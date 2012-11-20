@@ -11,6 +11,8 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
+#include <Arduino.h>
+
 #include <Channel.h>
 #include <rc_debug_lib.h>
 
@@ -26,7 +28,10 @@ OutputProcessor(p_source),
 m_reversed(false),
 m_epMin(100),
 m_epMax(100),
-m_subtrim(0)
+m_subtrim(0),
+m_speed(0),
+m_time(0),
+m_last(0)
 {
 	
 }
@@ -87,7 +92,22 @@ uint8_t Channel::getEndPointMax() const
 }
 
 
-int16_t Channel::apply(int16_t p_value) const
+void Channel::setSpeed(uint8_t p_speed)
+{
+	RC_TRACE("set speed: %u", p_speed);
+	RC_ASSERT_MINMAX(p_speed, 0, 100);
+	m_speed = p_speed;
+	m_time  = static_cast<uint8_t>(millis());
+}
+
+
+uint8_t Channel::getSpeed() const
+{
+	return m_speed;
+}
+
+
+int16_t Channel::apply(int16_t p_value)
 {
 	RC_ASSERT_MINMAX(p_value, -358, 358);
 	
@@ -106,14 +126,77 @@ int16_t Channel::apply(int16_t p_value) const
 	if (val > 256) val = 256;
 	p_value = neg ? -static_cast<int>(val) : static_cast<int>(val);
 	
-	// apply channel reverse
-	return m_reversed ? -p_value : p_value;
+	// apply channel reverse and servo speed
+	return applySpeed(m_reversed ? -p_value : p_value);
 }
 
 
-int16_t Channel::apply() const
+int16_t Channel::apply()
 {
 	return apply(rc::getOutput(m_source));
+}
+
+
+// private functions
+
+int16_t Channel::applySpeed(int16_t p_target)
+{
+	if (m_speed == 0 || p_target == m_last)
+	{
+		return p_target;
+	}
+	// we might as well use 8 bit for times, just make sure to update at least 4 times per second
+	// (1000 ms / 256 = 3.9 overflows per second)
+	uint8_t now = static_cast<uint8_t>(millis());
+	uint8_t delta = now - m_time;
+	
+	// the total amount traveled in the past delta time is:
+	// (full throw / time which it takes to travel) * delta time
+	// or
+	// (512 / (m_speed * 100)) * delta
+	// that'll result in 0 for any speed above 5, so let's not do that
+	// but the following is the same:
+	// (delta * 512) / (m_speed * 100)
+	// but this will overflow for delta >= 128
+	// But, hooray for math, we may divide the numerator and denominator by the same value and
+	// we'll still get the right result, let's use four, I like four
+	// (delta* (512 / 4)) / (m_speed * (100 / 4))
+	uint16_t travel = (delta * 128) / (m_speed * 25);
+	if (travel == 0)
+	{
+		// on some occasions (for example a small delta and very high speed)
+		// it may be possible that the result of the division is 0
+		// in those cases we won't do anything and wait for the next update
+		// since we don't store the time, the delta will grow and hopefully with the next
+		// update travel will be > 0
+		return m_last;
+	}
+	m_time = now;
+	
+	// now that we know how far we can travel in this update, let's see in which direction we'll need to go
+	if (m_last > p_target)
+	{
+		if (static_cast<uint16_t>(m_last - p_target) < travel)
+		{
+			m_last = p_target;
+		}
+		else
+		{
+			m_last = m_last - static_cast<int16_t>(travel);
+		}
+	}
+	else
+	{
+		if (static_cast<uint16_t>(p_target - m_last) < travel)
+		{
+			m_last = p_target;
+		}
+		else
+		{
+			m_last = m_last + static_cast<int16_t>(travel);
+		}
+	}
+	return m_last;
 }
 
 
