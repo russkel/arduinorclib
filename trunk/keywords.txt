@@ -32,6 +32,7 @@ ServoOut	KEYWORD1
 Swashplate	KEYWORD1
 ThrottleHold	KEYWORD1
 Timer1	KEYWORD1
+Trainer	KEYWORD1
 rc	KEYWORD1
 
 #######################################
