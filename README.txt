@@ -2,6 +2,7 @@ Version 0.4
 - ADD: Debugging functions [#49]
 - ADD: Calibration code for AIPin [#14]
 - ADD: Servo speed [#50]
+- ADD: Trainer port [#41]
 
 Version 0.3
 - ADD: Landing gear support [#24]
