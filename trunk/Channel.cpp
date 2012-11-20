@@ -31,7 +31,7 @@ m_epMax(100),
 m_subtrim(0),
 m_speed(0),
 m_time(0),
-m_last(0)
+m_last(0xFFFF)
 {
 	
 }
@@ -141,8 +141,11 @@ int16_t Channel::apply()
 
 int16_t Channel::applySpeed(int16_t p_target)
 {
-	if (m_speed == 0 || p_target == m_last)
+	// we use 0xFFFF as an indicator that applySpeed has never been called yet
+	// in that case we want to set the servo position immediately to the requested position
+	if (m_speed == 0 || p_target == m_last || m_last == int16_t(0xFFFF))
 	{
+		m_last = p_target;
 		return p_target;
 	}
 	// we might as well use 8 bit for times, just make sure to update at least 4 times per second
