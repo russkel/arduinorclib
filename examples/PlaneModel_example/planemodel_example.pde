@@ -12,8 +12,8 @@
 ** -------------------------------------------------------------------------*/
 
 #include <AIPin.h>
+#include <BiStateSwitch.h>
 #include <Channel.h>
-#include <DIPin.h>
 #include <PlaneModel.h>
 #include <ServoOut.h>
 #include <Timer1.h>
@@ -42,8 +42,8 @@ rc::ServoOut g_ServoOut(g_pinsOut, g_input, g_work, SERVOS);
 // -1 rudder servo
 rc::PlaneModel g_plane;
 
-// We use a digital input pin as a switch for the flaps, you could also use an analog input
-rc::DIPin g_flp(7);
+// We use a switch for the flaps, you could also use an analog input
+rc::BiStateSwitch g_flp(7);
 
 // And we use three analog input pins for controls, we'll also use the input system
 // so we specify their destinations
@@ -108,7 +108,7 @@ void setup()
 void loop()
 {
 	// Set a certain amount of flap if the flap switch is flicked, 0 otherwise
-	int16_t flp = g_flp.read() ? 64 : 0;
+	int16_t flp = g_flp.read() == rc::SwitchState_Down ? 64 : 0;
 	
 	// Read input, we don't need to catch the result
 	// they're stored in the input system

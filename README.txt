@@ -3,6 +3,8 @@ Version 0.4
 - ADD: Calibration code for AIPin [#14]
 - ADD: Servo speed [#50]
 - ADD: Trainer port [#41]
+- ADD: Input system for switches [#48]
+- DEL: Removed DIPin and DAIPin, use BiStateSwitch and AnalogSwitch instead
 
 Version 0.3
 - ADD: Landing gear support [#24]

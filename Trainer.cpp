@@ -21,8 +21,9 @@ namespace rc
 
 // Public functions
 
-Trainer::Trainer()
+Trainer::Trainer(Switch p_source, SwitchState p_state)
 :
+SwitchProcessor(p_source, p_state),
 m_enabled(false),
 m_destination(0xFF),
 m_studentRate(100),
@@ -75,7 +76,7 @@ void Trainer::setAsOutputSource(Output p_destination)
 
 Output Trainer::getOutputDestination() const
 {
-	if (m_destination & _BV(7) == 0  || m_destination == 0xFF)
+	if ((m_destination & _BV(7)) == 0  || m_destination == 0xFF)
 	{
 		return Output_None; // currently set as output source
 	}
@@ -113,9 +114,9 @@ uint8_t Trainer::getTeacherRate() const
 }
 
 
-uint16_t Trainer::apply(uint16_t p_teacher, uint16_t p_student, bool p_active)
+uint16_t Trainer::apply(uint16_t p_teacher, uint16_t p_student, bool p_activeAndValid)
 {
-	if (m_enabled && p_active)
+	if (m_enabled && p_activeAndValid)
 	{
 		return rc::clamp140(rc::mix(p_student, static_cast<int8_t>(m_studentRate)) +
 		                    rc::mix(p_teacher, static_cast<int8_t>(m_teacherRate)));
@@ -124,19 +125,19 @@ uint16_t Trainer::apply(uint16_t p_teacher, uint16_t p_student, bool p_active)
 }
 
 
-void Trainer::apply(uint16_t p_student, bool p_active)
+void Trainer::apply(uint16_t p_student, bool p_valid)
 {
-	if (p_active)
+	if (p_valid && isActiveState())
 	{
 		Input i = getInputDestination();
 		if (i != Input_None)
 		{
-			rc::setInput(i, apply(rc::getInput(i), p_student, p_active));
+			rc::setInput(i, apply(rc::getInput(i), p_student, p_valid));
 		}
 		Output o = getOutputDestination();
 		if (o != Output_None)
 		{
-			rc::setOutput(o, apply(rc::getOutput(o), p_student, p_active));
+			rc::setOutput(o, apply(rc::getOutput(o), p_student, p_valid));
 		}
 	}
 }

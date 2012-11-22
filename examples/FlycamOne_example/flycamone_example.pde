@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <DIPin.h>
+#include <BiStateSwitch.h>
 #include <FlycamOne.h>
 #include <ServoOut.h>
 #include <Timer1.h>
@@ -35,8 +35,8 @@ rc::ServoOut g_ServoOut(g_pinsOut, g_input, g_work, SERVOS);
 // FlycamOne object
 rc::FlycamOne g_cam;
 
-// We use a digital input pin as a switch
-rc::DIPin g_switch(3);
+// We use a switch on digital pin 3
+rc::BiStateSwitch g_switch(3);
 
 
 void setup()
@@ -76,7 +76,7 @@ void setup()
 void loop()
 {
 	// record while the switch is in the up position
-	if (g_switch.read())
+	if (g_switch.read() == rc::SwitchState_Up)
 	{
 		// not yet recording?
 		if (g_cam.isRecording() == false)

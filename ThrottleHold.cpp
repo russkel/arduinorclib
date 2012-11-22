@@ -19,9 +19,10 @@ namespace rc
 {
 // Public functions
 
-ThrottleHold::ThrottleHold(int16_t p_throttle, Input p_index)
+ThrottleHold::ThrottleHold(int16_t p_throttle, Switch p_source, SwitchState p_state)
 :
-InputModifier(p_index),
+InputModifier(Input_THR),
+SwitchProcessor(p_source, p_state),
 m_throttle(p_throttle)
 {
 	
@@ -51,11 +52,11 @@ int16_t ThrottleHold::apply(bool p_enabled, int16_t p_throttle) const
 }
 
 
-void ThrottleHold::apply(bool p_enabled) const
+void ThrottleHold::apply() const
 {
 	if (m_index != Input_None)
 	{
-		rc::setInput(m_index, apply(p_enabled, rc::getInput(m_index)));
+		rc::setInput(m_index, apply(isActiveState(), rc::getInput(m_index)));
 	}
 }
 

@@ -12,7 +12,7 @@
 ** Demonstration: https://www.youtube.com/watch?v=wCi2PpY_LIs
 ** -------------------------------------------------------------------------*/
 
-#include <DIPin.h>
+#include <BiStateSwitch.h>
 #include <Retracts.h>
 #include <ServoOut.h>
 #include <Timer1.h>
@@ -35,10 +35,11 @@ rc::ServoOut g_ServoOut(g_pinsOut, g_input, g_work, SERVOS);
 
 // The Retracts class supports various setups, here we go for the fancy dual servo setup
 // One servo to control the doors, the other to control the gear
-rc::Retracts g_Retracts(rc::Retracts::Type_Dual);
+// We'll use Switch_A as input
+rc::Retracts g_Retracts(rc::Retracts::Type_Dual, rc::Switch_A);
 
-// We use a digital input pin as a switch
-rc::DIPin g_switch(4);
+// We use a switch on digital pin 4 as input, write results to Switch_A
+rc::BiStateSwitch g_switch(4, rc::Switch_A);
 
 void setup()
 {
@@ -76,15 +77,8 @@ void setup()
 
 void loop()
 {
-	// set the mode of the retracts
-	if (g_switch.read())
-	{
-		g_Retracts.up();
-	}
-	else
-	{
-		g_Retracts.down();
-	}
+	// read the switch
+	g_switch.read(); // writes to rc::Switch_A
 	
 	// update the retracts, you'll need to do this often to get a smooth motion
 	g_Retracts.update();

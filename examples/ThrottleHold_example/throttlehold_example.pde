@@ -12,19 +12,21 @@
 ** -------------------------------------------------------------------------*/
 
 #include <AIPin.h>
-#include <DIPin.h>
+#include <BiStateSwitch.h>
 #include <ThrottleHold.h>
 
 
 // we use A0 as input for the throttle
 rc::AIPin g_thrPin(A0, rc::Input_THR);
 
-// we use pin 3 as a hold switch
-rc::DIPin g_hldPin(3);
+// we use pin 3 as a hold switch and store the result in rc::Switch_A
+rc::BiStateSwitch g_hldPin(3, rc::Switch_A);
 
 // we can define the throttle hold level in the contructor
-// this is the level the throttle will be on when hold is enabled
-rc::ThrottleHold g_hold(-256);
+// The first parameter is the level the throttle will be on when hold is enabled
+// The second defines which switch the hold should act on
+// The third is the state the switch should be in
+rc::ThrottleHold g_hold(-256, rc::Switch_A, rc::SwitchState_Down);
 
 void setup()
 {
@@ -37,9 +39,13 @@ void loop()
 	// ThrottleHold uses rc::Input_THR as default input
 	// you can specify a different input using setIndex()
 	// or you can specify some value in the apply function
+	g_hldPin.read(); // will write to rc::Switch_A
 	
-	g_hold.apply(g_hldPin.read());
-	// in case the hold pin was high, the result will be -256 (which we specified in the constructor)
+	// The ThrottleHold object will read input throttle from rc::Input_THR
+	// it will read the switch position from rc::Switch_A
+	// and it will write the result back to rc::Input_THR
+	g_hold.apply();
+	// in case the hold switch was in the low position, the result will be -256 (which we specified in the constructor)
 	// otherwise it will be whatever g_thrPin.read() wrote.
 	// you can get the result using rc::getInput(rc::Input_THR);
 	// print it out using Serial to see it in action!

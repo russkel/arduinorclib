@@ -24,8 +24,9 @@ namespace rc
 
 // Public functions
 
-Retracts::Retracts(Type p_type)
+Retracts::Retracts(Type p_type, Switch p_switch, SwitchState p_state)
 :
+SwitchProcessor(p_switch, p_state),
 m_type(p_type),
 m_doorsSpeed(100),
 m_gearSpeed(100),
@@ -185,8 +186,20 @@ bool Retracts::gearIsLowered() const
 
 void Retracts::update()
 {
-	unsigned long now = millis();
-	uint16_t delta = static_cast<uint16_t>(now - m_lastTime);
+	if (m_source != Switch_None)
+	{
+		if (isActiveState())
+		{
+			down();
+		}
+		else
+		{
+			up();
+		}
+	}
+	
+	uint16_t now   = static_cast<uint16_t>(millis());
+	uint16_t delta = now - m_lastTime;
 	m_lastTime = now;
 	
 	if (m_moveTo == m_time)

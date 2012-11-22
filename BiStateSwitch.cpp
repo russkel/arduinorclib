@@ -3,8 +3,8 @@
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** DIPin.cpp
-** Digital input read functionality
+** BiStateSwitch.cpp
+** Base class for classes acting as a switch
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
@@ -13,7 +13,7 @@
 
 #include <Arduino.h>
 
-#include <DIPin.h>
+#include <BiStateSwitch.h>
 #include <rc_debug_lib.h>
 
 
@@ -22,15 +22,17 @@ namespace rc
 
 // Public functions
 
-DIPin::DIPin(uint8_t p_pin)
+BiStateSwitch::BiStateSwitch(uint8_t p_pin, Switch p_destination, bool p_momentary, bool p_reversed)
 :
-m_reversed(false)
+SwitchSource(p_momentary ? SwitchType_Momentary : SwitchType_BiState, p_destination),
+m_pin(p_pin),
+m_reversed(p_reversed)
 {
 	setPin(p_pin);
 }
 
 
-void DIPin::setPin(uint8_t p_pin)
+void BiStateSwitch::setPin(uint8_t p_pin)
 {
 	RC_TRACE("set pin: %u", p_pin);
 	m_pin = p_pin;
@@ -38,43 +40,32 @@ void DIPin::setPin(uint8_t p_pin)
 }
 
 
-uint8_t DIPin::getPin() const
+uint8_t BiStateSwitch::getPin() const
 {
 	return m_pin;
 }
 
 
-DIPin& DIPin::operator = (uint8_t p_rhs)
-{
-	setPin(p_rhs);
-	return *this;
-}
-
-
-DIPin::operator uint8_t () const
-{
-	return m_pin;
-}
-
-
-void DIPin::setReverse(bool p_reversed)
+void BiStateSwitch::setReverse(bool p_reversed)
 {
 	RC_TRACE("set reverse: %d", p_reversed);
 	m_reversed = p_reversed;
 }
 	
 
-bool DIPin::isReversed() const
+bool BiStateSwitch::isReversed() const
 {
 	return m_reversed;
 }
 
 
-bool DIPin::read() const
+SwitchState BiStateSwitch::read() const
 {
-	bool raw = digitalRead(m_pin);
-	
-	return m_reversed ? !raw : raw;
+	// pin high and reversed false: up position
+	// pin high and reversed true: down position
+	// pin low and reversed false: down position
+	// pin low and reversed true: up position
+	return writeSwitchState(digitalRead(m_pin) == m_reversed ? SwitchState_Down : SwitchState_Up);
 }
 
 
