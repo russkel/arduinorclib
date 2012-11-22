@@ -17,7 +17,7 @@
 
 #include <inttypes.h>
 
-#include <output.h>
+#include <OutputSource.h>
 
 
 namespace rc
@@ -31,7 +31,7 @@ namespace rc
  *  \date      Nov-2012
  *  \copyright Public Domain.
  */
-class FlycamOne
+class FlycamOne : public OutputSource
 {
 public:
 	enum CamMode        //! Camera operating mode
@@ -52,16 +52,8 @@ public:
 	};
 	
 	/*! \brief Constructs a FlycamOne object.
-	    \param p_output Output destination.*/
-	FlycamOne(Output p_output = Output_None);
-	
-	/*! \brief Sets Output destination.
-	    \param p_output Output destination to set.*/
-	void setOutput(Output p_output);
-	
-	/*! \brief Gets Output destination.
-	    \return The Output destination currently set.*/
-	Output getOutput() const;
+	    \param p_destination Output destination.*/
+	FlycamOne(Output p_destination = Output_None);
 	
 	/*! \brief Sets Camera mode
 	    \param p_mode Camera mode to set.
@@ -152,8 +144,6 @@ private:
 	bool     m_coolDown;  //!< In cooldown period after command
 	
 	int16_t m_value; //!< Normalized channel value.
-	
-	Output m_output; //!< Output destination
 };
 /** \example flycamone_example.pde
  * This is an example of how to use the FlycamOne class.

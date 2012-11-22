@@ -23,8 +23,9 @@ namespace rc
 
 // Public functions
 
-FlycamOne::FlycamOne(Output p_output)
+FlycamOne::FlycamOne(Output p_destination)
 :
+OutputSource(p_destination),
 m_camMode(CamMode_Video),
 m_sensorMode(SensorMode_Normal),
 m_recording(false),
@@ -32,25 +33,9 @@ m_command(Command_Idle),
 m_startTime(0),
 m_duration(0),
 m_coolDown(false),
-m_value(Value_Low),
-m_output(p_output)
+m_value(Value_Low)
 {
 	
-}
-
-
-void FlycamOne::setOutput(Output p_output)
-{
-	RC_TRACE("set output: %d", p_output);
-	RC_ASSERT(p_output <= Output_Count);
-	
-	m_output = p_output;
-}
-
-
-Output FlycamOne::getOutput() const
-{
-	return m_output;
 }
 
 
@@ -206,11 +191,7 @@ int16_t FlycamOne::update()
 		}
 	}
 	
-	if (m_output != Output_None)
-	{
-		rc::setOutput(m_output, m_value);
-	}
-	return m_value;
+	return writeOutputValue(m_value);
 }
 
 
