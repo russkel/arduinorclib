@@ -17,6 +17,7 @@
 #include <inttypes.h>
 
 #include <InputModifier.h>
+#include <SwitchProcessor.h>
 
 
 namespace rc
@@ -29,13 +30,16 @@ namespace rc
  *  \date      Nov-2012
  *  \copyright Public Domain.
  */
-class ThrottleHold : public InputModifier
+class ThrottleHold : public InputModifier, public SwitchProcessor
 {
 public:
 	/*! \brief Constructs a ThrottleHold object
 	    \param p_throttle The throttle level during hold, range [-256 - 256].
-	    \param p_index Input index to use for input and output.*/
-	ThrottleHold(int16_t p_throttle = -256, Input p_index = Input_THR);
+	    \param p_source Source switch.
+	    \param p_state Switch state at which hold is active.*/
+	ThrottleHold(int16_t p_throttle = -256,
+	             Switch p_source = Switch_None,
+	             SwitchState p_state = SwitchState_Down);
 	
 	
 	/*! \brief Sets the throttle level during hold.
@@ -52,9 +56,8 @@ public:
 	    \return Hold applied to p_throttle.*/
 	int16_t apply(bool p_enabled, int16_t p_throttle) const;
 	
-	/*! \brief Applies throttle hold to the set input.
-	    \param p_enabled Whether throttle hold is enabled.*/
-	void apply(bool p_enabled) const;
+	/*! \brief Applies throttle hold to the set input based on the set switch.*/
+	void apply() const;
 	
 private:
 	int16_t m_throttle; //!< Throttle level during hold.

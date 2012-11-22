@@ -8,10 +8,10 @@
 
 AIPin	KEYWORD1
 AIPinCalibrator	KEYWORD1
+AnalogSwitch	KEYWORD1
+BiStateSwitch	KEYWORD1
 Channel	KEYWORD1
 Curve	KEYWORD1
-DAIPin	KEYWORD1
-DIPin	KEYWORD1
 DualRates	KEYWORD1
 Expo	KEYWORD1
 FlycamOne	KEYWORD1
@@ -20,6 +20,7 @@ InputModifier	KEYWORD1
 InputOutputPipe	KEYWORD1
 InputProcessor	KEYWORD1
 InputSource	KEYWORD1
+InputSwitch	KEYWORD1
 InputToInputMix	KEYWORD1
 OutputSource	KEYWORD1
 OutputProcessor	KEYWORD1
@@ -30,9 +31,12 @@ Retracts	KEYWORD1
 ServoIn	KEYWORD1
 ServoOut	KEYWORD1
 Swashplate	KEYWORD1
+SwitchSource	KEYWORD1
+SwitchProcessor	KEYWORD1
 ThrottleHold	KEYWORD1
 Timer1	KEYWORD1
 Trainer	KEYWORD1
+TriStateSwitch	KEYWORD1
 rc	KEYWORD1
 
 #######################################
@@ -128,3 +132,19 @@ DefaultCurve_HalfLinear	LITERAL1
 DefaultCurve_V	LITERAL1
 RC_DEBUG_LEVEL	LITERAL1
 RC_GLOBAL_LEVEL	LITERAL1
+Switch_A	LITERAL1
+Switch_B	LITERAL1
+Switch_C	LITERAL1
+Switch_D	LITERAL1
+Switch_E	LITERAL1
+Switch_F	LITERAL1
+Switch_G	LITERAL1
+Switch_H	LITERAL1
+SwitchState_Up	LITERAL1
+SwitchState_Center	LITERAL1
+SwitchState_Down	LITERAL1
+SwitchState_Disconnected	LITERAL1
+SwitchType_Disconnected	LITERAL1
+SwitchType_BiState	LITERAL1
+SwitchType_TriState	LITERAL1
+SwitchType_Momentary	LITERAL1

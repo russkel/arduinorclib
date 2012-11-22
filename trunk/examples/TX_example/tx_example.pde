@@ -13,9 +13,9 @@
 ** -------------------------------------------------------------------------*/
 
 #include <AIPin.h>
+#include <BiStateSwitch.h>
 #include <Channel.h>
 #include <Curve.h>
-#include <DIPin.h>
 #include <DualRates.h>
 #include <Expo.h>
 #include <Gyro.h>
@@ -40,7 +40,8 @@ rc::AIPin g_aPins[4] =
 	rc::AIPin(A2, rc::Input_THR), // input buffer where results should be written to
 	rc::AIPin(A3, rc::Input_RUD)
 };
-rc::DIPin g_dPins[2] = { rc::DIPin(3), rc::DIPin(4) };
+// two switches, one for flight mode (unnamed), the other for throttle hold (Switch_A)
+rc::BiStateSwitch g_switches[2] = { rc::BiStateSwitch(3), rc::BiStateSwitch(4, rc::Switch_A) };
 
 // Expo/DR, we use one expo and one dr per control and per flightmode
 rc::Expo g_ailExpo[2] = {rc::Expo(-30, rc::Input_AIL), rc::Expo(-10, rc::Input_AIL)}; // also specify what index of the input
@@ -65,7 +66,7 @@ rc::Curve g_thrCurve[2] = // we'll use throttle as both source and destination
 
 // throttle hold
 rc::Curve        g_pitCurveHold = rc::Curve(rc::Curve::DefaultCurve_Linear, rc::Input_THR, rc::Input_PIT);
-rc::ThrottleHold g_throttleHold; // Default throttle level is -256, default in/output is THR
+rc::ThrottleHold g_throttleHold(-256, rc::Switch_A); // Default throttle level is -256, default in/output is THR, set switch to Switch_A
 
 // channel transformations, we can specify a source for the channel
 // This acts like "glue", we can tell a channel where to fetch its input from
@@ -161,8 +162,10 @@ void setup()
 void loop()
 {
 	// read digital values
-	uint8_t flightmode   = g_dPins[0].read() ? 1 : 0;
-	bool    throttleHold = g_dPins[1].read();
+	uint8_t flightmode = g_switches[0].read() == rc::SwitchState_Up ? 1 : 0;
+	
+	// read throttle hold switch
+	g_switches[1].read(); // writes result to rc::Switch_A
 		
 	// read analog values, these write to the input system (AIL, ELE, THR and RUD)
 	g_aPins[0].read(); // aileron
@@ -185,16 +188,17 @@ void loop()
 	// Because the throttle curve overwrites the throttle input value
 	// and the pitch curve also uses the throttle input as source
 	// we need to apply the pitch curve BEFORE modifying the throttle
-	if (throttleHold)
+	// ThrottleHold doesn't handle pitch curves yet, so we have to do that manually :(
+	if (rc::getSwitchState(rc::Switch_A) == rc::SwitchState_Down)
 	{
-		g_pitCurveHold.apply();     // reads from THR, writes to PIT
-		g_throttleHold.apply(true); // reads from THR, writes to THR
+		g_pitCurveHold.apply(); // reads from THR, writes to PIT
 	}
 	else
 	{
 		g_pitCurve[flightmode].apply(); // reads from THR, writes to PIT
 		g_thrCurve[flightmode].apply(); // reads from THR, writes to THR
 	}
+	g_throttleHold.apply(); // reads from THR, writes to THR (acts based on rc::Switch_A)
 	
 	// apply swash to throttle mixing
 	g_ailToThr.apply();

@@ -1,13 +1,13 @@
-#ifndef INC_RC_DIPIN_H
-#define INC_RC_DIPIN_H
+#ifndef INC_RC_BISTATESWITCH_H
+#define INC_RC_BISTATESWITCH_H
 
 /* ---------------------------------------------------------------------------
 ** This software is in the public domain, furnished "as is", without technical
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** DIPin.h
-** Digital input pin functionality
+** BiStateSwitch.h
+** Bi state switch (momentary or alternating)
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
@@ -16,23 +16,31 @@
 
 #include <inttypes.h>
 
+#include <SwitchSource.h>
+
 
 namespace rc
 {
 
 /*! 
- *  \brief     Class to encapsulate digital input functionality.
- *  \details   This class provides functionality for reading digital input.
+ *  \brief     Momentary or alternating bi state switch.
+ *  \details   Abstraction of an ordinary or spring loaded 2 position switch.
  *  \author    Daniel van den Ouden
- *  \date      Feb-2012
+ *  \date      Nov-2012
  *  \copyright Public Domain.
  */
-class DIPin
+class BiStateSwitch : public SwitchSource
 {
 public:
-	/*! \brief Constructs an DIPin object.
-	    \param p_pin The hardware pin to use.*/
-	DIPin(uint8_t p_pin);
+	/*! \brief Constructs a BiStateSwitch object
+	    \param p_pin Input pin.
+		\param p_destination Index to use as destination for the switch.
+	    \param p_momentary True if the switch is spring loaded.
+	    \param p_reversed Whether the switch is mounted up side down.*/
+	BiStateSwitch(uint8_t p_pin,
+	              Switch p_destination = Switch_None,
+	              bool p_momentary = false,
+	              bool p_reversed = false);
 	
 	/*! \brief Sets the hardware pin to use.
 	    \param p_pin The hardware pin to use.*/
@@ -41,15 +49,6 @@ public:
 	/*! \brief Gets the hardware pin.
 	    \return Current hardware pin.*/
 	uint8_t getPin() const;
-	
-	/*! \brief Assignment operator, sets hardware pin.
-	    \param p_pin The hardware pin to use.
-	    \return Reference to DIPin object.*/
-	DIPin& operator = (uint8_t p_pin);
-	
-	/*! \brief Cast operator, casts object to uint8_t.
-	    \return Current hardware pin.*/
-	operator uint8_t () const;
 	
 	/*! \brief Sets whether the input should be reversed or not.
 	    \param p_reverse Whether to reverse the input or not.*/
@@ -60,18 +59,18 @@ public:
 	bool isReversed() const;
 	
 	/*! \brief Reads and processes.
-	    \return Processed value.*/
-	bool read() const;
+	    \return Current switch state.*/
+	SwitchState read() const;
 	
 private:
 	uint8_t  m_pin;      //!< Hardware pin.
 	bool     m_reversed; //!< Input reverse.
 };
-/** \example dipin_example.pde
- * This is an example of how to use the DIPin class.
+/** \example switch_example.pde
+ * This is an example of how to use the BiStateSwitch and TriStateSwitch classes.
  */
- 
+
 
 } // namespace end
 
-#endif // INC_RC_DIPIN_H
+#endif // INC_RC_BISTATESWITCH_H

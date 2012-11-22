@@ -16,6 +16,8 @@
 
 #include <inttypes.h>
 
+#include <SwitchProcessor.h>
+
 
 namespace rc
 {
@@ -27,7 +29,7 @@ namespace rc
  *  \date      Oct-2012
  *  \copyright Public Domain.
  */
-class Retracts
+class Retracts : public SwitchProcessor
 {
 public:
 	enum Type //! Type of retracts
@@ -41,8 +43,11 @@ public:
 	
 	/*! \brief Constructs a Retracts object
 	    \param p_type Retracts type.
-	*/
-	Retracts(Type p_type = Type_NoDoor);
+	    \param p_source Switch to act on.
+	    \param p_state  Switch state on which the gear should go down.*/
+	Retracts(Type p_type = Type_NoDoor,
+	         Switch p_source = Switch_None,
+	         SwitchState p_state = SwitchState_Down);
 	
 	/*! \brief Sets retracts type
 	    \param p_type Retracts type to set.*/
@@ -126,7 +131,8 @@ public:
 	    \return whether the gear is _fully_ lowered.*/
 	bool gearIsLowered() const;
 	
-	/*! \brief Updates the door and gear position.*/
+	/*! \brief Updates the door and gear position.
+	    \note  If a switch has been defined, up() or down() will be called in the update.*/
 	void update();
 	
 	/*! \brief Gets the position of the doors servo.
@@ -148,7 +154,7 @@ private:
 	uint16_t m_gearSpeed;  //!< Speed at which the gear moves in milliseconds
 	int16_t  m_delay;      //!< Delay between the doors and gear in milliseconds
 	
-	unsigned long m_lastTime; //!< Last time the update was called (used to calculate delta)
+	uint16_t m_lastTime; //!< Last time the update was called (used to calculate delta)
 	
 	int16_t m_time;       //!< Current position in the timeline
 	int16_t m_moveTo;     //!< Position in timeline to move to
