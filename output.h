@@ -52,9 +52,16 @@ namespace rc
 		Output_GYR3, //!< Gyro gain output 3 (Elevator)
 		Output_GEAR, //!< Landing gear output
 		Output_DOOR, //!< Landing gear doors output
+		Output_GOV,  //!< Governor speed output
 		
 		Output_Count,
 		Output_None //!< No output, special case
+	};
+	
+	enum
+	{
+		Out_Max =  32767, //!< Maximum value and ignore endpoints
+		Out_Min = -32768  //!< Minimum value and ignore endpoints
 	};
 	
 	

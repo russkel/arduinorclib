@@ -109,6 +109,14 @@ uint8_t Channel::getSpeed() const
 
 int16_t Channel::apply(int16_t p_value)
 {
+	if (p_value == Out_Max)
+	{
+		return 256;
+	}
+	if (p_value == Out_Min)
+	{
+		return -256;
+	}
 	RC_ASSERT_MINMAX(p_value, -358, 358);
 	
 	// apply subtrim

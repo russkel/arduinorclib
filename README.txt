@@ -6,6 +6,7 @@ Version 0.4
 - ADD: Input system for switches [#48]
 - DEL: Removed DIPin and DAIPin, use BiStateSwitch and AnalogSwitch instead
 - ADD: Offset [#7]
+- ADD: Governor [#10]
 
 Version 0.3
 - ADD: Landing gear support [#24]

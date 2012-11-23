@@ -24,7 +24,8 @@ static int16_t s_values[Output_Count] = { 0 };
 void setOutput(Output p_output, int16_t p_value)
 {
 	RC_ASSERT(p_output < Output_Count);
-	RC_ASSERT_MINMAX(p_value, -358, 358);
+	RC_ASSERT(p_value == Out_Max || p_value == Out_Min ||
+	          (p_value >= -358 && p_value <= 358));
 	s_values[p_output] = p_value;
 }
 
