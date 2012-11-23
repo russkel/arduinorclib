@@ -15,6 +15,7 @@ Curve	KEYWORD1
 DualRates	KEYWORD1
 Expo	KEYWORD1
 FlycamOne	KEYWORD1
+Governor	KEYWORD1
 Gyro	KEYWORD1
 InputModifier	KEYWORD1
 InputOutputPipe	KEYWORD1
