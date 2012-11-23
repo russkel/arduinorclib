@@ -15,6 +15,7 @@
 
 #include <Curve.h>
 #include <rc_debug_lib.h>
+#include <util.h>
 
 
 namespace rc
@@ -36,7 +37,10 @@ static const int16_t PROGMEM sc_defaults[Curve::DefaultCurve_Count][Curve::Point
 Curve::Curve(DefaultCurve p_curve, Input p_source, Input p_destination)
 :
 InputProcessor(p_source),
-InputSource(p_destination)
+InputSource(p_destination),
+m_lowTrim(0),
+m_centerTrim(0),
+m_highTrim(0)
 {
 	loadCurve(p_curve);
 }
@@ -92,18 +96,73 @@ const int16_t& Curve::operator[](uint8_t p_index) const
 }
 
 
+void Curve::setLowTrim(int8_t p_trim)
+{
+	RC_TRACE("set low trim: %d", p_trim);
+	RC_ASSERT_MINMAX(p_trim, -100, 100);
+	
+	m_lowTrim = p_trim;
+}
+
+
+int8_t Curve::getLowTrim() const
+{
+	return m_lowTrim;
+}
+
+
+void Curve::setCenterTrim(int8_t p_trim)
+{
+	RC_TRACE("set center trim: %d", p_trim);
+	RC_ASSERT_MINMAX(p_trim, -100, 100);
+	
+	m_centerTrim = p_trim;
+}
+
+
+int8_t Curve::getCenterTrim() const
+{
+	return m_centerTrim;
+}
+
+
+void Curve::setHighTrim(int8_t p_trim)
+{
+	RC_TRACE("set high trim: %d", p_trim);
+	RC_ASSERT_MINMAX(p_trim, -100, 100);
+	
+	m_highTrim = p_trim;
+}
+
+
+int8_t Curve::getHighTrim() const
+{
+	return m_highTrim;
+}
+
+
+void Curve::setAllTrim(int8_t p_trim)
+{
+	RC_TRACE("set all trim: %d", p_trim);
+	RC_ASSERT_MINMAX(p_trim, -100, 100);
+	
+	m_lowTrim    = p_trim;
+	m_centerTrim = p_trim;
+	m_highTrim   = p_trim;
+}
+
+
 int16_t Curve::apply(int16_t p_value) const
 {
 	RC_ASSERT_MINMAX(p_value, -256, 256);
 	
 	p_value += 256; // range [0 - 512]
-	int16_t index = p_value >> 6;   // divide by 64, range [0 - 8]
-	int16_t rem   = p_value & 0x3F; // remainder of division
+	uint8_t index = static_cast<uint8_t>(p_value >> 6);  // divide by 64, range [0 - 8]
+	int8_t  rem   = static_cast<int8_t>(p_value & 0x3F); // remainder of division
 	
 	// linear interpolation on curve values
-	int16_t lowval = index >= 8 ? m_points[8] : m_points[index];
-	++index;
-	int16_t highval = index >= 8 ? m_points[8] : m_points[index];
+	int16_t lowval = getPointWithTrim(index);
+	int16_t highval = getPointWithTrim(index + 1);
 	
 	lowval  = lowval * (64 - rem);
 	highval = highval * rem;
@@ -119,6 +178,61 @@ int16_t Curve::apply() const
 		return apply(rc::getInput(m_source));
 	}
 	return 0;
+}
+
+
+// Private functions
+
+int16_t Curve::getPointWithTrim(uint8_t p_index) const
+{
+	if (p_index > 8)
+	{
+		p_index = 8;
+	}
+	int16_t point = m_points[p_index];
+	
+	// apply low end and center trim (for low end)
+	if (p_index < 4)
+	{
+		if (m_lowTrim != 0)
+		{
+			// index == 0 ? + 100% trim
+			// index == 1 ? +  75% trim
+			// index == 2 ? +  50% trim
+			// index == 3 ? +  25% trim
+			point += (static_cast<int16_t>(m_lowTrim) * (4 - p_index)) / 4;
+		}
+		if (m_centerTrim != 0)
+		{
+			// index == 0 ? +   0% trim
+			// index == 1 ? +  25% trim
+			// index == 2 ? +  50% trim
+			// index == 3 ? +  75% trim
+			point += (static_cast<int16_t>(m_centerTrim) * p_index) / 4;
+		}
+	}
+	else // apply high end and center trim (for high end)
+	{
+		if (m_highTrim != 0)
+		{
+			// index == 8 ? + 100% trim
+			// index == 7 ? +  75% trim
+			// index == 6 ? +  50% trim
+			// index == 5 ? +  25% trim
+			// index == 4 ? +   0% trim
+			point += (static_cast<int16_t>(m_highTrim) * (p_index - 4)) / 4;
+		}
+		if (m_centerTrim != 0)
+		{
+			// index == 8 ? +   0% trim
+			// index == 7 ? +  25% trim
+			// index == 6 ? +  50% trim
+			// index == 5 ? +  75% trim
+			// index == 4 ? + 100% trim
+			point += (static_cast<int16_t>(m_centerTrim) * (8 - p_index)) / 4;
+		}
+	}
+	return clampNormalized(point);
 }
 
 

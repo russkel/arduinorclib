@@ -37,6 +37,39 @@ void setup()
 	// g_curve.setSource(rc::Input_AIL);
 	// g_curve.setDestination(rc::Input_AIL);
 	// you can also specify the source and destination as a constructor parameter
+	
+	// In case we want to make some temporary adjustments to our curve, we can set
+	// some trims on the curve.
+	// There are three trims: low, center and high
+	// The low trim affects the four lowest curve points (0 - 3), and affects point 0 the most
+	// The center trim affects the seven center curve points (1 - 7), and affects point 4 the most
+	// The high trim affects the four highest curve points (5 - 8), and affects point 8 the most
+	// When setting all trims to the same number, the entire curve is moved up or down by that amount
+	//
+	// For now let's say we want to move the center of our curve up by a small amount
+	// because of weather conditions for example
+	g_curve.setCenterTrim(16);
+	// this would make our final curve
+	// 256, 192, 128,  64,   0,  64, 128, 192, 256
+	//  +0   +4   +8  +12  +16  +12   +8   +4   +0  // the center point is affected the most
+	// 256, 196, 136,  76,  16,  76, 136, 196, 256
+	//
+	// the results for low trim would have been:
+	// 256, 192, 128,  64,   0,  64, 128, 192, 256
+	// +16, +12,  +8,  +4,  +0,  +0,  +0,  +0,  +0
+	// 256, 204, 136,  68,   0,  64, 128, 192, 256
+	//
+	// the results for high trim would have been:
+	// 256, 192, 128,  64,   0,  64, 128, 192, 256
+	//  +0,  +0,  +0,  +0,  +0,  +4,  +8, +12, +16
+	// 256, 192, 128,  64,   0,  68, 136, 204, 256
+	//
+	// the results for all trim would have been:
+	// 256, 192, 128,  64,   0,  64, 128, 192, 256
+	// +16, +16, +16, +16, +16, +16, +16, +16, +16
+	// 256, 208, 144,  80,  16,  80, 144, 208, 256
+	//
+	// as you can see, values won't go higher than 256 (or lower than -256)
 }
 
 void loop()
