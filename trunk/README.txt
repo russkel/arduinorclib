@@ -10,6 +10,7 @@ Version 0.4
 - ADD: Input/Output system for channels [#52]
 - ADD: Programmable mixes [#3]
 - CHG: InputToInputMix derives from MixBase
+- ADD: Swash to throttle mix [#9]
 
 Version 0.3
 - ADD: Landing gear support [#24]
