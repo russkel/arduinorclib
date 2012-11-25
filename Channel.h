@@ -17,6 +17,7 @@
 #include <inttypes.h>
 
 #include <OutputProcessor.h>
+#include <OutputChannelSource.h>
 
 
 namespace rc
@@ -29,12 +30,13 @@ namespace rc
  *  \date      Feb-2012
  *  \copyright Public Domain.
  */
-class Channel : public OutputProcessor
+class Channel : public OutputProcessor, public OutputChannelSource
 {
 public:
 	/*! \brief Constructs a Channel object
-	    \param p_source Which function output to use as channel input.*/
-	Channel(Output p_source = Output_None);
+	    \param p_source Which function output to use as channel input.
+	    \param p_destination Which channel to use for output.*/
+	Channel(Output p_source = Output_None, OutputChannel p_destination = OutputChannel_None);
 	
 	/*! \brief Sets channel reverse.
 	    \param p_reverse Whether the channel should be reversed.
@@ -87,12 +89,12 @@ public:
 	
 	/*! \brief Applies channel transformations.
 	    \param p_value The normalized value of the channel, range 140% [-358 - 358].
-	    \return Normalized channel value, range [-256 - 256].*/
-	int16_t apply(int16_t p_value);
+	    \return Channel output value in microseconds [750 -2250].*/
+	uint16_t apply(int16_t p_value);
 	
 	/*! \brief Applies channel transformations to specified input source.
-	    \return Normalized channel value, range [-256 - 256].*/
-	int16_t apply();
+	    \return Channel output value in microseconds [750 -2250]*/
+	uint16_t apply();
 	
 private:
 	int16_t applySpeed(int16_t p_target); //!< Apply servo speed

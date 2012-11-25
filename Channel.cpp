@@ -15,6 +15,7 @@
 
 #include <Channel.h>
 #include <rc_debug_lib.h>
+#include <util.h>
 
 
 namespace rc
@@ -22,9 +23,10 @@ namespace rc
 
 // Public functions
 
-Channel::Channel(Output p_source)
+Channel::Channel(Output p_source, OutputChannel p_destination)
 :
 OutputProcessor(p_source),
+OutputChannelSource(p_destination),
 m_reversed(false),
 m_epMin(100),
 m_epMax(100),
@@ -107,7 +109,7 @@ uint8_t Channel::getSpeed() const
 }
 
 
-int16_t Channel::apply(int16_t p_value)
+uint16_t Channel::apply(int16_t p_value)
 {
 	if (p_value == Out_Max)
 	{
@@ -135,11 +137,11 @@ int16_t Channel::apply(int16_t p_value)
 	p_value = neg ? -static_cast<int>(val) : static_cast<int>(val);
 	
 	// apply channel reverse and servo speed
-	return applySpeed(m_reversed ? -p_value : p_value);
+	return writeOutputChannelValue(rc::normalizedToMicros(applySpeed(m_reversed ? -p_value : p_value)));
 }
 
 
-int16_t Channel::apply()
+uint16_t Channel::apply()
 {
 	return apply(rc::getOutput(m_source));
 }

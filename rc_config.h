@@ -15,6 +15,12 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
+// Set the maximum number of channels
+// reduce this if you're never going to use this many channels;
+// it'll reduce the memory footprint.
+// You may set this to any number between 4 and 18
+#define RC_MAX_CHANNELS 18
+
 // This is the global debug level
 // If you just want to change the debug level of the library, modify rc_debug_lib.h!
 #define RC_GLOBAL_LEVEL 5

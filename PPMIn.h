@@ -16,7 +16,7 @@
 
 #include <inttypes.h>
 
-#define PPMIN_WORK_SIZE(channels) ((channels) * 2)
+#include <rc_config.h>
 
 
 namespace rc
@@ -34,11 +34,8 @@ namespace rc
 class PPMIn
 {
 public:
-	/*! \brief Constructs a PPMIn object.
-	    \param p_results External buffer to store results, at least p_maxChannels in size.
-	    \param p_work Work buffer at least PPMIN_WORK_SIZE(p_maxChannels) in size.
-	    \param p_maxChannels Maximum number of channels supported.*/
-	PPMIn(uint16_t* p_results, uint8_t* p_work, uint8_t p_maxChannels);
+	/*! \brief Constructs a PPMIn object.*/
+	PPMIn();
 	
 	/*! \brief Starts measuring.
 	    \param p_high Whether the incoming signal has high or low pulses.
@@ -105,10 +102,8 @@ private:
 	uint16_t m_pauseLength; //!< Minimum pause length in microseconds.
 	uint16_t m_timeout;     //!< Time in milliseconds without signal after which the signal is considered "lost".
 	
-	uint16_t* m_results;     //!< Results buffer.
-	uint16_t* m_work;        //!< Work buffer.
-	uint8_t   m_maxChannels; //!< Maximum number of channels to fit buffers.
-	uint8_t   m_idx;         //!< Current index in buffer.
+	uint16_t m_work[RC_MAX_CHANNELS]; //!< Work buffer.
+	uint8_t  m_idx;                   //!< Current index in buffer.
 	
 	volatile bool m_newFrame;      //!< Whether a new frame is available or not.
 	uint16_t      m_lastFrameTime; //!< Last time a new frame has been found

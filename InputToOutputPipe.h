@@ -1,12 +1,12 @@
-#ifndef INC_RC_INPUTOUTPUTPIPE_H
-#define INC_RC_INPUTOUTPUTPIPE_H
+#ifndef INC_RC_INPUTTOOUTPUTPIPE_H
+#define INC_RC_INPUTTOOUTPUTPIPE_H
 
 /* ---------------------------------------------------------------------------
 ** This software is in the public domain, furnished "as is", without technical
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** InputOutputPipe.h
+** InputToOutputPipe.h
 ** Class copying from input directly to output
 **
 ** Author: Daniel van den Ouden
@@ -30,13 +30,13 @@ namespace rc
  *  \date      Nov-2012
  *  \copyright Public Domain.
  */
-class InputOutputPipe : public InputProcessor, OutputSource
+class InputToOutputPipe : public InputProcessor, OutputSource
 {
 public:
-	/*! \brief Constructs an InputOutputPipe object
+	/*! \brief Constructs an InputToOutputPipe object
 	    \param p_source Index to use as input source.
 	    \param p_destination Index to use as output destination.*/
-	InputOutputPipe(Input p_source, Output p_destination);
+	InputToOutputPipe(Input p_source, Output p_destination);
 	
 	/*! \brief Fetches input and writes output.*/
 	void apply() const;
@@ -46,4 +46,4 @@ public:
 
 } // namespace end
 
-#endif // INC_RC_INPUTOUTPUTPIPE_H
+#endif // INC_RC_INPUTTOOUTPUTPIPE_H

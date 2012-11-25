@@ -15,12 +15,7 @@
 #include <Timer1.h>
 
 
-#define CHANNELS 4
-
-uint16_t g_values[CHANNELS];                  // output buffer for PPMIn
-uint8_t  g_workIn[PPMIN_WORK_SIZE(CHANNELS)]; // we need to have a work buffer for the PPMIn class
-
-rc::PPMIn g_PPMIn(g_values, g_workIn, CHANNELS);
+rc::PPMIn g_PPMIn;
 
 void setup()
 {
@@ -56,7 +51,9 @@ void loop()
 	
 	if (g_PPMIn.isStable())
 	{
-		// do magic, incoming values available in g_values in microseconds.
+		// do magic, incoming values available in rc::getInputChannel() in microseconds.
+		// or use rc::getRawInputChannels() to get a pointer to the raw buffer
+		// see <inputchannel.h>
 	}
 	else if (g_PPMIn.isLost())
 	{

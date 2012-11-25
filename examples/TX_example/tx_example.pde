@@ -19,7 +19,7 @@
 #include <DualRates.h>
 #include <Expo.h>
 #include <Gyro.h>
-#include <InputOutputPipe.h>
+#include <InputToOutputPipe.h>
 #include <InputToInputMix.h>
 #include <PPMOut.h>
 #include <Swashplate.h>
@@ -73,14 +73,15 @@ rc::ThrottleHold g_throttleHold(-256, rc::Switch_A); // Default throttle level i
 // Various functions write their output to predefined or user settable locations
 // A channel can fetch its input from these locations
 // Multiple channels may use the same input
+// The second parameter is the output channel to where the result should be written
 rc::Channel g_channels[ChannelCount] =
 {
-	rc::Channel(rc::Output_AIL1),
-	rc::Channel(rc::Output_ELE1),
-	rc::Channel(rc::Output_THR1),
-	rc::Channel(rc::Output_RUD1),
-	rc::Channel(rc::Output_GYR1),
-	rc::Channel(rc::Output_PIT)
+	rc::Channel(rc::Output_AIL1, rc::OutputChannel_1),
+	rc::Channel(rc::Output_ELE1, rc::OutputChannel_2),
+	rc::Channel(rc::Output_THR1, rc::OutputChannel_3),
+	rc::Channel(rc::Output_RUD1, rc::OutputChannel_4),
+	rc::Channel(rc::Output_GYR1, rc::OutputChannel_5),
+	rc::Channel(rc::Output_PIT,  rc::OutputChannel_6)
 };
 
 // swashplate
@@ -93,16 +94,12 @@ rc::Gyro g_gyro[2] =
 	rc::Gyro(rc::Output_GYR1)  // We only use the one of the active flightmode
 };
 
-// Channel values in microseconds
-uint16_t g_channelValues[ChannelCount] = {0};
-
-// PPM related variables
-uint8_t    g_PPMWork[PPMOUT_WORK_SIZE(ChannelCount)];
-rc::PPMOut g_PPMOut(ChannelCount, g_channelValues, g_PPMWork, ChannelCount);
+// we'll need to tell PPMOut how many channels to output
+rc::PPMOut g_PPMOut(ChannelCount);
 
 // Set up pipes for direct input to output copying
-rc::InputOutputPipe g_throttle(rc::Input_THR, rc::Output_THR1);
-rc::InputOutputPipe g_rudder(rc::Input_RUD, rc::Output_RUD1);
+rc::InputToOutputPipe g_throttle(rc::Input_THR, rc::Output_THR1);
+rc::InputToOutputPipe g_rudder(rc::Input_RUD, rc::Output_RUD1);
 
 // Swash to throttle mixing
 // we need to use abs, this will make sure that any negative input from aileron or elevator will
@@ -145,12 +142,12 @@ void setup()
 	// our output signal will lie between 920 and 2120 microseconds (1520 +/- 600)
 	
 	// fill channel values buffer with sane values, all centered
-	g_channelValues[0] = rc::normalizedToMicros(0);
-	g_channelValues[1] = rc::normalizedToMicros(0);
-	g_channelValues[2] = rc::normalizedToMicros(-256); // Throttle channel, MUST BE AT 0 THROTTLE!
-	g_channelValues[3] = rc::normalizedToMicros(0);
-	g_channelValues[4] = rc::normalizedToMicros(0);
-	g_channelValues[5] = rc::normalizedToMicros(0);
+	rc::setOutputChannel(rc::OutputChannel_1, rc::normalizedToMicros(0));
+	rc::setOutputChannel(rc::OutputChannel_1, rc::normalizedToMicros(0));
+	rc::setOutputChannel(rc::OutputChannel_1, rc::normalizedToMicros(-256)); // Throttle channel, MUST BE AT 0 THROTTLE!
+	rc::setOutputChannel(rc::OutputChannel_1, rc::normalizedToMicros(0));
+	rc::setOutputChannel(rc::OutputChannel_1, rc::normalizedToMicros(0));
+	rc::setOutputChannel(rc::OutputChannel_1, rc::normalizedToMicros(0));
 	
 	// set up PPM
 	g_PPMOut.setPulseLength(448);   // default pulse length used by Esky hardware
@@ -225,13 +222,13 @@ void loop()
 	// END OF OUTPUT HANDLING
 	// Now we've filled all the parts of the output system we need (AIL1, ELE1, THR1, RUD1, GYR1 and PIT1)
 	// now we can start using the output to generate a signal or data packet
-	// Well, almost. Channel does perform some transformations, but these aren't written back into the output system
-	// since more than one channel may use the same output as source.
+	// Well, almost. Channel does perform some transformations, the results are written to OutputChannel_N
+	// which is the input for PPMOut
 	
 	// perform channel transformations and set channel values
 	for (uint8_t i = 0; i < ChannelCount; ++i)
 	{
-		g_channelValues[i] = rc::normalizedToMicros(g_channels[i].apply());
+		g_channels[i].apply();
 	}
 	
 	// Tell PPMOut that new values are ready

@@ -13,6 +13,7 @@
 
 #include <Arduino.h>
 
+#include <outputchannel.h>
 #include <rc_debug_lib.h>
 #include <ServoOut.h>
 #include <Timer1.h>
@@ -26,15 +27,10 @@ ServoOut* ServoOut::s_instance = 0;
 
 // Public functions
 
-ServoOut::ServoOut(const uint8_t* p_pins, const uint16_t* p_values, uint8_t* p_work, uint8_t p_maxServos)
+ServoOut::ServoOut(const uint8_t* p_pins)
 :
 m_pauseLength(10000),
 m_pins(p_pins),
-m_values(p_values),
-m_timings(reinterpret_cast<volatile uint16_t*>(p_work)),
-m_ports(reinterpret_cast<volatile uint8_t*>(m_timings + p_maxServos + 1)),
-m_masks(m_ports + p_maxServos + 1),
-m_maxServos(p_maxServos),
 m_activePort(0),
 m_activeMask(0),
 m_nextPort(0),
@@ -88,9 +84,10 @@ void ServoOut::update(bool p_pinsChanged)
 	uint16_t remainingTime = m_pauseLength;
 	uint8_t idx = 0;
 	
-	for (uint8_t i = 0; i < m_maxServos; ++i)
+	const uint16_t* values = getRawOutputChannels();
+	for (uint8_t i = 0; i < RC_MAX_CHANNELS; ++i)
 	{
-		if (m_pins[i] != 0 && m_values[i] != 0)
+		if (m_pins[i] != 0 && values[i] != 0)
 		{
 			if (p_pinsChanged)
 			{
@@ -98,30 +95,30 @@ void ServoOut::update(bool p_pinsChanged)
 				uint8_t port = digitalPinToPort(m_pins[i]);
 				volatile uint8_t* out = portInputRegister(port);
 				
-				RC_ASSERT_MINMAX(m_values[i], 0, 32766);
+				RC_ASSERT_MINMAX(values[i], 0, 32766);
 				
 				TIMSK1 &= ~(1 << OCIE1B);
-				m_timings[idx] = m_values[i] << 1;
+				m_timings[idx] = values[i] << 1;
 				m_ports[idx] = static_cast<uint8_t>(reinterpret_cast<uint16_t>(out) & 0xFF);
 				m_masks[idx] = mask;
 				TIMSK1 |= (1 << OCIE1B);
 			}
 			else
 			{
-				RC_ASSERT_MINMAX(m_values[i], 0, 32766);
+				RC_ASSERT_MINMAX(values[i], 0, 32766);
 				
 				TIMSK1 &= ~(1 << OCIE1B);
-				m_timings[idx] = m_values[i] << 1;
+				m_timings[idx] = values[i] << 1;
 				TIMSK1 |= (1 << OCIE1B);
 			}
 			
-			if (remainingTime < m_values[i])
+			if (remainingTime < values[i])
 			{
 				remainingTime = 0;
 			}
 			else
 			{
-				remainingTime -= m_values[i];
+				remainingTime -= values[i];
 			}
 			
 			++idx;
@@ -174,7 +171,7 @@ void ServoOut::isr()
 	
 	// update index
 	++m_idx;
-	if (m_idx > m_maxServos || m_timings[m_idx] == 0)
+	if (m_idx > RC_MAX_CHANNELS || m_timings[m_idx] == 0)
 	{
 		m_idx = 0;
 	}

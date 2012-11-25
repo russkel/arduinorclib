@@ -13,6 +13,7 @@
 
 #include <Arduino.h>
 
+#include <inputchannel.h>
 #include <rc_debug_lib.h>
 #include <ServoIn.h>
 #include <Timer1.h>
@@ -23,13 +24,9 @@ namespace rc
 
 // Public functions
 
-ServoIn::ServoIn(uint16_t* p_results, uint8_t* p_work, uint8_t p_maxServos)
+ServoIn::ServoIn()
 :
-m_maxServos(p_maxServos),
-m_high(true),
-m_results(p_results),
-m_pulseStart(reinterpret_cast<uint16_t*>(p_work)),
-m_pulseLength(m_pulseStart + p_maxServos)
+m_high(true)
 {
 	
 }
@@ -41,11 +38,12 @@ void ServoIn::start(bool p_high)
 	m_high = p_high;
 	
 	// clean buffers
-	for (uint8_t i = 0; i < m_maxServos; ++i)
+	uint16_t* results = getRawInputChannels();
+	for (uint8_t i = 0; i < RC_MAX_CHANNELS; ++i)
 	{
 		m_pulseStart[i]  = 0;
 		m_pulseLength[i] = 0;
-		m_results[i]     = 0;
+		results[i]       = 0;
 	}
 	
 	// start Timer 1
@@ -76,9 +74,10 @@ void ServoIn::pinChanged(uint8_t p_servo, bool p_high)
 
 void ServoIn::update()
 {
-	for (uint8_t i = 0; i < m_maxServos; ++i)
+	uint16_t* results = getRawInputChannels();
+	for (uint8_t i = 0; i < RC_MAX_CHANNELS; ++i)
 	{
-		m_results[i] = m_pulseLength[i] >> 1;
+		results[i] = m_pulseLength[i] >> 1;
 	}
 }
 

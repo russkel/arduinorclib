@@ -11,16 +11,15 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
+#include <inputchannel.h>
 #include <ServoIn.h>
 #include <Timer1.h>
 
 
 #define SERVOS 4
 
-uint16_t g_values[SERVOS];                    // output buffer for ServoIn
-uint8_t  g_workIn[SERVOIN_WORK_SIZE(SERVOS)]; // we need to have a work buffer for the ServoIn class
+rc::ServoIn g_ServoIn;
 
-rc::ServoIn g_ServoIn(g_values, g_workIn, SERVOS);
 
 void setup()
 {
@@ -53,7 +52,8 @@ void loop()
 	// update incoming values
 	g_ServoIn.update();
 	
-	// handle servo values here, stored in g_values
+	// handle servo values here, stored in rc::getInputChannel()
+	// or get the raw pointer to the buffer using rc::getRawInputChannels()
 }
 
 

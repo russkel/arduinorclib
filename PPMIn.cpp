@@ -13,6 +13,7 @@
 
 #include <Arduino.h>
 
+#include <inputchannel.h>
 #include <PPMIn.h>
 #include <rc_debug_lib.h>
 #include <Timer1.h>
@@ -23,15 +24,12 @@ namespace rc
 
 // Public functions
 
-PPMIn::PPMIn(uint16_t* p_results, uint8_t* p_work, uint8_t p_maxChannels)
+PPMIn::PPMIn()
 :
 m_state(State_Startup),
 m_channels(0),
 m_pauseLength(8000),
 m_timeout(500),
-m_results(p_results),
-m_work(reinterpret_cast<uint16_t*>(p_work)),
-m_maxChannels(p_maxChannels),
 m_idx(0),
 m_newFrame(false),
 m_lastFrameTime(0),
@@ -137,7 +135,7 @@ void PPMIn::pinChanged(bool p_high)
 			}
 			else
 			{
-				if (m_channels < m_maxChannels)
+				if (m_channels < RC_MAX_CHANNELS)
 				{
 					m_work[m_channels] = cnt - m_lastTime;
 				}
@@ -162,7 +160,7 @@ void PPMIn::pinChanged(bool p_high)
 			}
 			else
 			{
-				if (m_idx < m_maxChannels)
+				if (m_idx < RC_MAX_CHANNELS)
 				{
 					m_work[m_idx] = cnt - m_lastTime;
 				}
@@ -182,9 +180,10 @@ bool PPMIn::update()
 		RC_TRACE("received new frame");
 		m_newFrame = false;
 		m_lastFrameTime = static_cast<uint16_t>(millis());
-		for (uint8_t i = 0; i < m_channels && i < m_maxChannels; ++i)
+		uint16_t* results = getRawInputChannels();
+		for (uint8_t i = 0; i < m_channels && i < RC_MAX_CHANNELS; ++i)
 		{
-			m_results[i] = m_work[i] >> 1;
+			results[i] = m_work[i] >> 1;
 		}
 		return true;
 	}

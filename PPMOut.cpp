@@ -13,6 +13,7 @@
 
 #include <Arduino.h>
 
+#include <outputchannel.h>
 #include <PPMOut.h>
 #include <rc_debug_lib.h>
 #include <Timer1.h>
@@ -26,18 +27,12 @@ PPMOut* PPMOut::s_instance = 0;
 
 // Public functions
 
-PPMOut::PPMOut(uint8_t         p_channels,
-               const uint16_t* p_input,
-               uint8_t*        p_work,
-               uint8_t         p_maxChannels)
+PPMOut::PPMOut(uint8_t p_channels)
 :
 m_pulseLength(500),
 m_pauseLength(10500),
 m_channelCount(p_channels),
-m_channels(p_input),
-m_channelTimings(reinterpret_cast<uint16_t*>(p_work)),
-m_timingCount((p_channels + 1) * 2),
-m_timings(const_cast<uint16_t*>(m_channelTimings) + p_maxChannels)
+m_timingCount((p_channels + 1) * 2)
 {
 	s_instance = this;
 }
@@ -89,6 +84,7 @@ void PPMOut::start(uint8_t p_pin, bool p_invert)
 void PPMOut::setChannelCount(uint8_t p_channels)
 {
 	RC_TRACE("set channel count %u", p_channels);
+	RC_ASSERT_MINMAX(p_channels, 1, RC_MAX_CHANNELS);
 	m_channelCount = p_channels;
 }
 
@@ -131,9 +127,10 @@ uint16_t PPMOut::getPauseLength() const
 
 void PPMOut::update()
 {
+	const uint16_t* channels = getRawOutputChannels();
 	for (uint8_t i = 0; i < m_channelCount; ++i)
 	{
-		m_channelTimings[i] = m_channels[i] << 1;
+		m_channelTimings[i] = channels[i] << 1;
 	}
 }
 
