@@ -7,6 +7,7 @@ Version 0.4
 - DEL: Removed DIPin and DAIPin, use BiStateSwitch and AnalogSwitch instead
 - ADD: Offset [#7]
 - ADD: Governor [#10]
+- ADD: Input/Output system for channels [#52]
 
 Version 0.3
 - ADD: Landing gear support [#24]

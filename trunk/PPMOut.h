@@ -16,7 +16,7 @@
 
 #include <inttypes.h>
 
-#define PPMOUT_WORK_SIZE(channels) ((channels) + (((channels) + 1) * 4))
+#include <rc_config.h>
 
 
 namespace rc
@@ -36,14 +36,8 @@ class PPMOut
 public:
 	
 	/*! \brief Constructs a PPMOut object.
-	    \param p_channels Number of active channels, <= p_maxChannels.
-	    \param p_input External input buffer for channel values, in microseconds.
-	    \param p_work Work buffer, should be (p_maxChannels + 1) * 4 elements large.
-	    \param p_maxChannels Maximum number of channels supported.*/
-	PPMOut(uint8_t         p_channels,
-	       const uint16_t* p_input,
-	       uint8_t*        p_work,
-	       uint8_t         p_maxChannels);
+	    \param p_channels Number of active channels, <= RC_MAX_CHANNELS.*/
+	PPMOut(uint8_t p_channels);
 	
 	/*! \brief Sets up timers and interrupts.
 	    \param p_pin Pin to use as output pin, pins 9 and 10 are preferred and give the best result.
@@ -92,14 +86,13 @@ private:
 	uint16_t m_pulseLength; //!< Pulse length in timer ticks.
 	uint16_t m_pauseLength; //!< End of frame length in timer ticks.
 	
-	uint8_t         m_channelCount;    //!< Number of active channels.
-	const uint16_t* m_channels;        //!< External buffer with channel values, in microseconds.
+	uint8_t m_channelCount;    //!< Number of active channels.
 	
-	volatile uint16_t* m_channelTimings; //!< Timings per channel, in timer ticks.
+	volatile uint16_t m_channelTimings[RC_MAX_CHANNELS + 1]; //!< Timings per channel, in timer ticks.
 	
-	uint8_t   m_timingCount; //!< Number of active timings.
-	uint8_t   m_timingPos;   //!< Current position in timings buffer.
-	uint16_t* m_timings;     //!< Timing values in timer ticks.
+	uint8_t   m_timingCount;                        //!< Number of active timings.
+	uint8_t   m_timingPos;                          //!< Current position in timings buffer.
+	uint16_t  m_timings[(RC_MAX_CHANNELS + 1) * 2]; //!< Timing values in timer ticks.
 	
 	uint8_t           m_mask; //!< Mask to use for pins other than 9 and 10
 	volatile uint8_t* m_port; //!< Input port register for pins other than 9 and 10

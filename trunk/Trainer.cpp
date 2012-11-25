@@ -21,9 +21,10 @@ namespace rc
 
 // Public functions
 
-Trainer::Trainer(Switch p_source, SwitchState p_state)
+Trainer::Trainer(Switch p_source, SwitchState p_state, InputChannel p_channel)
 :
 SwitchProcessor(p_source, p_state),
+InputChannelProcessor(p_channel),
 m_enabled(false),
 m_destination(0xFF),
 m_studentRate(100),
@@ -114,7 +115,7 @@ uint8_t Trainer::getTeacherRate() const
 }
 
 
-uint16_t Trainer::apply(uint16_t p_teacher, uint16_t p_student, bool p_activeAndValid)
+int16_t Trainer::apply(int16_t p_teacher, int16_t p_student, bool p_activeAndValid)
 {
 	if (m_enabled && p_activeAndValid)
 	{
@@ -125,19 +126,20 @@ uint16_t Trainer::apply(uint16_t p_teacher, uint16_t p_student, bool p_activeAnd
 }
 
 
-void Trainer::apply(uint16_t p_student, bool p_valid)
+void Trainer::apply(bool p_valid)
 {
-	if (p_valid && isActiveState())
+	if (p_valid && isActiveState() && InputChannelProcessor::m_source != InputChannel_None)
 	{
+		int16_t student = rc::microsToNormalized(rc::getInputChannel(InputChannelProcessor::m_source));
 		Input i = getInputDestination();
 		if (i != Input_None)
 		{
-			rc::setInput(i, apply(rc::getInput(i), p_student, p_valid));
+			rc::setInput(i, apply(rc::getInput(i), student, p_valid));
 		}
 		Output o = getOutputDestination();
 		if (o != Output_None)
 		{
-			rc::setOutput(o, apply(rc::getOutput(o), p_student, p_valid));
+			rc::setOutput(o, apply(rc::getOutput(o), student, p_valid));
 		}
 	}
 }

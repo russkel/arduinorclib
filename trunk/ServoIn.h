@@ -16,7 +16,7 @@
 
 #include <inttypes.h>
 
-#define SERVOIN_WORK_SIZE(servos) ((servos) * 4)
+#include <rc_config.h>
 
 
 namespace rc
@@ -35,11 +35,8 @@ class ServoIn
 {
 public:
 	
-	/*! \brief Constructs a ServoIn object.
-	    \param p_results Output buffer for results, in microseconds.
-	    \param p_work Work buffer of at least SERVOIN_WORK_SIZE(p_maxServos) in size.
-	    \param p_maxServos Maximum number of signals to listen to.*/
-	ServoIn(uint16_t* p_results, uint8_t* p_work, uint8_t p_maxServos);
+	/*! \brief Constructs a ServoIn object.*/
+	ServoIn();
 	
 	/*! \brief Starts measuring.
 	    \param p_high Whether the incoming signal has high or low pulses.
@@ -56,11 +53,9 @@ public:
 	void update();
 	
 private:
-	uint8_t   m_maxServos;   //!< Maximum number of servos to listen for.
-	bool      m_high;        //!< Whether pulses are high or low.
-	uint16_t* m_results;     //!< Output result buffer, microseconds.
-	uint16_t* m_pulseStart;  //!< Last measured pulse start for each servo.
-	uint16_t* m_pulseLength; //!< Last measured pulse length for each servo.
+	bool     m_high;                         //!< Whether pulses are high or low.
+	uint16_t m_pulseStart[RC_MAX_CHANNELS];  //!< Last measured pulse start for each servo.
+	uint16_t m_pulseLength[RC_MAX_CHANNELS]; //!< Last measured pulse length for each servo.
 };
 /** \example servoin_example.pde
  * This is an example of how to use the ServoIn class.

@@ -17,6 +17,7 @@
 #include <inttypes.h>
 
 #include <input.h>
+#include <InputChannelProcessor.h>
 #include <output.h>
 #include <SwitchProcessor.h>
 
@@ -31,13 +32,16 @@ namespace rc
  *  \date      Nov-2012
  *  \copyright Public Domain.
  */
-class Trainer : public SwitchProcessor
+class Trainer : public SwitchProcessor, public InputChannelProcessor
 {
 public:
 	/*! \brief Constructs a Trainer object.
 	    \param p_source Source switch.
-	    \param p_state Switch state at which trainer is active.*/
-	Trainer(Switch p_source = Switch_None, SwitchState p_state = SwitchState_Down);
+	    \param p_state Switch state at which trainer is active.
+	    \param p_channel Input channel from which to read student input.*/
+	Trainer(Switch p_source = Switch_None,
+	        SwitchState p_state = SwitchState_Down,
+	        InputChannel p_channel = InputChannel_None);
 	
 	/*! \brief Enables or disables this trainer channel.
 	    \param p_enabled Whether to enable or disable.*/
@@ -89,13 +93,12 @@ public:
 		\param p_student Student input, range [-358 - 358]
 		\param p_activeAndValid True when trainer switch is being held and student input is valid.
 	    \return Result.*/
-	uint16_t apply(uint16_t p_teacher, uint16_t p_student, bool p_activeAndValid);
+	int16_t apply(int16_t p_teacher, int16_t p_student, bool p_activeAndValid);
 	
 	/*! \brief Applies student input to existing teacher input.
-		\param p_student Student input, range [-358 - 358]
 		\param p_valid True when student input is valid.
 	    \return Result.*/
-	void apply(uint16_t p_student, bool p_valid);
+	void apply(bool p_valid);
 	
 private:
 	bool    m_enabled;     //!< Whether trainer port is enabled (for this channel)

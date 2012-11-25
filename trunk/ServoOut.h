@@ -16,7 +16,7 @@
 
 #include <inttypes.h>
 
-#define SERVOOUT_WORK_SIZE(servos) (((servos) + 1) * 4)
+#include <rc_config.h>
 
 
 namespace rc
@@ -36,10 +36,8 @@ public:
 	
 	/*! \brief Constructs a ServoOut object.
 	    \param p_pins Input buffer of pins to connect servos to.
-	    \param p_values Input buffer of values of servos in microseconds.
-	    \param p_work Work buffer at least SERVOOUT_WORK_SIZE(p_maxServos) in size.
-	    \param p_maxServos Maximum number of servos supported.*/
-	ServoOut(const uint8_t* p_pins, const uint16_t* p_values, uint8_t* p_work, uint8_t p_maxServos);
+	    \param p_values Input buffer of values of servos in microseconds.*/
+	ServoOut(const uint8_t* p_pins);
 	
 	/*! \brief Starts timers and output.*/
 	void start();
@@ -65,14 +63,11 @@ private:
 	
 	uint16_t m_pauseLength; //!< Minimal length of pause between pulses on a pin in microseconds.
 	
-	const uint8_t*  m_pins;   //!< External buffer defining pins to use.
-	const uint16_t* m_values; //!< External buffer defining values for servos.
+	const uint8_t* m_pins;   //!< External buffer defining pins to use.
 	
-	volatile uint16_t* m_timings; //!< Work buffer containing timings.
-	volatile uint8_t*  m_ports;   //!< Work buffer containing port addresses.
-	volatile uint8_t*  m_masks;   //!< Work buffer containing bitmasks.
-	
-	uint8_t   m_maxServos; //!< Maximal number of servos that can be contained in the buffers.
+	volatile uint16_t m_timings[RC_MAX_CHANNELS]; //!< Work buffer containing timings.
+	volatile uint8_t  m_ports[RC_MAX_CHANNELS];   //!< Work buffer containing port addresses.
+	volatile uint8_t  m_masks[RC_MAX_CHANNELS];   //!< Work buffer containing bitmasks.
 	
 	volatile uint8_t* m_activePort; //!< Address of port of currently active (high) pin.
 	         uint8_t  m_activeMask; //!< Inverted bitmask of currently active (high) pin.

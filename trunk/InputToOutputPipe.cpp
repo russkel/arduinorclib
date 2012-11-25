@@ -3,7 +3,7 @@
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** InputOutputPipe.cpp
+** InputToOutputPipe.cpp
 ** Class copying from input directly to output
 **
 ** Author: Daniel van den Ouden
@@ -11,7 +11,7 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <InputOutputPipe.h>
+#include <InputToOutputPipe.h>
 #include <rc_debug_lib.h>
 
 
@@ -20,7 +20,7 @@ namespace rc
 
 // Public functions
 
-InputOutputPipe::InputOutputPipe(Input p_source, Output p_destination)
+InputToOutputPipe::InputToOutputPipe(Input p_source, Output p_destination)
 :
 InputProcessor(p_source),
 OutputSource(p_destination)
@@ -29,7 +29,7 @@ OutputSource(p_destination)
 }
 
 
-void InputOutputPipe::apply() const
+void InputToOutputPipe::apply() const
 {
 	if (m_source != Input_None)
 	{

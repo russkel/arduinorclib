@@ -23,10 +23,8 @@
 
 
 // PPM related variables
-uint16_t g_values[CHANNELS];                  // output buffer for PPMIn
-uint8_t  g_workIn[PPMIN_WORK_SIZE(CHANNELS)]; // we need to have a work buffer for the PPMIn class
 
-rc::PPMIn g_PPMIn(g_values, g_workIn, CHANNELS);
+rc::PPMIn g_PPMIn;
 
 
 // Hardware input
@@ -46,10 +44,10 @@ rc::BiStateSwitch g_switch(3, rc::Switch_A); // use pin 3 as trainer switch and 
 
 rc::Trainer g_trainer[CHANNELS] = // Trainer object for every channel
 {
-	rc::Trainer(rc::Switch_A, rc::SwitchState_Down), // We can specify a switch and state for which the
-	rc::Trainer(rc::Switch_A, rc::SwitchState_Down), // student input should be used
-	rc::Trainer(rc::Switch_A, rc::SwitchState_Down), // in this case we use Switch A in the Down position
-	rc::Trainer(rc::Switch_A, rc::SwitchState_Down)  // We could use a different switch for some functions, but we won't
+	rc::Trainer(rc::Switch_A, rc::SwitchState_Down, rc::InputChannel_1), // We can specify a switch and state for which the
+	rc::Trainer(rc::Switch_A, rc::SwitchState_Down, rc::InputChannel_2), // student input should be used
+	rc::Trainer(rc::Switch_A, rc::SwitchState_Down, rc::InputChannel_3), // in this case we use Switch A in the Down position
+	rc::Trainer(rc::Switch_A, rc::SwitchState_Down, rc::InputChannel_4)  // We could use a different switch for some functions, but we won't
 };
 
 
@@ -129,8 +127,8 @@ void loop()
 	{
 		// note that the state of the switch will be read from rc::Switch_A
 		// teacher input will be read from rc::Input_xxx
-		// student input is in microseconds (from PPMIn) and needs to be translated to normalized
-		g_trainer[i].apply(rc::microsToNormalized(g_values[i]), validStudent);
+		// student input will be read from rc::InputChannel_N
+		g_trainer[i].apply(validStudent);
 	}
 	
 	// Done! At this point the results are available in the global input buffer
