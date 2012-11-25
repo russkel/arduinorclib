@@ -3,15 +3,15 @@
 ** support, and with no warranty, express or implied, as to its usefulness for
 ** any purpose.
 **
-** InputToInputMix.cpp
-** Generic input to input mix
+** OutputToOutputMix.cpp
+** Generic output to output mix
 **
 ** Author: Daniel van den Ouden
 ** Project: ArduinoRCLib
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
-#include <InputToInputMix.h>
+#include <OutputToOutputMix.h>
 #include <rc_debug_lib.h>
 #include <util.h>
 
@@ -21,21 +21,21 @@ namespace rc
 
 // Public functions
 
-InputToInputMix::InputToInputMix(int8_t p_posMix,
-                                 int8_t p_negMix,
-                                 int16_t p_offset,
-                                 Input p_source,
-                                 Input p_index)
+OutputToOutputMix::OutputToOutputMix(int8_t p_posMix,
+                                     int8_t p_negMix,
+                                     int16_t p_offset,
+                                     Output p_source,
+                                     Output p_index)
 :
-InputProcessor(p_source),
-InputModifier(p_index),
+OutputProcessor(p_source),
+OutputModifier(p_index),
 MixBase(p_posMix, p_negMix, p_offset)
 {
 	
 }
 
 
-int16_t InputToInputMix::apply(int16_t p_master, int16_t p_slave) const
+int16_t OutputToOutputMix::apply(int16_t p_master, int16_t p_slave) const
 {
 	RC_ASSERT_MINMAX(p_master, -358, 358);
 	RC_ASSERT_MINMAX(p_slave, -358, 358);
@@ -44,7 +44,7 @@ int16_t InputToInputMix::apply(int16_t p_master, int16_t p_slave) const
 }
 
 
-int16_t InputToInputMix::applyOffset(int16_t p_slave) const
+int16_t OutputToOutputMix::applyOffset(int16_t p_slave) const
 {
 	RC_ASSERT_MINMAX(p_slave, -358, 358);
 	
@@ -52,19 +52,19 @@ int16_t InputToInputMix::applyOffset(int16_t p_slave) const
 }
 
 
-void InputToInputMix::apply() const
+void OutputToOutputMix::apply() const
 {
-	if (m_index != Input_None)
+	if (m_index != Output_None)
 	{
-		if (m_source != Input_None)
+		if (m_source != Output_None)
 		{
-			rc::setInput(m_index,
-			             apply(rc::getInput(m_source),
-			                   rc::getInput(m_index)));
+			rc::setOutput(m_index,
+			              apply(rc::getOutput(m_source),
+			                    rc::getOutput(m_index)));
 		}
 		else
 		{
-			rc::setInput(m_index, applyOffset(rc::getInput(m_index)));
+			rc::setOutput(m_index, applyOffset(rc::getOutput(m_index)));
 		}
 	}
 }

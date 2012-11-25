@@ -102,10 +102,9 @@ rc::InputToOutputPipe g_throttle(rc::Input_THR, rc::Output_THR1);
 rc::InputToOutputPipe g_rudder(rc::Input_RUD, rc::Output_RUD1);
 
 // Swash to throttle mixing
-// we need to use abs, this will make sure that any negative input from aileron or elevator will
-// be treated as positive. Otherwise we would get an decrease in throttle when we move to one side.
-rc::InputToInputMix g_ailToThr(5, true, rc::Input_AIL, rc::Input_THR); // 5%, use abs, from aileron, to throttle
-rc::InputToInputMix g_eleToThr(5, true, rc::Input_ELE, rc::Input_THR); // 5%, use abs, from elevator, to throttle
+// We specify a negative mix for negative master input, so throttle will INCREASE when there's negative input
+rc::InputToInputMix g_ailToThr(5, -5, 0, rc::Input_AIL, rc::Input_THR); // 5% pos, -5% neg, no offset, from aileron, to throttle
+rc::InputToInputMix g_eleToThr(5, -5, 0, rc::Input_ELE, rc::Input_THR); // 5% pos, -5% neg, no offset, from elevator, to throttle
 
 
 void setup()

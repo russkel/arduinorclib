@@ -26,12 +26,15 @@ InputProcessor	KEYWORD1
 InputSource	KEYWORD1
 InputSwitch	KEYWORD1
 InputToInputMix	KEYWORD1
+MixBase	KEYWORD1
 Offset	KEYWORD1
 OutputChannelProcessor	KEYWORD1
 OutputChannelSource	KEYWORD1
+OutputModifier	KEYWORD1
 OutputProcessor	KEYWORD1
 OutputSource	KEYWORD1
 OutputToOutputChannelPipe	KEYWORD1
+OutputToOutputMix	KEYWORD1
 PlaneModel	KEYWORD1
 PPMIn	KEYWORD1
 PPMOut	KEYWORD1
