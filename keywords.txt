@@ -42,6 +42,7 @@ Retracts	KEYWORD1
 ServoIn	KEYWORD1
 ServoOut	KEYWORD1
 Swashplate	KEYWORD1
+SwashToThrottleMix	KEYWORD1
 SwitchSource	KEYWORD1
 SwitchProcessor	KEYWORD1
 ThrottleHold	KEYWORD1

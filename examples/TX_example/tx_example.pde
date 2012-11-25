@@ -102,9 +102,7 @@ rc::InputToOutputPipe g_throttle(rc::Input_THR, rc::Output_THR1);
 rc::InputToOutputPipe g_rudder(rc::Input_RUD, rc::Output_RUD1);
 
 // Swash to throttle mixing
-// We specify a negative mix for negative master input, so throttle will INCREASE when there's negative input
-rc::InputToInputMix g_ailToThr(5, -5, 0, rc::Input_AIL, rc::Input_THR); // 5% pos, -5% neg, no offset, from aileron, to throttle
-rc::InputToInputMix g_eleToThr(5, -5, 0, rc::Input_ELE, rc::Input_THR); // 5% pos, -5% neg, no offset, from elevator, to throttle
+rc::SwashToThrottleMix g_SwToThr(5, 5); // 5% aileron, 5% elevator
 
 
 void setup()
@@ -169,6 +167,10 @@ void loop()
 	g_aPins[2].read(); // throttle/pitch
 	g_aPins[3].read(); // rudder
 	
+	// apply swash to throttle mix
+	// since we want this mix to ignore any curves or expo, we apply it now
+	g_SwToThr();
+	
 	// apply expo and dual rates to input, these read from and write to input system
 	g_ailExpo[flightmode].apply();
 	g_ailDR[flightmode].apply();
@@ -195,10 +197,6 @@ void loop()
 		g_thrCurve[flightmode].apply(); // reads from THR, writes to THR
 	}
 	g_throttleHold.apply(); // reads from THR, writes to THR (acts based on rc::Switch_A)
-	
-	// apply swash to throttle mixing
-	g_ailToThr.apply();
-	g_eleToThr.apply();
 	
 	// END OF INPUT HANDLING
 	// up to here we've only dealt with filling the input system and applying transformations to it
