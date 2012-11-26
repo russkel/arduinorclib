@@ -23,6 +23,7 @@ namespace rc
 
 SwashToThrottleMix::SwashToThrottleMix(uint8_t p_ail, uint8_t p_ele)
 :
+ThrottleMixBase(100, -100, 0),
 m_ail(p_ail),
 m_ele(p_ele)
 {
@@ -67,16 +68,9 @@ int16_t SwashToThrottleMix::apply(int16_t p_thr, int16_t p_ail, int16_t p_ele) c
 	RC_ASSERT_MINMAX(p_ele, -358, 358);
 	
 	// the amount of mix to add is simply ail + ele
-	int16_t mix = rc::clamp140(rc::mix(p_ail, m_ail) + rc::mix(p_ele, m_ele));
+	int16_t master = rc::clamp140(rc::mix(p_ail, m_ail) + rc::mix(p_ele, m_ele));
 	
-	// mix is strongest around center throttle, no mix at full or no throttle.
-	int16_t thr = 256 - (p_thr > 0 ? p_thr : -p_thr);
-	
-	// we're going to have overflows if we multiply by thr, so we divide that by two
-	// same as mix = (mix * thr) / 256; but without overflows
-	mix = (mix * (thr / 2)) / 128;
-	
-	return rc::clampNormalized(p_thr + mix);
+	return applyThrottleMix(master, p_thr);
 }
 
 

@@ -13,6 +13,7 @@ BiStateSwitch	KEYWORD1
 Channel	KEYWORD1
 Curve	KEYWORD1
 DualRates	KEYWORD1
+Engine	KEYWORD1
 Expo	KEYWORD1
 FlycamOne	KEYWORD1
 Gimbal	KEYWORD1
@@ -47,6 +48,7 @@ SwashToThrottleMix	KEYWORD1
 SwitchSource	KEYWORD1
 SwitchProcessor	KEYWORD1
 ThrottleHold	KEYWORD1
+ThrottleMixBase	KEYWORD1
 Timer1	KEYWORD1
 Trainer	KEYWORD1
 TriStateSwitch	KEYWORD1

@@ -74,7 +74,6 @@ protected:
 	    \return p_slave - offset, range [-358 - 358] (clamped).*/
 	int16_t applyOffsetMix(int16_t p_slave) const;
 	
-private:
 	int8_t  m_posMix; //!< Amount of positive mix [-100 - 100].
 	int8_t  m_negMix; //!< Amount of negative mix [-100 - 100].
 	int16_t m_offset; //!< Master offset

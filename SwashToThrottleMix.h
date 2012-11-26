@@ -17,6 +17,7 @@
 #include <inttypes.h>
 
 #include <input.h>
+#include <ThrottleMixBase.h>
 
 
 namespace rc
@@ -29,7 +30,7 @@ namespace rc
  *  \date      Nov-2012
  *  \copyright Public Domain.
  */
-class SwashToThrottleMix
+class SwashToThrottleMix : public ThrottleMixBase
 {
 public:
 	/*! \brief Constructs a SwashToThrottleMix object
