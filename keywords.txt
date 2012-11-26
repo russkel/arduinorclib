@@ -15,6 +15,7 @@ Curve	KEYWORD1
 DualRates	KEYWORD1
 Expo	KEYWORD1
 FlycamOne	KEYWORD1
+Gimbal	KEYWORD1
 Governor	KEYWORD1
 Gyro	KEYWORD1
 InputChannelProcessor	KEYWORD1
@@ -196,3 +197,7 @@ OutputChannel_15	LITERAL1
 OutputChannel_16	LITERAL1
 OutputChannel_17	LITERAL1
 OutputChannel_18	LITERAL1
+Mode_1	LITERAL1
+Mode_2	LITERAL1
+Mode_3	LITERAL1
+Mode_4	LITERAL1
