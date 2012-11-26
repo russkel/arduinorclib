@@ -11,6 +11,7 @@ Version 0.4
 - ADD: Programmable mixes [#3]
 - CHG: InputToInputMix derives from MixBase
 - ADD: Swash to throttle mix [#9]
+- ADD: Gimbal [#43]
 
 Version 0.3
 - ADD: Landing gear support [#24]
