@@ -33,7 +33,7 @@ class ThrottleMixBase : public MixBase
 {
 protected:
 	/*! \brief Constructs an Mix object
-	    \param p_mix The amount of mix to use when master is positive, range [-100 - 100].
+	    \param p_posMix The amount of mix to use when master is positive, range [-100 - 100].
 	    \param p_negMix The amount of mix to use when master is negative, range [-100 - 100].
 	    \param p_offset Master offset, determines center point for master, range [-358 - 358].*/
 	ThrottleMixBase(int8_t p_posMix = 0,

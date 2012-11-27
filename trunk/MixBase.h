@@ -48,7 +48,7 @@ public:
 	
 	/*! \brief Sets the master offset.
 	    \param p_offset Offset for master input, range [-358 - 358].*/
-	void setOffset(int16_t p_mix);
+	void setOffset(int16_t p_offset);
 	
 	/*! \brief Gets the master offset.
 	    \return Master offset, range [-358 - 358].*/

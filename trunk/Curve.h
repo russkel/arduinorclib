@@ -30,7 +30,7 @@ namespace rc
  *  \date      Feb-2012
  *  \copyright Public Domain.
  */
-class Curve : public InputProcessor, InputSource
+class Curve : public InputProcessor, public InputSource
 {
 public:
 	/*! \brief Nameless enum, magic number hiding. */

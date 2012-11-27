@@ -30,7 +30,7 @@ namespace rc
  *  \date      Nov-2012
  *  \copyright Public Domain.
  */
-class OutputToOutputChannelPipe : public OutputProcessor, OutputChannelSource
+class OutputToOutputChannelPipe : public OutputProcessor, public OutputChannelSource
 {
 public:
 	/*! \brief Constructs an OutputToOutputChannelPipe object
