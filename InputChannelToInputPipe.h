@@ -30,7 +30,7 @@ namespace rc
  *  \date      Nov-2012
  *  \copyright Public Domain.
  */
-class InputChannelToInputPipe : public InputChannelProcessor, InputSource
+class InputChannelToInputPipe : public InputChannelProcessor, public InputSource
 {
 public:
 	/*! \brief Constructs an InputChannelToInputPipe object

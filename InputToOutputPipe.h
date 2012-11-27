@@ -30,7 +30,7 @@ namespace rc
  *  \date      Nov-2012
  *  \copyright Public Domain.
  */
-class InputToOutputPipe : public InputProcessor, OutputSource
+class InputToOutputPipe : public InputProcessor, public OutputSource
 {
 public:
 	/*! \brief Constructs an InputToOutputPipe object

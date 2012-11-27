@@ -40,7 +40,7 @@ public:
 		\param p_switch Throttle cut switch.
 	    \param p_state Throttle cut switch state.*/
 	Engine(Output p_destination,
-	       Switch p_source = Switch_None,
+	       Switch p_switch = Switch_None,
 	       SwitchState p_state = SwitchState_Disconnected);
 	
 	/*! \brief Sets rudder mix.

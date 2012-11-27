@@ -35,8 +35,7 @@ class ServoOut
 public:
 	
 	/*! \brief Constructs a ServoOut object.
-	    \param p_pins Input buffer of pins to connect servos to.
-	    \param p_values Input buffer of values of servos in microseconds.*/
+	    \param p_pins Input buffer of pins to connect servos to.*/
 	ServoOut(const uint8_t* p_pins);
 	
 	/*! \brief Starts timers and output.*/
