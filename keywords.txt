@@ -10,11 +10,13 @@ AIPin	KEYWORD1
 AIPinCalibrator	KEYWORD1
 AnalogSwitch	KEYWORD1
 BiStateSwitch	KEYWORD1
+Buzzer	KEYWORD1
 Channel	KEYWORD1
 Curve	KEYWORD1
 DualRates	KEYWORD1
 Engine	KEYWORD1
 Expo	KEYWORD1
+FlightTimer	KEYWORD1
 FlycamOne	KEYWORD1
 Gimbal	KEYWORD1
 Governor	KEYWORD1
@@ -43,6 +45,7 @@ PPMOut	KEYWORD1
 Retracts	KEYWORD1
 ServoIn	KEYWORD1
 ServoOut	KEYWORD1
+Speaker	KEYWORD1
 Swashplate	KEYWORD1
 SwashToThrottleMix	KEYWORD1
 SwitchSource	KEYWORD1
@@ -50,6 +53,7 @@ SwitchProcessor	KEYWORD1
 ThrottleHold	KEYWORD1
 ThrottleMixBase	KEYWORD1
 Timer1	KEYWORD1
+Timer2	KEYWORD1
 Trainer	KEYWORD1
 TriStateSwitch	KEYWORD1
 rc	KEYWORD1
