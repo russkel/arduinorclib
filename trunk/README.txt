@@ -12,6 +12,7 @@ Version 0.4
 - CHG: InputToInputMix derives from MixBase
 - ADD: Swash to throttle mix [#9]
 - ADD: Gimbal [#43]
+- ADD: Programmable timer [#53]
 
 Version 0.3
 - ADD: Landing gear support [#24]

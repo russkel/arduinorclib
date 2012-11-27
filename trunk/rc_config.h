@@ -21,6 +21,16 @@
 // You may set this to any number between 4 and 18
 #define RC_MAX_CHANNELS 18
 
+// Use this define if you want to use a Piezzo buzzer/sounder
+#define RC_USE_BUZZER
+
+// Use this define if you want to use a Piezzo transducer/speaker
+//#define RC_USE_SPEAKER
+
+#if defined(RC_USE_BUZZER) && defined(RC_USE_SPEAKER)
+	#error Cannot use RC_USE_BUZZER in combination with RC_USE_SPEAKER
+#endif
+
 // This is the global debug level
 // If you just want to change the debug level of the library, modify rc_debug_lib.h!
 #define RC_GLOBAL_LEVEL 5
