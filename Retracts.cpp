@@ -186,16 +186,13 @@ bool Retracts::gearIsLowered() const
 
 void Retracts::update()
 {
-	if (m_source != Switch_None)
+	if (isActiveState())
 	{
-		if (isActiveState())
-		{
-			down();
-		}
-		else
-		{
-			up();
-		}
+		down();
+	}
+	else
+	{
+		up();
 	}
 	
 	uint16_t now   = static_cast<uint16_t>(millis());
