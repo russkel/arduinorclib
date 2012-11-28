@@ -38,12 +38,12 @@ public:
 	FlightTimer(Switch p_source = Switch_None, SwitchState p_state = SwitchState_Disconnected);
 	
 	/*! \brief Sets the target time for the timer.
-	    \param p_time The target time in seconds, range [1 - 18000] (up to 5 hours).
+	    \param p_seconds The target time in seconds, range [1 - 18000] (up to 5 hours).
 	    \note Will reset the timer.*/
 	void setTarget(uint16_t p_seconds);
 	
 	/*! \brief Gets the target time for the timer.
-	    \param The target time in seconds, range [1 - 18000] (up to 5 hours).*/
+	    \return The target time in seconds, range [1 - 18000] (up to 5 hours).*/
 	uint16_t getTarget() const;
 	
 	/*! \brief Sets the direction the timer will be counting in.
