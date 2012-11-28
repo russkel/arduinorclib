@@ -27,7 +27,7 @@ SwitchProcessor(p_source),
 OutputSource(p_destination),
 m_holdDirection(false),
 m_holdSwitch(Switch_None),
-m_holdSwitchState(SwitchState_Disconnected)
+m_holdSwitchState(SwitchState_Down)
 {
 	m_rates[rc::SwitchState_Down]   = 0;
 	m_rates[rc::SwitchState_Center] = 50;
@@ -128,8 +128,8 @@ int16_t Governor::apply() const
 	{
 		bool hold = 
 			m_holdSwitch != Switch_None &&
-			m_holdSwitchState != SwitchState_Disconnected &&
-			getSwitchState(m_holdSwitch) == m_holdSwitchState;
+			(m_holdSwitchState == SwitchState_Disconnected ||
+			getSwitchState(m_holdSwitch) == m_holdSwitchState);
 		return writeOutputValue(apply(getSwitchState(m_source), hold));
 	}
 	return 0;

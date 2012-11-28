@@ -60,8 +60,9 @@ m_activeState(p_state)
 
 bool SwitchProcessor::isActiveState() const
 {
-	return m_activeState == SwitchState_Disconnected ||
-	       (m_source != Switch_None && getSwitchState(m_source) == m_activeState);
+	return m_source != Switch_None &&
+		(m_activeState == SwitchState_Disconnected ||
+		 getSwitchState(m_source) == m_activeState);
 }
 
 

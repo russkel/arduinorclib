@@ -33,7 +33,8 @@ class SwitchProcessor
 {
 public:
 	/*! \brief Sets the switch index.
-	    \param p_source Index to use as source switch.*/
+	    \param p_source Index to use as source switch.
+	    \note use Switch_None to force isActiveState to false.*/
 	void setSource(Switch p_source);
 	
 	/*! \brief Gets the input index.
