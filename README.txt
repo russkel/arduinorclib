@@ -12,7 +12,9 @@ Version 0.4
 - CHG: InputToInputMix derives from MixBase
 - ADD: Swash to throttle mix [#9]
 - ADD: Gimbal [#43]
-- ADD: Programmable timer [#53]
+- ADD: (Multi)Engine with idle, cut and rudder mix [#30]
+- ADD: Programmable timer with Buzzer and Speaker [#53]
+- ADD: Dead band for InputSwitch [#54]
 
 Version 0.3
 - ADD: Landing gear support [#24]
