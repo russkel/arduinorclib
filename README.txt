@@ -15,6 +15,8 @@ Version 0.4
 - ADD: (Multi)Engine with idle, cut and rudder mix [#30]
 - ADD: Programmable timer with Buzzer and Speaker [#53]
 - ADD: Dead band for InputSwitch [#54]
+- ADD: Rotary encoder [#39]
+- ADD: Global pin change and external interrupt handlers
 
 Version 0.3
 - ADD: Landing gear support [#24]

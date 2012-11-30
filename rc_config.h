@@ -15,11 +15,20 @@
 ** Website: http://sourceforge.net/p/arduinorclib/
 ** -------------------------------------------------------------------------*/
 
+// ----------------
+// CHANNEL SETTINGS
+// ----------------
+
 // Set the maximum number of channels
 // reduce this if you're never going to use this many channels;
 // it'll reduce the memory footprint.
 // You may set this to any number between 4 and 18
 #define RC_MAX_CHANNELS 18
+
+
+// -------------------------
+// BUZZER / SPEAKER SETTINGS
+// -------------------------
 
 // Use this define if you want to use a Piezzo buzzer/sounder
 #define RC_USE_BUZZER
@@ -30,6 +39,24 @@
 #if defined(RC_USE_BUZZER) && defined(RC_USE_SPEAKER)
 	#error Cannot use RC_USE_BUZZER in combination with RC_USE_SPEAKER
 #endif
+
+
+// ------------------
+// INTERRUPT SETTINGS
+// ------------------
+
+// Use the built-in Pin Change Interrupt handler of ArduinoRCLib
+// comment this out if you want to supply your own pcint handler
+#define RC_USE_PCINT
+
+// Use the built-in External Interrupt handler of ArduinoRCLib
+// comment this out if you want to supply your own extint handler
+#define RC_USE_EXTINT
+
+
+// ------------------
+// DEBUGGING SETTINGS
+// ------------------
 
 // This is the global debug level
 // If you just want to change the debug level of the library, modify rc_debug_lib.h!

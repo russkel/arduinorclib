@@ -17,6 +17,7 @@
 #include <PPMIn.h>
 #include <rc_debug_lib.h>
 #include <Timer1.h>
+#include <rc_pcint.h>
 
 
 namespace rc
@@ -35,9 +36,28 @@ m_newFrame(false),
 m_lastFrameTime(0),
 m_lastTime(0),
 m_high(false)
+#ifdef RC_USE_PCINT
+,m_pin(0)
+#endif
 {
 	
 }
+
+
+#ifdef RC_USE_PCINT
+void PPMIn::setPin(uint8_t p_pin)
+{
+	RC_TRACE("set pin: %u", p_pin);
+	
+	m_pin = p_pin;
+}
+
+
+uint8_t PPMIn::getPin() const
+{
+	return m_pin;
+}
+#endif // RC_USE_PCINT
 
 
 void PPMIn::start(bool p_high)
@@ -47,6 +67,25 @@ void PPMIn::start(bool p_high)
 	
 	// check if Timer 1 is running or not
 	rc::Timer1::start();
+
+#ifdef RC_USE_PCINT
+	// register pin change interrupt
+	if (m_pin != 0)
+	{
+		pcint::enable(m_pin, PPMIn::isr, this);
+	}
+#endif // RC_USE_PCINT
+}
+
+
+void PPMIn::stop()
+{
+#ifdef RC_USE_PCINT
+	if (m_pin != 0)
+	{
+		pcint::disable(m_pin);
+	}
+#endif // RC_USE_PCINT
 }
 
 
@@ -199,6 +238,16 @@ bool PPMIn::update()
 	}
 	return false;
 }
+
+
+// Private functions
+
+#ifdef RC_USE_PCINT
+void PPMIn::isr(uint8_t p_pin, bool p_high, void* p_user)
+{
+	reinterpret_cast<PPMIn*>(p_user)->pinChanged(p_high);
+}
+#endif // RC_USE_PCINT
 
 
 // namespace end

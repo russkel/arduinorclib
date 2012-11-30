@@ -87,18 +87,8 @@ void setup()
 	rc::Timer1::init();
 	
 	// We use pin 8 as PPM input pin
-	pinMode(8, INPUT);
-	
-	// We use pin change interrupts to detect changes in the signal
-	// If you're unfamiliar with how this works, please look up some
-	// article or tutorial on the subject.
-	
-	// only allow pin change interrupts for PB0 (digital pin 8)
-	PCMSK0 = (1 << PCINT0);
-	
-	// enable pin change interrupt 0
-	PCICR = (1 << PCIE0);
-	
+	g_PPMIn.setPin(8);
+
 	// set a timeout (default 500 milliseconds)
 	g_PPMIn.setTimeout(1000);
 	
@@ -138,28 +128,4 @@ void loop()
 	// rc::getInput(rc::Input_ELE)
 	// rc::getInput(rc::Input_THR)
 	// rc::getInput(rc::Input_RUD)
-}
-
-
-// Interrupt handling code below, this needs cleaning
-
-static uint8_t lastB = 0; // last read value of PINB
-
-// Pin change port 0 interrupt
-ISR(PCINT0_vect)
-{
-	uint8_t newB = PINB;
-	
-	// we've hardcoded the bitmask here (1 << 0), the portable way to get it is
-	// digitalPinToBitMask(pinnr), but you really don't want to call that in
-	// the interrupt handler.
-	// we test if the specified pin has changed (not really necessary, but
-	// think about what would happen if you were monitoring multiple pins)
-	if ((lastB & (1 << 0)) != (newB & (1 << 0)))
-	{
-		// and we tell PPMIn the pin has changed
-		g_PPMIn.pinChanged(newB & (1 << 0));
-	}
-	
-	lastB = newB;
 }
