@@ -15,8 +15,8 @@
 #include <ServoIn.h>
 #include <Timer1.h>
 
-
-#define SERVOS 4
+// we specify the pins in progmem
+static const prog_uint8_t s_pins[RC_MAX_CHANNELS] = {8, 9, 10, 11};
 
 rc::ServoIn g_ServoIn;
 
@@ -27,21 +27,17 @@ void setup()
 	// (PPMIn/PPMOut/ServoIn/ServoOut)
 	rc::Timer1::init();
 	
-	// We use pin 8-11 as Servo input pins
-	pinMode(8, INPUT);
-	pinMode(9, INPUT);
-	pinMode(10, INPUT);
-	pinMode(11, INPUT);
+	// we need to tell ServoIn which pins to use
+	g_ServoIn.setPins(s_pins);
 	
-	// We use pin change interrupts to detect changes in the signal
-	// If you're unfamiliar with how this works, please look up some
-	// article or tutorial on the subject.
+	// it's also possible to set pins individually
+	g_ServoIn.setPin(0, 8); // Servo 0 uses pin 8
 	
-	// only allow pin change interrupts for PB0-3 (digital pins 8-11)
-	PCMSK0 = (1 << PCINT0) | (1 << PCINT1) | (1 << PCINT2) | (1 << PCINT3);
-	
-	// enable pin change interrupt 0
-	PCICR = (1 << PCIE0);
+	// ServoIn will take care of all pin change interrupts and will set pin modes
+	// if you'd rather handle the pin change interrupts yourself, you need to edit rc_config.h
+	// and comment out the line that says #define RC_USE_PCINT
+	// you'll need to set up pin change interrupts yourself and call pinChanged(p_servo, p_high)
+	// from the interrupt handler.
 	
 	// start listening
 	g_ServoIn.start();
@@ -54,40 +50,4 @@ void loop()
 	
 	// handle servo values here, stored in rc::getInputChannel()
 	// or get the raw pointer to the buffer using rc::getRawInputChannels()
-}
-
-
-// Interrupt handling code below, this needs cleaning
-
-static uint8_t lastB = 0;
-
-// Pin change port 0 interrupt
-ISR(PCINT0_vect)
-{
-	// we need to call the ServoIn ISR here, keep code in the ISR to a minimum!
-	uint8_t newB = PINB;
-	uint8_t chgB = newB ^ lastB; // bitwise XOR will set all bits that have changed
-	lastB = newB;
-	
-	// has any of the pins changed?
-	if (chgB)
-	{
-		// find out which pin has changed
-		if (chgB & _BV(0))
-		{
-			g_ServoIn.pinChanged(0, newB & _BV(0));
-		}
-		if (chgB & _BV(1))
-		{
-			g_ServoIn.pinChanged(1, newB & _BV(1));
-		}
-		if (chgB & _BV(2))
-		{
-			g_ServoIn.pinChanged(2, newB & _BV(2));
-		}
-		if (chgB & _BV(3))
-		{
-			g_ServoIn.pinChanged(3, newB & _BV(3));
-		}
-	}
 }

@@ -37,6 +37,16 @@ public:
 	/*! \brief Constructs a PPMIn object.*/
 	PPMIn();
 	
+#ifdef RC_USE_PCINT
+	/*! \brief Sets pin on which PPM signal is received.
+	    \param p_pin The pin on which a PPM signal is received.*/
+	void setPin(uint8_t p_pin);
+	
+	/*! \brief Gets pin on which PPM signal is received.
+	    \return The pin on which a PPM signal is received.*/
+	uint8_t getPin() const;
+#endif
+	
 	/*! \brief Starts measuring.
 	    \param p_high Whether the incoming signal has high or low pulses.
 	    \note It doesn't really matter if the pulses are low or high,
@@ -45,9 +55,14 @@ public:
 	          the p_high parameter will make the interrupt handler respond to either
 	          the high or low pin change and may thus reduce problems created by
 	          simultaneous interrupts.
+	    \note Will register pin change interrupt if you're using that.
 	    \warning Do <b>NOT</b> use this together with the standard Arduino Servo library,
 	             use rc::ServoOut instead.*/
 	void start(bool p_high = false);
+	
+	/*! \brief Stops measuring.
+	    \note Will unregister pin change interrupt if you're using that.*/
+	void stop();
 	
 	/*! \brief Sets minimum pause length, including pulse, in microseconds.
 	    \param p_length Minimum pause length in microseconds.*/
@@ -78,8 +93,9 @@ public:
 	    \return The number of channels found in the last received signal. */
 	uint8_t getChannels() const;
 	
-	/*! \brief Handles pin change interrupt, call in your interrupt handler.
-	    \param p_high Whether the pin is high or not.*/
+	/*! \brief Handles pin change interrupt.
+	    \param p_high Whether the pin is high or not.
+	    \note Call this from your interrupt handler if you're handling interrupts yourself.*/
 	void pinChanged(bool p_high);
 	
 	/*! \brief Updates the result buffer with new values.
@@ -97,6 +113,10 @@ private:
 		State_Lost       //!< Signal has been lost (no valid signal for a while).
 	};
 	
+#ifdef RC_USE_PCINT
+	static void isr(uint8_t p_pin, bool p_high, void* p_user);
+#endif
+	
 	State    m_state;       //!< Current state of input signal.
 	uint8_t  m_channels;    //!< Number of channels in input signal.
 	uint16_t m_pauseLength; //!< Minimum pause length in microseconds.
@@ -110,6 +130,10 @@ private:
 	
 	uint16_t m_lastTime; //!< Time of last interrupt.
 	bool     m_high;     //!< Whether the incoming signal uses high pulses.
+
+#ifdef RC_USE_PCINT
+	uint8_t m_pin;
+#endif
 };
 /** \example ppmin_example.pde
  * This is an example of how to use the PPMIn class.
