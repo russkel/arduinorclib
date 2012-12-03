@@ -34,7 +34,7 @@ m_state(p_toggleState)
 void SwitchToggler::setToggleState(SwitchState p_state)
 {
 	RC_TRACE("set toggle state: %d", p_state);
-	RC_ASSERT_MINMAX(p_expo, -100, 100);
+	RC_ASSERT(p_state < SwitchState_Count);
 	
 	m_toggle = p_state;
 	m_last = p_state;
