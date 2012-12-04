@@ -68,7 +68,7 @@ public:
 	int8_t getMin() const;
 	
 	/*! \brief Sets maximum value.
-	    \param p_min Maximum value, range [-128 - 127].
+	    \param p_max Maximum value, range [-128 - 127].
 	    \note default is 127.*/
 	void setMax(int8_t p_max);
 	
