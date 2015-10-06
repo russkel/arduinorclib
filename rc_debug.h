@@ -18,6 +18,11 @@
 // Include for program space related macros
 #include <avr/pgmspace.h>
 
+// add missing typedefs
+typedef char PROGMEM prog_char;
+typedef uint8_t PROGMEM prog_uint8_t;
+
+
 // include global config settings first
 #include <rc_config.h>
 
